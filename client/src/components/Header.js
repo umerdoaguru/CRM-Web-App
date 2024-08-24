@@ -8,21 +8,21 @@ function Header() {
     <div className="w-full ">
     
         <nav className="bg-white border-gray-200 dark:bg-gray-800">
-          <div className="flex p-1  items-center  justify-between bg-slate-100">
+          <div className="flex items-center justify-between p-1 bg-slate-100">
             <a href="#" className="flex items-center mx-2">
               <img
                 src="https://flowbite.com/docs/images/logo.svg"
-                className="mr-3 h-6 sm:h-9"
+                className="h-6 mr-3 sm:h-9"
                 alt="Flowbite Logo"
               />
               CRM GURU 
             </a>
-            <div className="flex items-center lg:order-2 mx-3">
-             <div className=" mx-4">
+            <div className="flex items-center mx-3 lg:order-2">
+             <div className="mx-4 ">
             <UserLogin/></div>
            
-              <div className="">
-              <Logout/></div>
+              {/* <div className="">
+              <Logout/></div> */}
               
 
             </div>
