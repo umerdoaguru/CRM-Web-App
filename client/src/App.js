@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import Login from './components/Login';
 import Registration from './components/Registration';
 import Header from './components/Header';
+import Register from './adiComponent/Register';
 
 
 function App() {
@@ -19,9 +20,9 @@ function App() {
 
     <Routes>
         <Route path="/" element={user? <Dashboard />:<Login/>} />
-      
-       
-        <Route path="/admincrmdoaguru" element={<Registration />} />
+        <Route path='/login' element={<Login/>}/>
+       <Route path='/admincrmdoaguru' element={<Register/>}/>
+        {/* <Route path="/admincrmdoaguru" element={<Registration />} /> */}
         <Route path="/dashboard" element={<Dashboard />} />
         
       </Routes>
