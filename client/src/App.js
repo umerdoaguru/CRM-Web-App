@@ -7,6 +7,7 @@ import Login from './components/Login';
 import Registration from './components/Registration';
 import Header from './components/Header';
 import Register from './adiComponent/Register';
+import Overview from './adiComponent/Overview';
 
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
        <Route path='/admincrmdoaguru' element={<Register/>}/>
         {/* <Route path="/admincrmdoaguru" element={<Registration />} /> */}
         <Route path="/dashboard" element={<Dashboard />} />
-        
+        <Route path='/overview' element={<Overview/>}/>
       </Routes>
 
 
