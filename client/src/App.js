@@ -9,6 +9,7 @@ import Header from './components/Header';
 import Register from './adiComponent/Register';
 import Overview from './adiComponent/Overview';
 import Leads from './adiComponent/Leads';
+import EditProfile from './adiComponent/editProfle';
 
 
 function App() {
@@ -19,27 +20,19 @@ function App() {
 
     <>
     
+<Header/>
 
     <Routes>
         <Route path="/" element={user? <Dashboard />:<Login/>} />
         <Route path='/login' element={<Login/>}/>
        <Route path='/admincrmdoaguru' element={<Register/>}/>
-        {/* <Route path="/admincrmdoaguru" element={<Registration />} /> */}
+        <Route path='/edit-profile' element={<EditProfile/>}/>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path='/overview' element={<Overview/>}/>
         <Route path='/leads' element={<Leads/>}/>
       </Routes>
-
-
-
-
     
     </>
-
-
-
-
-
   )
 }
 

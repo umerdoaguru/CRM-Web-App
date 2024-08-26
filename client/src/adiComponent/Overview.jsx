@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BsPencilSquare, BsTrash, BsPlusCircle } from "react-icons/bs";
 import Sider from "../components/Sider";
-
 const Overview = () => {
   const [companies, setCompanies] = useState([]);
   const [newCompany, setNewCompany] = useState({
@@ -89,6 +88,8 @@ const Overview = () => {
 
   return (
     <div className="flex min-h-screen">
+      <div>
+      </div>
       <Sider />
       <main className="flex-1 p-6 ml-0 lg:p-8 lg:ml-64 xl:ml-80">
         <div className="flex flex-col items-start justify-between mb-8 lg:flex-row lg:items-center">

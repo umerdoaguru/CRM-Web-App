@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaHistory } from "react-icons/fa";
 import { RiSecurePaymentLine } from "react-icons/ri";
-import { BsFileEarmarkPerson, BsHouse, BsEye } from "react-icons/bs";
+import { BsFileEarmarkPerson, BsHouse, BsEye, BsPerson } from "react-icons/bs";
 import { TbReportAnalytics } from "react-icons/tb";
 import Logout from "./Logout";
 
@@ -16,6 +16,19 @@ const Sider = () => {
 
   return (
     <div className="fixed inset-y-0 left-0 w-20 sm:w-28 lg:w-64 bg-[#0B1120] shadow-xl flex flex-col items-center py-4 lg:py-6 space-y-4 lg:space-y-6">
+      {/* Profile Section */}
+      <div className="flex flex-col items-center w-full mb-6 space-y-2 lg:mb-8">
+        <div className="flex items-center justify-center w-16 h-16 bg-gray-700 rounded-full">
+          <BsPerson className="text-3xl text-white" />
+        </div>
+        <Link
+          to="/edit-profile"
+          className="text-sm font-medium text-white hover:underline"
+        >
+          Edit Profile
+        </Link>
+      </div>
+
       <ul className="flex flex-col items-center w-full lg:items-start">
         <hr className="w-3/4 border-gray-600 lg:w-full" />
 
