@@ -1,7 +1,39 @@
 const express = require("express");
 const { db } = require("../db");
 
-// Add Organization Function
+
+
+const getAllOrganizations = async (req, res) => {
+  try {
+    // Query to select all organizations
+    const getAllOrgsQuery = "SELECT * FROM organization";
+
+    db.query(getAllOrgsQuery, (err, result) => {
+      if (err) {
+        console.error("Error fetching organizations from MySQL:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+
+      if (result.length === 0) {
+        return res.status(404).json({ error: "No organizations found" });
+      }
+
+      // Return the list of organizations
+      return res.status(200).json({
+        success: true,
+        organizations: result,
+      });
+    });
+  } catch (error) {
+    console.error("Error in fetching organizations:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetching organizations",
+      error: error.message,
+    });
+  }
+};
+
 const addOrganization = async (req, res) => {
   try {
     const { name, bankDetails, signature, logo } = req.body;
@@ -66,17 +98,18 @@ const addOrganization = async (req, res) => {
 
 const deleteOrganization = async (req, res) => {
     try {
-      const { companyId } = req.body
+      // Extract companyId from URL parameters
+      const { id } = req.params;
   
       // Validate companyId
-      if (!companyId) {
+      if (!id) {
         return res.status(400).json({ error: "Company ID is required" });
       }
   
       // Check if the organization exists
       const checkOrgQuery = "SELECT * FROM organization WHERE companyId = ?";
   
-      db.query(checkOrgQuery, [companyId], (err, result) => {
+      db.query(checkOrgQuery, [id], (err, result) => {
         if (err) {
           console.error("Error checking if organization exists in MySQL:", err);
           return res.status(500).json({ error: "Internal server error" });
@@ -88,7 +121,7 @@ const deleteOrganization = async (req, res) => {
           // Organization found, proceed with deletion
           const deleteOrgQuery = "DELETE FROM organization WHERE companyId = ?";
   
-          db.query(deleteOrgQuery, [companyId], (deleteErr, deleteResult) => {
+          db.query(deleteOrgQuery, [id], (deleteErr, deleteResult) => {
             if (deleteErr) {
               console.error("Error deleting organization:", deleteErr);
               return res.status(500).json({ error: "Internal server error" });
@@ -112,16 +145,20 @@ const deleteOrganization = async (req, res) => {
     }
   };
   
-  
-  
+
   const updateOrganization = async (req, res) => {
     try {
-      const { companyId } = req.body;
+      
+      const { id } = req.params;
+      // Extract other fields from request body
       const { name, bankDetails, signature, logo } = req.body;
   
-      // Validate companyId and required fields
-      if (!companyId) {
-        return res.status(400).json({ error: "Company ID is required" });
+      console.log(`Received ID: ${id}`);
+      console.log(`Received Body: ${JSON.stringify(req.body)}`);
+  
+      // Validate id and required fields
+      if (!id) {
+        return res.status(400).json({ error: "Organization ID is required" });
       }
       const requiredFields = [name, bankDetails];
       if (requiredFields.some((field) => !field)) {
@@ -131,7 +168,7 @@ const deleteOrganization = async (req, res) => {
       // Check if the organization exists
       const checkOrgQuery = "SELECT * FROM organization WHERE companyId = ?";
   
-      db.query(checkOrgQuery, [companyId], (err, result) => {
+      db.query(checkOrgQuery, [id], (err, result) => {
         if (err) {
           console.error("Error checking if organization exists in MySQL:", err);
           return res.status(500).json({ error: "Internal server error" });
@@ -152,7 +189,7 @@ const deleteOrganization = async (req, res) => {
             JSON.stringify(bankDetails),
             signature || null,
             logo || null,
-            companyId
+            id
           ];
   
           db.query(updateOrgQuery, updateOrgParams, (updateErr, updateResult) => {
@@ -181,4 +218,4 @@ const deleteOrganization = async (req, res) => {
   
   
 
-module.exports = { addOrganization,deleteOrganization,updateOrganization };
+module.exports = {getAllOrganizations, addOrganization,deleteOrganization,updateOrganization };
