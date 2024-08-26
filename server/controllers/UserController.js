@@ -3,7 +3,6 @@ const { db } = require("../db");
 const bcrypt = require("bcrypt");
 const JWT = require('jsonwebtoken');
 
-
 const register = async (req, res) => {
   try {
     const { name, email,password } = req.body;
@@ -131,6 +130,65 @@ const login = async (req, res) => {
   }
 };
 
+const editProfile = async (req, res) => {
+  try {
+    const { user_name, email, password, profile_picture } = req.body;
+
+    // Validations
+    if (!user_name || !email || !password) {
+      return res.status(400).json({ error: "Name, email, and password are required" });
+    }
+
+    // Check if the user exists by email
+    const checkUserQuery = "SELECT * FROM registered_data WHERE email = ?";
+
+    db.query(checkUserQuery, [email], (err, result) => {
+      if (err) {
+        console.error("Error checking if user exists in MySQL:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+
+      if (result.length === 0) {
+        return res.status(404).json({ error: "User not found" });
+      } else {
+        // User exists, proceed with updating
+        const updateUserQuery = `
+          UPDATE registered_data
+          SET user_name = ?, password = ?, profile_picture = ?
+          WHERE email = ?
+        `;
+
+        const updateParams = [
+          user_name,
+          password,
+          profile_picture || null,
+          email
+        ];
+
+        db.query(updateUserQuery, updateParams, (updateErr, updateResult) => {
+          if (updateErr) {
+            console.error("Error updating user profile:", updateErr);
+            return res.status(500).json({ error: "Internal server error" });
+          } else {
+            console.log("User profile updated successfully");
+            return res.status(200).json({
+              success: true,
+              message: "User profile updated successfully"
+            });
+          }
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error in editing profile:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in editing profile",
+      error: error.message,
+    });
+  }
+};
+
 
 
 
@@ -177,4 +235,4 @@ const login = async (req, res) => {
   // };
 
   
-  module.exports = {register,login};
+  module.exports = {register,login,editProfile};
