@@ -1,93 +1,106 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { BsPencilSquare, BsTrash, BsPlusCircle } from "react-icons/bs";
 import Sider from "../components/Sider";
 
 const Overview = () => {
-  // Sample state data for companies
-  const [companies, setCompanies] = useState([
-    {
-      id: "CMP001",
-      name: "Tech Corp",
-      contact: "+1 234 567 890",
-      bankDetails: "Bank of America - 123456789",
-      signature: "John Doe",
-      logo: "https://via.placeholder.com/50",
-    },
-    {
-      id: "CMP002",
-      name: "InnoSoft",
-      contact: "+1 987 654 321",
-      bankDetails: "Wells Fargo - 987654321",
-      signature: "Jane Doe",
-      logo: "https://via.placeholder.com/50",
-    },
-  ]);
-
-  // State to manage new company data and form visibility
+  const [companies, setCompanies] = useState([]);
   const [newCompany, setNewCompany] = useState({
-    id: "",
+    companyId: "",
     name: "",
     contact: "",
     bankDetails: "",
     signature: "",
     logo: "",
   });
-  
-  const [editingIndex, setEditingIndex] = useState(null); // Track editing index
-  const [showForm, setShowForm] = useState(false); // State for form visibility
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [showForm, setShowForm] = useState(false);
 
-  // Handle form input changes
+  useEffect(() => {
+    fetchCompanies();
+  }, []);
+
+  const fetchCompanies = async () => {
+    try {
+      const response = await axios.get("http://localhost:9000/api/v1/getOrganization");
+      const { organizations } = response.data;
+      setCompanies(organizations);
+    } catch (error) {
+      console.error("Error fetching companies:", error);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewCompany((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Add or Edit a company
-  const handleSaveCompany = () => {
-    if (editingIndex !== null) {
-      // Edit existing company
-      const updatedCompanies = [...companies];
-      updatedCompanies[editingIndex] = newCompany;
-      setCompanies(updatedCompanies);
-      setEditingIndex(null);
-    } else {
-      // Add a new company
-      setCompanies((prev) => [...prev, newCompany]);
+  const handleSaveCompany = async () => {
+    try {
+      // Basic validation
+      if (!newCompany.companyId || !newCompany.name) {
+        console.error("Company ID and Name are required");
+        return;
+      }
+  
+      if (editingIndex !== null) {
+        // Edit existing company
+        const companyId = companies[editingIndex].companyId;
+        await axios.put(`http://localhost:9000/api/v1/updateOrganization/${companyId}`, newCompany);
+        const updatedCompanies = [...companies];
+        updatedCompanies[editingIndex] = newCompany;
+        setCompanies(updatedCompanies);
+        setEditingIndex(null);
+      } else {
+        // Add a new company
+        await axios.post("http://localhost:9000/api/v1/addOrganization", newCompany);
+        setCompanies((prev) => [...prev, newCompany]);
+      }
+      setNewCompany({
+        companyId: "",
+        name: "",
+        contact: "",
+        bankDetails: "",
+        signature: "",
+        logo: "",
+      });
+      setShowForm(false);
+    } catch (error) {
+      console.error("Error saving company:", error.response?.data || error.message);
     }
-
-    setNewCompany({ id: "", name: "", contact: "", bankDetails: "", signature: "", logo: "" });
-    setShowForm(false); // Hide the form after saving
   };
+  
 
-  // Edit a company
   const handleEditCompany = (index) => {
     const companyToEdit = companies[index];
     setNewCompany(companyToEdit);
     setEditingIndex(index);
-    setShowForm(true); // Show the form when editing
+    setShowForm(true);
   };
 
-  // Delete a company
-  const handleDeleteCompany = (index) => {
-    setCompanies(companies.filter((_, i) => i !== index));
+  const handleDeleteCompany = async (companyId) => {
+    try {
+      await axios.delete(`http://localhost:9000/api/v1/deleteOrganization/${companyId}`);
+      setCompanies(companies.filter((company) => company.companyId !== companyId));
+    } catch (error) {
+      console.error("Error deleting company:", error);
+    }
   };
 
   return (
     <div className="flex min-h-screen">
       <Sider />
       <main className="flex-1 p-6 ml-0 lg:p-8 lg:ml-64 xl:ml-80">
-        {/* Top Section: Title and Add Organization Button */}
         <div className="flex flex-col items-start justify-between mb-8 lg:flex-row lg:items-center">
-          <h2 className="mb-4 text-2xl font-bold text-gray-800 lg:mb-0">Overview</h2>
+          <h2 className="mb-4 text-2xl font-bold text-gray-800 lg:mb-0">Organization Management</h2>
           <button
-            onClick={() => { setShowForm(true); setEditingIndex(null); }} // Reset form for new entry
+            onClick={() => { setShowForm(true); setEditingIndex(null); }}
             className="flex items-center px-4 py-2 text-white transition duration-200 bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600"
           >
             <BsPlusCircle className="mr-2" /> Add Organization
           </button>
         </div>
 
-        {/* Table for Displaying Companies */}
         <div className="overflow-x-auto rounded-lg shadow-md">
           <table className="min-w-full bg-white">
             <thead>
@@ -102,9 +115,9 @@ const Overview = () => {
               </tr>
             </thead>
             <tbody>
-              {companies.map((company, index) => (
+              {Array.isArray(companies) && companies.map((company, index) => (
                 <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
-                  <td className="px-4 py-4 sm:px-6">{company.id}</td>
+                  <td className="px-4 py-4 sm:px-6">{company.companyId}</td>
                   <td className="px-4 py-4 sm:px-6">{company.name}</td>
                   <td className="px-4 py-4 sm:px-6">{company.contact}</td>
                   <td className="px-4 py-4 sm:px-6">{company.bankDetails}</td>
@@ -121,7 +134,7 @@ const Overview = () => {
                         <BsPencilSquare size={20} />
                       </button>
                       <button
-                        onClick={() => handleDeleteCompany(index)}
+                        onClick={() => handleDeleteCompany(company.companyId)}
                         className="text-red-500 transition duration-200 hover:text-red-600"
                       >
                         <BsTrash size={20} />
@@ -134,15 +147,14 @@ const Overview = () => {
           </table>
         </div>
 
-        {/* Form for Adding or Editing a Company */}
         {showForm && (
           <div className="p-4 mt-8 bg-white rounded-lg shadow-md">
             <h3 className="mb-4 text-lg font-bold">{editingIndex !== null ? "Edit Organization" : "Add Organization"}</h3>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <input
                 type="text"
-                name="id"
-                value={newCompany.id}
+                name="companyId"
+                value={newCompany.companyId}
                 onChange={handleInputChange}
                 placeholder="Company ID"
                 className="p-2 border rounded-lg"
@@ -193,7 +205,13 @@ const Overview = () => {
                 onClick={handleSaveCompany}
                 className="px-4 py-2 text-white transition duration-200 bg-green-500 rounded-lg shadow-lg hover:bg-green-600"
               >
-                {editingIndex !== null ? "Update Organization" : "Save Organization"}
+                Save
+              </button>
+              <button
+                onClick={() => setShowForm(false)}
+                className="px-4 py-2 ml-4 text-white transition duration-200 bg-red-500 rounded-lg shadow-lg hover:bg-red-600"
+              >
+                Cancel
               </button>
             </div>
           </div>

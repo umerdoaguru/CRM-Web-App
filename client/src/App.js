@@ -8,6 +8,7 @@ import Registration from './components/Registration';
 import Header from './components/Header';
 import Register from './adiComponent/Register';
 import Overview from './adiComponent/Overview';
+import Leads from './adiComponent/Leads';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         {/* <Route path="/admincrmdoaguru" element={<Registration />} /> */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path='/overview' element={<Overview/>}/>
+        <Route path='/leads' element={<Leads/>}/>
       </Routes>
 
 

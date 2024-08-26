@@ -110,7 +110,7 @@ const Sider = () => {
           >
             <BsEye className="text-2xl sm:text-3xl" />
             <span className="hidden ml-3 text-sm font-medium lg:inline">
-              Overview
+              Organization Management
             </span>
           </Link>
         </li>
