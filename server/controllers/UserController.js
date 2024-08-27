@@ -132,16 +132,14 @@ const login = async (req, res) => {
 
 const editProfile = async (req, res) => {
   try {
-    const { user_name, email, password, profile_picture } = req.body;
+    const { user_name, email, password } = req.body;
+    const profile_picture = req.file ? req.file.buffer : null;
 
-    // Validations
     if (!user_name || !email || !password) {
       return res.status(400).json({ error: "Name, email, and password are required" });
     }
 
-    // Check if the user exists by email
     const checkUserQuery = "SELECT * FROM registered_data WHERE email = ?";
-
     db.query(checkUserQuery, [email], (err, result) => {
       if (err) {
         console.error("Error checking if user exists in MySQL:", err);
@@ -151,7 +149,6 @@ const editProfile = async (req, res) => {
       if (result.length === 0) {
         return res.status(404).json({ error: "User not found" });
       } else {
-        // User exists, proceed with updating
         const updateUserQuery = `
           UPDATE registered_data
           SET user_name = ?, password = ?, profile_picture = ?
@@ -161,7 +158,7 @@ const editProfile = async (req, res) => {
         const updateParams = [
           user_name,
           password,
-          profile_picture || null,
+          profile_picture,
           email
         ];
 
@@ -188,6 +185,8 @@ const editProfile = async (req, res) => {
     });
   }
 };
+
+
 
 
 
