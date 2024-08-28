@@ -15,10 +15,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' })); 
-app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use("/api/v1/",Router2)
 app.use('/api',Router)
+app.use(cors({ origin: 'http://localhost:3000' }));
 
 const PORT = process.env.PORT;
 
