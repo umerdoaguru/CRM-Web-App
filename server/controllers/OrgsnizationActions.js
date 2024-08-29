@@ -172,7 +172,7 @@ const getAllEmployees = async (req, res) => {
 
 const updateEmployee = async (req, res) => {
   try {
-    const { id } = req.params;  // This is the auto-generated employeeId
+    const { id } = req.params;  
     const { name, email, position, phone, salary } = req.body;
 
     if (!id) {
