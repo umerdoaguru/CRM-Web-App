@@ -10,9 +10,9 @@ const Dashboard = () => {
     return (
         <div className="flex min-h-screen">
             {/* Sidebar */}
-            <div className="hidden w-64 min-h-screen p-4 text-white bg-gray-800 md:block">
+            {/* <div className="hidden w-64 min-h-screen p-4 text-white bg-gray-800 md:block">
                 <Sider />
-            </div>
+            </div> */}
 
             {/* Main Content */}
             <div className="flex-1 p-6 bg-gray-100">

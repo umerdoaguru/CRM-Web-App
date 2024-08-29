@@ -4,6 +4,7 @@ import { FaHistory } from "react-icons/fa";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import { BsFileEarmarkPerson, BsHouse, BsEye, BsPerson } from "react-icons/bs";
 import { TbReportAnalytics } from "react-icons/tb";
+import { MdOutlineManageAccounts } from "react-icons/md";
 import Logout from "./Logout";
 
 const Sider = () => {
@@ -15,15 +16,15 @@ const Sider = () => {
   };
 
   return (
-    <div className="fixed inset-y-0 left-0 w-20 sm:w-28 lg:w-64 bg-[#0B1120] shadow-xl flex flex-col items-center py-4 lg:py-6 space-y-4 lg:space-y-6">
+    <div className="fixed inset-y-0 left-0 w-20 sm:w-28 lg:w-48 bg-[#0B1120] shadow-xl flex flex-col items-center py-2 lg:py-4 space-y-2 lg:space-y-4">
       {/* Profile Section */}
-      <div className="flex flex-col items-center w-full mb-6 space-y-2 lg:mb-8">
-        <div className="flex items-center justify-center w-16 h-16 bg-gray-700 rounded-full">
-          <BsPerson className="text-3xl text-white" />
+      <div className="flex flex-col items-center w-full mb-4 space-y-2 lg:mb-6">
+        <div className="flex items-center justify-center w-12 h-12 bg-gray-700 rounded-full">
+          <BsPerson className="text-2xl text-white" />
         </div>
         <Link
           to="/edit-profile"
-          className="text-sm font-medium text-white hover:underline"
+          className="text-xs font-medium text-white lg:text-sm hover:underline"
         >
           Edit Profile
         </Link>
@@ -32,13 +33,14 @@ const Sider = () => {
       <ul className="flex flex-col items-center w-full lg:items-start">
         <hr className="w-3/4 border-gray-600 lg:w-full" />
 
+        {/* Menu Items */}
         <li className={`w-full ${getSidebarClass("/")}`}>
           <Link
             to="/"
-            className="flex items-center justify-center px-4 py-4 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
+            className="flex items-center justify-center px-2 py-3 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
           >
-            <BsHouse className="text-2xl sm:text-3xl" />
-            <span className="hidden ml-3 text-sm font-medium lg:inline">
+            <BsHouse className="text-xl sm:text-2xl" />
+            <span className="hidden ml-2 text-xs lg:text-sm lg:inline">
               Dashboard
             </span>
           </Link>
@@ -49,10 +51,10 @@ const Sider = () => {
         <li className={`w-full ${getSidebarClass("/leads")}`}>
           <Link
             to="/leads"
-            className="flex items-center justify-center px-4 py-4 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
+            className="flex items-center justify-center px-2 py-3 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
           >
-            <FaHistory className="text-2xl sm:text-3xl" />
-            <span className="hidden ml-3 text-sm font-medium lg:inline">
+            <FaHistory className="text-xl sm:text-2xl" />
+            <span className="hidden ml-2 text-xs lg:text-sm lg:inline">
               Leads
             </span>
           </Link>
@@ -63,10 +65,10 @@ const Sider = () => {
         <li className={`w-full ${getSidebarClass("/tasks")}`}>
           <Link
             to="/tasks"
-            className="flex items-center justify-center px-4 py-4 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
+            className="flex items-center justify-center px-2 py-3 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
           >
-            <TbReportAnalytics className="text-2xl sm:text-3xl" />
-            <span className="hidden ml-3 text-sm font-medium lg:inline">
+            <TbReportAnalytics className="text-xl sm:text-2xl" />
+            <span className="hidden ml-2 text-xs lg:text-sm lg:inline">
               Task Management
             </span>
           </Link>
@@ -77,10 +79,10 @@ const Sider = () => {
         <li className={`w-full ${getSidebarClass("/reporting")}`}>
           <Link
             to="/reporting"
-            className="flex items-center justify-center px-4 py-4 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
+            className="flex items-center justify-center px-2 py-3 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
           >
-            <RiSecurePaymentLine className="text-2xl sm:text-3xl" />
-            <span className="hidden ml-3 text-sm font-medium lg:inline">
+            <RiSecurePaymentLine className="text-xl sm:text-2xl" />
+            <span className="hidden ml-2 text-xs lg:text-sm lg:inline">
               Reporting
             </span>
           </Link>
@@ -91,10 +93,10 @@ const Sider = () => {
         <li className={`w-full ${getSidebarClass("/data-export")}`}>
           <Link
             to="/data-export"
-            className="flex items-center justify-center px-4 py-4 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
+            className="flex items-center justify-center px-2 py-3 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
           >
-            <BsFileEarmarkPerson className="text-2xl sm:text-3xl" />
-            <span className="hidden ml-3 text-sm font-medium lg:inline">
+            <BsFileEarmarkPerson className="text-xl sm:text-2xl" />
+            <span className="hidden ml-2 text-xs lg:text-sm lg:inline">
               Data Export
             </span>
           </Link>
@@ -105,11 +107,25 @@ const Sider = () => {
         <li className={`w-full ${getSidebarClass("/invoices")}`}>
           <Link
             to="/invoices"
-            className="flex items-center justify-center px-4 py-4 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
+            className="flex items-center justify-center px-2 py-3 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
           >
-            <BsFileEarmarkPerson className="text-2xl sm:text-3xl" />
-            <span className="hidden ml-3 text-sm font-medium lg:inline">
+            <BsFileEarmarkPerson className="text-xl sm:text-2xl" />
+            <span className="hidden ml-2 text-xs lg:text-sm lg:inline">
               Quotation & Invoice
+            </span>
+          </Link>
+        </li>
+
+        <hr className="w-3/4 border-gray-600 lg:w-full" />
+
+        <li className={`w-full ${getSidebarClass("/employee-management")}`}>
+          <Link
+            to="/employee-management"
+            className="flex items-center justify-center px-2 py-3 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
+          >
+            <MdOutlineManageAccounts className="text-xl sm:text-2xl" />
+            <span className="hidden ml-2 text-xs lg:text-sm lg:inline">
+              Employee Management
             </span>
           </Link>
         </li>
@@ -119,10 +135,10 @@ const Sider = () => {
         <li className={`w-full ${getSidebarClass("/overview")}`}>
           <Link
             to="/overview"
-            className="flex items-center justify-center px-4 py-4 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
+            className="flex items-center justify-center px-2 py-3 transition-colors duration-300 lg:justify-start hover:bg-gradient-to-r from-indigo-500 to-blue-400"
           >
-            <BsEye className="text-2xl sm:text-3xl" />
-            <span className="hidden ml-3 text-sm font-medium lg:inline">
+            <BsEye className="text-xl sm:text-2xl" />
+            <span className="hidden ml-2 text-xs lg:text-sm lg:inline">
               Organization Management
             </span>
           </Link>
@@ -130,8 +146,9 @@ const Sider = () => {
 
         <hr className="w-3/4 border-gray-600 lg:w-full" />
 
+        {/* Logout Button */}
         <li className="w-full">
-          <div className="flex items-center justify-center px-4 py-4 transition-colors duration-300 lg:justify-start hover:bg-blue-500">
+          <div className="flex items-center justify-center px-2 py-3 transition-colors duration-300 lg:justify-start hover:bg-blue-500">
             <Logout />
           </div>
         </li>

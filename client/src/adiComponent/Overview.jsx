@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { BsPencilSquare, BsTrash, BsPlusCircle } from "react-icons/bs";
-import Sider from "../components/Sider";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { BsPencilSquare, BsTrash, BsPlusCircle } from 'react-icons/bs';
+import Sider from '../components/Sider';
+import Modal from '../adiComponent/Modal'; 
+
 const Overview = () => {
   const [companies, setCompanies] = useState([]);
   const [newCompany, setNewCompany] = useState({
-    companyId: "",
-    name: "",
-    contact: "",
-    bankDetails: "",
-    signature: "",
-    logo: "",
+    companyId: '',
+    name: '',
+    contact: '',
+    bankDetails: '',
+    signature: '',
+    logo: '',
   });
   const [editingIndex, setEditingIndex] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -21,11 +23,11 @@ const Overview = () => {
 
   const fetchCompanies = async () => {
     try {
-      const response = await axios.get("http://localhost:9000/api/v1/getOrganization");
+      const response = await axios.get('http://localhost:9000/api/v1/getOrganization');
       const { organizations } = response.data;
       setCompanies(organizations);
     } catch (error) {
-      console.error("Error fetching companies:", error);
+      console.error('Error fetching companies:', error);
     }
   };
 
@@ -36,14 +38,12 @@ const Overview = () => {
 
   const handleSaveCompany = async () => {
     try {
-      // Basic validation
       if (!newCompany.companyId || !newCompany.name) {
-        console.error("Company ID and Name are required");
+        console.error('Company ID and Name are required');
         return;
       }
-  
+
       if (editingIndex !== null) {
-        // Edit existing company
         const companyId = companies[editingIndex].companyId;
         await axios.put(`http://localhost:9000/api/v1/updateOrganization/${companyId}`, newCompany);
         const updatedCompanies = [...companies];
@@ -51,24 +51,22 @@ const Overview = () => {
         setCompanies(updatedCompanies);
         setEditingIndex(null);
       } else {
-        // Add a new company
-        await axios.post("http://localhost:9000/api/v1/addOrganization", newCompany);
+        await axios.post('http://localhost:9000/api/v1/addOrganization', newCompany);
         setCompanies((prev) => [...prev, newCompany]);
       }
       setNewCompany({
-        companyId: "",
-        name: "",
-        contact: "",
-        bankDetails: "",
-        signature: "",
-        logo: "",
+        companyId: '',
+        name: '',
+        contact: '',
+        bankDetails: '',
+        signature: '',
+        logo: '',
       });
       setShowForm(false);
     } catch (error) {
-      console.error("Error saving company:", error.response?.data || error.message);
+      console.error('Error saving company:', error.response?.data || error.message);
     }
   };
-  
 
   const handleEditCompany = (index) => {
     const companyToEdit = companies[index];
@@ -78,18 +76,20 @@ const Overview = () => {
   };
 
   const handleDeleteCompany = async (companyId) => {
-    try {
-      await axios.delete(`http://localhost:9000/api/v1/deleteOrganization/${companyId}`);
-      setCompanies(companies.filter((company) => company.companyId !== companyId));
-    } catch (error) {
-      console.error("Error deleting company:", error);
+    const isConfirmed = window.confirm('Are you sure you want to delete this organization?');
+    if (isConfirmed) {
+      try {
+        await axios.delete(`http://localhost:9000/api/v1/deleteOrganization/${companyId}`);
+        setCompanies(companies.filter((company) => company.companyId !== companyId));
+      } catch (error) {
+        console.error('Error deleting company:', error);
+      }
     }
   };
+  
 
   return (
     <div className="flex min-h-screen">
-      <div>
-      </div>
       <Sider />
       <main className="flex-1 p-6 ml-0 lg:p-8 lg:ml-64 xl:ml-80">
         <div className="flex flex-col items-start justify-between mb-8 lg:flex-row lg:items-center">
@@ -148,75 +148,73 @@ const Overview = () => {
           </table>
         </div>
 
-        {showForm && (
-          <div className="p-4 mt-8 bg-white rounded-lg shadow-md">
-            <h3 className="mb-4 text-lg font-bold">{editingIndex !== null ? "Edit Organization" : "Add Organization"}</h3>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <input
-                type="text"
-                name="companyId"
-                value={newCompany.companyId}
-                onChange={handleInputChange}
-                placeholder="Company ID"
-                className="p-2 border rounded-lg"
-              />
-              <input
-                type="text"
-                name="name"
-                value={newCompany.name}
-                onChange={handleInputChange}
-                placeholder="Company Name"
-                className="p-2 border rounded-lg"
-              />
-              <input
-                type="text"
-                name="contact"
-                value={newCompany.contact}
-                onChange={handleInputChange}
-                placeholder="Contact No"
-                className="p-2 border rounded-lg"
-              />
-              <input
-                type="text"
-                name="bankDetails"
-                value={newCompany.bankDetails}
-                onChange={handleInputChange}
-                placeholder="Bank Details"
-                className="p-2 border rounded-lg"
-              />
-              <input
-                type="text"
-                name="signature"
-                value={newCompany.signature}
-                onChange={handleInputChange}
-                placeholder="Signature"
-                className="p-2 border rounded-lg"
-              />
-              <input
-                type="text"
-                name="logo"
-                value={newCompany.logo}
-                onChange={handleInputChange}
-                placeholder="Logo URL"
-                className="p-2 border rounded-lg"
-              />
-            </div>
-            <div className="flex justify-end mt-4">
-              <button
-                onClick={handleSaveCompany}
-                className="px-4 py-2 text-white transition duration-200 bg-green-500 rounded-lg shadow-lg hover:bg-green-600"
-              >
-                Save
-              </button>
-              <button
-                onClick={() => setShowForm(false)}
-                className="px-4 py-2 ml-4 text-white transition duration-200 bg-red-500 rounded-lg shadow-lg hover:bg-red-600"
-              >
-                Cancel
-              </button>
-            </div>
+        <Modal isOpen={showForm} onClose={() => setShowForm(false)}>
+          <h3 className="mb-4 text-lg font-bold">{editingIndex !== null ? "Edit Organization" : "Add Organization"}</h3>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <input
+              type="text"
+              name="companyId"
+              value={newCompany.companyId}
+              onChange={handleInputChange}
+              placeholder="Company ID"
+              className="p-2 border rounded-lg"
+            />
+            <input
+              type="text"
+              name="name"
+              value={newCompany.name}
+              onChange={handleInputChange}
+              placeholder="Company Name"
+              className="p-2 border rounded-lg"
+            />
+            <input
+              type="text"
+              name="contact"
+              value={newCompany.contact}
+              onChange={handleInputChange}
+              placeholder="Contact No"
+              className="p-2 border rounded-lg"
+            />
+            <input
+              type="text"
+              name="bankDetails"
+              value={newCompany.bankDetails}
+              onChange={handleInputChange}
+              placeholder="Bank Details"
+              className="p-2 border rounded-lg"
+            />
+            <input
+              type="text"
+              name="signature"
+              value={newCompany.signature}
+              onChange={handleInputChange}
+              placeholder="Signature"
+              className="p-2 border rounded-lg"
+            />
+            <input
+              type="text"
+              name="logo"
+              value={newCompany.logo}
+              onChange={handleInputChange}
+              placeholder="Logo URL"
+              className="p-2 border rounded-lg"
+            />
           </div>
-        )}
+          <div className="flex justify-end mt-4">
+            <button
+              onClick={handleSaveCompany}
+              className="px-4 py-2 text-white transition duration-200 bg-green-500 rounded-lg shadow-lg hover:bg-green-600"
+            >
+              Save
+            </button>
+            <button
+              onClick={() => setShowForm(false)}
+              className="px-4 py-2 ml-4 text-white transition duration-200 bg-red-500 rounded-lg shadow-lg hover:bg-red-600"
+            >
+              Cancel
+            </button>
+          </div>
+        </Modal>
       </main>
     </div>
   );
