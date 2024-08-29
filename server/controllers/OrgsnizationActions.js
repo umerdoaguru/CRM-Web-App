@@ -267,7 +267,7 @@ const deleteOrganization = async (req, res) => {
 
   const updateOrganization = async (req, res) => {
     try {
-      const { id } = req.params;
+      const { companyId } = req.params; // Changed to companyId
       const { name, contact, bankDetails } = req.body;
   
       // Retrieve file paths for signature and logo, if available
@@ -278,11 +278,11 @@ const deleteOrganization = async (req, res) => {
       const query = `
         UPDATE organization 
         SET name = ?, contact = ?, bankDetails = ?, signature = COALESCE(?, signature), logo = COALESCE(?, logo) 
-        WHERE id = ?
+        WHERE companyId = ?
       `;
   
       // Values for the query
-      const values = [name, contact, bankDetails, signaturePath, logoPath, id];
+      const values = [name, contact, bankDetails, signaturePath, logoPath, companyId];
   
       // Execute the database query
       db.query(query, values, (err, results) => {
@@ -304,6 +304,7 @@ const deleteOrganization = async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   };
+  
   
 
   
