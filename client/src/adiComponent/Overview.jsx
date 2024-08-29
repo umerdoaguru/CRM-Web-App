@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BsPencilSquare, BsTrash, BsPlusCircle } from 'react-icons/bs';
 import Sider from '../components/Sider';
-import Modal from '../adiComponent/Modal'; 
+import Modal from '../adiComponent/Modal';
 
 const Overview = () => {
   const [companies, setCompanies] = useState([]);
@@ -109,7 +109,7 @@ const Overview = () => {
           <table className="min-w-full bg-white">
             <thead>
               <tr className="text-sm font-semibold text-left text-gray-600 uppercase bg-gray-200">
-                <th className="px-4 py-3 sm:px-6">Company ID</th>
+                {/* Removed the Company ID column here */}
                 <th className="px-4 py-3 sm:px-6">Name</th>
                 <th className="px-4 py-3 sm:px-6">Contact No</th>
                 <th className="px-4 py-3 sm:px-6">Bank Details</th>
@@ -121,7 +121,7 @@ const Overview = () => {
             <tbody>
               {Array.isArray(companies) && companies.map((company, index) => (
                 <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
-                  <td className="px-4 py-4 sm:px-6">{company.companyId}</td>
+                  {/* Removed the Company ID column here */}
                   <td className="px-4 py-4 sm:px-6">{company.name}</td>
                   <td className="px-4 py-4 sm:px-6">{company.contact}</td>
                   <td className="px-4 py-4 sm:px-6">{company.bankDetails}</td>

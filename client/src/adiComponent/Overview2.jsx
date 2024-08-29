@@ -8,16 +8,21 @@ const Overview2 = () => {
     ];
 
     return (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {metrics.map((metric, idx) => (
-                <div key={idx} className={`p-4 rounded-lg ${metric.positive ? 'bg-green-100' : 'bg-red-100'}`}>
-                    <h2 className="text-xl font-semibold">{metric.title}</h2>
-                    <p className="text-3xl">{metric.value}</p>
-                    <p className={`text-sm ${metric.positive ? 'text-green-600' : 'text-red-600'}`}>
-                        {metric.change} Since last week
-                    </p>
-                </div>
-            ))}
+        <div className="p-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {metrics.map((metric, idx) => (
+                    <div 
+                        key={idx} 
+                        className={`p-6 rounded-lg shadow-md ${metric.positive ? 'bg-green-100' : 'bg-red-100'} flex flex-col justify-between`}
+                    >
+                        <h2 className="mb-2 text-lg font-semibold">{metric.title}</h2>
+                        <p className="text-2xl font-bold">{metric.value}</p>
+                        <p className={`text-sm mt-2 ${metric.positive ? 'text-green-600' : 'text-red-600'}`}>
+                            {metric.change} Since last week
+                        </p>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

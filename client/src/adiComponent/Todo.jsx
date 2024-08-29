@@ -7,16 +7,24 @@ const todos = [
     // Add more tasks as needed
 ];
 
+const statusStyles = {
+    Completed: 'bg-green-100 text-green-600',
+    Upcoming: 'bg-blue-100 text-blue-600',
+    Canceled: 'bg-red-100 text-red-600',
+};
+
 const ToDoList = () => {
     return (
         <div className="p-4 mt-6 bg-white rounded-lg shadow-lg">
             <h3 className="mb-4 text-lg font-semibold">To Do List</h3>
-            <ul>
+            <ul className="divide-y divide-gray-200">
                 {todos.map((todo, idx) => (
-                    <li key={idx} className="py-2">
-                        <div className="flex justify-between">
-                            <span>{todo.title}</span>
-                            <span>{todo.status}</span>
+                    <li key={idx} className="px-4 py-3 transition duration-200 rounded-lg hover:bg-gray-50">
+                        <div className="flex items-center justify-between">
+                            <span className="font-medium">{todo.title}</span>
+                            <span className={`px-2 py-1 text-xs font-semibold rounded-full ${statusStyles[todo.status]}`}>
+                                {todo.status}
+                            </span>
                         </div>
                         <p className="text-sm text-gray-500">{todo.time} - {todo.date}</p>
                     </li>
