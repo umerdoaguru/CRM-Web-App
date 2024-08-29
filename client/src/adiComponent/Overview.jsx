@@ -7,7 +7,6 @@ import Modal from '../adiComponent/Modal';
 const Overview = () => {
   const [companies, setCompanies] = useState([]);
   const [newCompany, setNewCompany] = useState({
-    companyId: '',
     name: '',
     contact: '',
     bankDetails: '',
@@ -38,8 +37,8 @@ const Overview = () => {
 
   const handleSaveCompany = async () => {
     try {
-      if (!newCompany.companyId || !newCompany.name) {
-        console.error('Company ID and Name are required');
+      if (!newCompany.name) {
+        console.error('Name is required');
         return;
       }
 
@@ -47,7 +46,7 @@ const Overview = () => {
         const companyId = companies[editingIndex].companyId;
         await axios.put(`http://localhost:9000/api/v1/updateOrganization/${companyId}`, newCompany);
         const updatedCompanies = [...companies];
-        updatedCompanies[editingIndex] = newCompany;
+        updatedCompanies[editingIndex] = { ...newCompany, companyId }; // Preserve the companyId for editing
         setCompanies(updatedCompanies);
         setEditingIndex(null);
       } else {
@@ -55,7 +54,6 @@ const Overview = () => {
         setCompanies((prev) => [...prev, newCompany]);
       }
       setNewCompany({
-        companyId: '',
         name: '',
         contact: '',
         bankDetails: '',
@@ -70,7 +68,13 @@ const Overview = () => {
 
   const handleEditCompany = (index) => {
     const companyToEdit = companies[index];
-    setNewCompany(companyToEdit);
+    setNewCompany({
+      name: companyToEdit.name,
+      contact: companyToEdit.contact,
+      bankDetails: companyToEdit.bankDetails,
+      signature: companyToEdit.signature,
+      logo: companyToEdit.logo,
+    });
     setEditingIndex(index);
     setShowForm(true);
   };
@@ -86,7 +90,6 @@ const Overview = () => {
       }
     }
   };
-  
 
   return (
     <div className="flex min-h-screen">
@@ -151,14 +154,6 @@ const Overview = () => {
         <Modal isOpen={showForm} onClose={() => setShowForm(false)}>
           <h3 className="mb-4 text-lg font-bold">{editingIndex !== null ? "Edit Organization" : "Add Organization"}</h3>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <input
-              type="text"
-              name="companyId"
-              value={newCompany.companyId}
-              onChange={handleInputChange}
-              placeholder="Company ID"
-              className="p-2 border rounded-lg"
-            />
             <input
               type="text"
               name="name"
