@@ -39,8 +39,7 @@ const addOrganization = async (req, res) => {
     const { name, contact, bankDetails, signature, logo } = req.body;
 
     // Validations
-    const requiredFields = [name, contact, bankDetails];
-    if (requiredFields.some((field) => !field)) {
+    if (!name || !contact || !bankDetails) {
       return res.status(400).json({ error: "Name, contact, and bank details are required" });
     }
 
@@ -76,14 +75,14 @@ const addOrganization = async (req, res) => {
           if (insertErr) {
             console.error("Error inserting organization:", insertErr);
             return res.status(500).json({ error: "Internal server error" });
-          } else {
-            console.log("Organization added successfully");
-            return res.status(200).json({
-              success: true,
-              message: "Organization added successfully",
-              organizationId: insertResult.insertId,
-            });
-          }
+          } 
+
+          console.log("Organization added successfully");
+          return res.status(201).json({
+            success: true,
+            message: "Organization added successfully",
+            organizationId: insertResult.insertId,
+          });
         });
       }
     });
@@ -96,6 +95,7 @@ const addOrganization = async (req, res) => {
     });
   }
 };
+
 const addEmployee = async (req, res) => {
   try {
     const { name, email, position, phone, salary } = req.body;
