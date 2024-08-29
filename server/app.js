@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use("/api/v1/",Router2)
 app.use('/api',Router)
 app.use(cors({ origin: 'http://localhost:3000' }));
+app.use('/Assets', express.static(path.join(__dirname, 'Assets')));
 
 const PORT = process.env.PORT;
 

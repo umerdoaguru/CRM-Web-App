@@ -1,7 +1,6 @@
 const express = require("express");
 const { db } = require("../db");
-
-
+const path = require('path');
 
 const getAllOrganizations = async (req, res) => {
   try {
@@ -11,17 +10,27 @@ const getAllOrganizations = async (req, res) => {
     db.query(getAllOrgsQuery, (err, result) => {
       if (err) {
         console.error("Error fetching organizations from MySQL:", err);
-        return res.status(500).json({ error: "Internal server error" });
+        return res.status(500).json({ success: false, message: "Internal server error" });
       }
 
       if (result.length === 0) {
-        return res.status(404).json({ error: "No organizations found" });
+        return res.status(404).json({ success: false, message: "No organizations found" });
       }
 
-      // Return the list of organizations
+      // Construct the base URL for accessing assets
+      const baseUrl = `${req.protocol}://${req.get('host')}/Assets/`;
+
+      // Transform the results to include the full URL for images
+      const organizationsWithUrls = result.map(org => ({
+        ...org,
+        signature: org.signature ? baseUrl + org.signature.split('/').pop() : null,
+        logo: org.logo ? baseUrl + org.logo.split('/').pop() : null,
+      }));
+
+      // Return the list of organizations with URLs
       return res.status(200).json({
         success: true,
-        organizations: result,
+        organizations: organizationsWithUrls,
       });
     });
   } catch (error) {
@@ -34,67 +43,37 @@ const getAllOrganizations = async (req, res) => {
   }
 };
 
+
+
 const addOrganization = async (req, res) => {
   try {
-    const { name, contact, bankDetails, signature, logo } = req.body;
+    // Destructure organization fields from request body
+    const { name, contact, bankDetails } = req.body;
 
-    // Validations
-    if (!name || !contact || !bankDetails) {
-      return res.status(400).json({ error: "Name, contact, and bank details are required" });
-    }
+    // Retrieve file paths for signature and logo, if available
+    const signaturePath = req.files.signature ? `/Assets/${req.files.signature[0].filename}` : null;
+    const logoPath = req.files.logo ? `/Assets/${req.files.logo[0].filename}` : null;
 
-    // Check if the organization already exists
-    const checkOrgQuery = "SELECT * FROM organization WHERE name = ?";
+    // Insert data into the database
+    const query = 'INSERT INTO organization (name, contact, bankDetails, signature, logo) VALUES (?, ?, ?, ?, ?)';
+    const values = [name, contact, bankDetails, signaturePath, logoPath];
 
-    db.query(checkOrgQuery, [name], (err, result) => {
+    // Execute the database query
+    db.query(query, values, (err, results) => {
       if (err) {
-        console.error("Error checking if organization exists in MySQL:", err);
-        return res.status(500).json({ error: "Internal server error" });
+        console.error('Error executing query:', err);
+        return res.status(500).json({ error: 'Internal server error' });
       }
-
-      if (result.length > 0) {
-        return res.status(400).json({
-          error: "Organization already exists.",
-        });
-      } else {
-        // Organization not found, proceed with insertion
-        const insertOrgQuery = `
-          INSERT INTO organization (name, contact, bankDetails, signature, logo)
-          VALUES (?, ?, ?, ?, ?)
-        `;
-
-        const insertOrgParams = [
-          name,
-          contact,
-          JSON.stringify(bankDetails),
-          signature || null,
-          logo || null,
-        ];
-
-        db.query(insertOrgQuery, insertOrgParams, (insertErr, insertResult) => {
-          if (insertErr) {
-            console.error("Error inserting organization:", insertErr);
-            return res.status(500).json({ error: "Internal server error" });
-          } 
-
-          console.log("Organization added successfully");
-          return res.status(201).json({
-            success: true,
-            message: "Organization added successfully",
-            organizationId: insertResult.insertId,
-          });
-        });
-      }
+      res.status(200).json({ message: 'Organization added successfully' });
     });
+
   } catch (error) {
-    console.error("Error in adding organization:", error);
-    res.status(500).json({
-      success: false,
-      message: "Error in adding organization",
-      error: error.message,
-    });
+    // Handle any unexpected errors
+    console.error('Error adding organization:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 const addEmployee = async (req, res) => {
   try {
@@ -288,73 +267,44 @@ const deleteOrganization = async (req, res) => {
 
   const updateOrganization = async (req, res) => {
     try {
-      
       const { id } = req.params;
-      // Extract other fields from request body
-      const { name, bankDetails, signature, logo } = req.body;
+      const { name, contact, bankDetails } = req.body;
   
-      console.log(`Received ID: ${id}`);
-      console.log(`Received Body: ${JSON.stringify(req.body)}`);
+      // Retrieve file paths for signature and logo, if available
+      const signaturePath = req.files.signature ? `/Assets/${req.files.signature[0].filename}` : null;
+      const logoPath = req.files.logo ? `/Assets/${req.files.logo[0].filename}` : null;
   
-      // Validate id and required fields
-      if (!id) {
-        return res.status(400).json({ error: "Organization ID is required" });
-      }
-      const requiredFields = [name, bankDetails];
-      if (requiredFields.some((field) => !field)) {
-        return res.status(400).json({ error: "Name and bank details are required" });
-      }
+      // Construct the SQL query
+      const query = `
+        UPDATE organization 
+        SET name = ?, contact = ?, bankDetails = ?, signature = COALESCE(?, signature), logo = COALESCE(?, logo) 
+        WHERE id = ?
+      `;
   
-      // Check if the organization exists
-      const checkOrgQuery = "SELECT * FROM organization WHERE companyId = ?";
+      // Values for the query
+      const values = [name, contact, bankDetails, signaturePath, logoPath, id];
   
-      db.query(checkOrgQuery, [id], (err, result) => {
+      // Execute the database query
+      db.query(query, values, (err, results) => {
         if (err) {
-          console.error("Error checking if organization exists in MySQL:", err);
-          return res.status(500).json({ error: "Internal server error" });
+          console.error('Error executing query:', err);
+          return res.status(500).json({ error: 'Internal server error' });
         }
   
-        if (result.length === 0) {
-          return res.status(404).json({ error: "Organization not found" });
-        } else {
-          // Organization found, proceed with update
-          const updateOrgQuery = `
-            UPDATE organization
-            SET name = ?, bankDetails = ?, signature = ?, logo = ?
-            WHERE companyId = ?
-          `;
-  
-          const updateOrgParams = [
-            name,
-            JSON.stringify(bankDetails),
-            signature || null,
-            logo || null,
-            id
-          ];
-  
-          db.query(updateOrgQuery, updateOrgParams, (updateErr, updateResult) => {
-            if (updateErr) {
-              console.error("Error updating organization:", updateErr);
-              return res.status(500).json({ error: "Internal server error" });
-            } else {
-              console.log("Organization updated successfully");
-              return res.status(200).json({
-                success: true,
-                message: "Organization updated successfully",
-              });
-            }
-          });
+        if (results.affectedRows === 0) {
+          return res.status(404).json({ error: 'Organization not found' });
         }
+  
+        // Return success message
+        res.status(200).json({ message: 'Organization updated successfully' });
       });
+  
     } catch (error) {
-      console.error("Error in updating organization:", error);
-      res.status(500).json({
-        success: false,
-        message: "Error in updating organization",
-        error: error.message,
-      });
+      console.error('Error updating organization:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
   };
+  
 
   
 
