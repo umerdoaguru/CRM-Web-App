@@ -36,12 +36,12 @@ const getAllOrganizations = async (req, res) => {
 
 const addOrganization = async (req, res) => {
   try {
-    const { name, bankDetails, signature, logo } = req.body;
+    const { name, contact, bankDetails, signature, logo } = req.body;
 
     // Validations
-    const requiredFields = [name, bankDetails];
+    const requiredFields = [name, contact, bankDetails];
     if (requiredFields.some((field) => !field)) {
-      return res.status(400).json({ error: "Name and bank details are required" });
+      return res.status(400).json({ error: "Name, contact, and bank details are required" });
     }
 
     // Check if the organization already exists
@@ -60,12 +60,13 @@ const addOrganization = async (req, res) => {
       } else {
         // Organization not found, proceed with insertion
         const insertOrgQuery = `
-          INSERT INTO organization (name, bankDetails, signature, logo)
-          VALUES (?, ?, ?, ?)
+          INSERT INTO organization (name, contact, bankDetails, signature, logo)
+          VALUES (?, ?, ?, ?, ?)
         `;
 
         const insertOrgParams = [
           name,
+          contact,
           JSON.stringify(bankDetails),
           signature || null,
           logo || null,
@@ -95,6 +96,145 @@ const addOrganization = async (req, res) => {
     });
   }
 };
+const addEmployee = async (req, res) => {
+  try {
+    const { name, email, position, phone, salary } = req.body;
+
+    // Validations
+    const requiredFields = [name, email];
+    if (requiredFields.some((field) => !field)) {
+      return res.status(400).json({ error: 'Name and email are required' });
+    }
+
+    // Insert employee into the database
+    const insertEmployeeQuery = `
+      INSERT INTO employee (name, email, position, phone, salary)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+
+    const insertEmployeeParams = [
+      name,
+      email,
+      position || null,
+      phone || null,
+      salary || null,
+    ];
+
+    db.query(insertEmployeeQuery, insertEmployeeParams, (insertErr, insertResult) => {
+      if (insertErr) {
+        console.error('Error inserting employee:', insertErr);
+        return res.status(500).json({ error: 'Internal server error' });
+      } else {
+        console.log('Employee added successfully');
+        return res.status(201).json({
+          success: true,
+          message: 'Employee added successfully',
+          employeeId: insertResult.insertId, // Returning the auto-generated ID
+        });
+      }
+    });
+  } catch (error) {
+    console.error('Error in adding employee:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error in adding employee',
+      error: error.message,
+    });
+  }
+};
+
+const getAllEmployees = async (req, res) => {
+  try {
+    // Query to get all employees
+    const getAllEmployeesQuery = "SELECT * FROM employee";
+
+    db.query(getAllEmployeesQuery, (err, results) => {
+      if (err) {
+        console.error("Error fetching employees from MySQL:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+
+      // Return the results
+      return res.status(200).json({
+        success: true,
+        employees: results,
+      });
+    });
+  } catch (error) {
+    console.error("Error in getting employees:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in getting employees",
+      error: error.message,
+    });
+  }
+};
+
+const updateEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;  // This is the auto-generated employeeId
+    const { name, email, position, phone, salary } = req.body;
+
+    if (!id) {
+      return res.status(400).json({ error: 'Employee ID is required' });
+    }
+
+    const query = `
+      UPDATE employee
+      SET name = ?, email = ?, position = ?, phone = ?, salary = ?
+      WHERE employeeId = ?
+    `;
+
+    const params = [name, email, position || null, phone || null, salary || null, id];
+
+    db.query(query, params, (err, results) => {
+      if (err) {
+        console.error('Error updating employee:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ error: 'Employee not found' });
+      }
+
+      res.status(200).json({ success: true, message: 'Employee updated successfully' });
+    });
+  } catch (error) {
+    console.error('Error in updateEmployee:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+const deleteEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;  // This is the auto-generated employeeId
+
+    if (!id) {
+      return res.status(400).json({ error: 'Employee ID is required' });
+    }
+
+    const query = 'DELETE FROM employee WHERE employeeId = ?';
+
+    db.query(query, [id], (err, results) => {
+      if (err) {
+        console.error('Error deleting employee:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ error: 'Employee not found' });
+      }
+
+      res.status(200).json({ success: true, message: 'Employee deleted successfully' });
+    });
+  } catch (error) {
+    console.error('Error in deleteEmployee:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
 
 const deleteOrganization = async (req, res) => {
     try {
@@ -215,7 +355,7 @@ const deleteOrganization = async (req, res) => {
       });
     }
   };
-  
+
   
 
-module.exports = {getAllOrganizations, addOrganization,deleteOrganization,updateOrganization };
+module.exports = {getAllOrganizations, addOrganization,deleteOrganization,updateOrganization ,addEmployee,getAllEmployees,updateEmployee,deleteEmployee};
