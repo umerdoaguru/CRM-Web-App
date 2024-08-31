@@ -305,7 +305,6 @@ const deleteOrganization = async (req, res) => {
     }
   };
   
-  
 
   
 

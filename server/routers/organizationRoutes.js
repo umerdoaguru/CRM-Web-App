@@ -13,7 +13,7 @@ router.delete('/deleteOrganization/:id', deleteOrganization);
 
 router.get('/getAllEmployees',getAllEmployees)
 
-router.put('/updateOrganization/:id', upload.fields([{ name: 'signature' }, { name: 'logo' }]), updateOrganization);
+router.put('/updateOrganization/:companyId', upload.fields([{ name: 'signature' }, { name: 'logo' }]), updateOrganization);
 
 router.post("/addEmployee",addEmployee);
 
