@@ -108,8 +108,6 @@ const getToDoList = async (req, res) => {
     }
 };
 
-const db = require('../config/db'); // Adjust the path as necessary
-
 // Create a new client
 const createClient = async (req, res) => {
     const { name, email } = req.body;
