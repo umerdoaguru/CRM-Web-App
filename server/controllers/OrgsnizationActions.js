@@ -149,6 +149,38 @@ const getAllEmployees = async (req, res) => {
   }
 };
 
+const getEmployeeById = async (req, res) => {
+  const { employeeId } = req.params;  
+
+  try {
+    const getEmployeeByIdQuery = "SELECT * FROM employee WHERE employeeId = ?";
+    
+    db.query(getEmployeeByIdQuery, [employeeId], (err, result) => {  
+      if (err) {
+        console.error("Error fetching employee by ID from MySQL:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+
+      if (result.length === 0) {
+        return res.status(404).json({ message: "Employee not found" });
+      }
+
+      return res.status(200).json({
+        success: true,
+        employee: result[0], // Return a single employee
+      });
+    });
+  } catch (error) {
+    console.error("Error in getting employee by ID:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in getting employee by ID",
+      error: error.message,
+    });
+  }
+};
+
+
 const updateEmployee = async (req, res) => {
   try {
     const { id } = req.params;  
@@ -183,6 +215,45 @@ const updateEmployee = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+const updateSingleEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;  
+    const { name, email, position, phone, salary } = req.body;
+
+    if (!id) {
+      return res.status(400).json({ error: 'Employee ID is required' });
+    }
+
+    // Retrieve file paths for photo and signature, if available
+    const photoPath = req.files.photo ? `/Assets/${req.files.photo[0].filename}` : null;
+    const signaturePath = req.files.signature ? `/Assets/${req.files.signature[0].filename}` : null;
+
+    const query = `
+      UPDATE employee
+      SET name = ?, email = ?, position = ?, phone = ?, salary = ?, photo = COALESCE(?, photo), signature = COALESCE(?, signature)
+      WHERE employeeId = ?
+    `;
+
+    const params = [name, email, position || null, phone || null, salary || null, photoPath, signaturePath, id];
+
+    db.query(query, params, (err, results) => {
+      if (err) {
+        console.error('Error updating employee:', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ error: 'Employee not found' });
+      }
+
+      res.status(200).json({ success: true, message: 'Employee updated successfully' });
+    });
+  } catch (error) {
+    console.error('Error in updateEmployee:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 
 
 const deleteEmployee = async (req, res) => {
@@ -308,4 +379,4 @@ const deleteOrganization = async (req, res) => {
 
   
 
-module.exports = {getAllOrganizations, addOrganization,deleteOrganization,updateOrganization ,addEmployee,getAllEmployees,updateEmployee,deleteEmployee};
+module.exports = {getAllOrganizations, addOrganization,deleteOrganization,updateOrganization ,addEmployee,getAllEmployees,updateEmployee,deleteEmployee,getEmployeeById,updateSingleEmployee};
