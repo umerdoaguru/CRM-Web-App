@@ -3,6 +3,7 @@ import axios from 'axios';
 import { BsPencilSquare, BsTrash, BsPlusCircle } from 'react-icons/bs';
 import Modal from '../adiComponent/Modal'; // assuming you have a modal component
 import Sider from '../components/Sider';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const EmployeeManagement = () => {
   const [employees, setEmployees] = useState([]);
@@ -15,6 +16,7 @@ const EmployeeManagement = () => {
   });
   const [editingIndex, setEditingIndex] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     fetchEmployees();
@@ -93,6 +95,10 @@ const EmployeeManagement = () => {
     }
   };
 
+  const handleEmployeeClick = (employeeId) => {
+    navigate(`/employee-single/${employeeId}`); 
+  };
+
   return (
     <div className="flex flex-col min-h-screen lg:flex-row">
       <div className="lg:w-64">
@@ -125,8 +131,12 @@ const EmployeeManagement = () => {
               {employees.length > 0 ? (
                 employees
                   .filter((employee) => employee && employee.name) // Ensure employee and employee.name exist
-                  .map((employee, index) => (
-                    <tr key={employee.employeeId} className="border-b border-gray-200 hover:bg-gray-100">
+                  .map((employee, index) => ( // Add index here
+                    <tr
+                      key={employee.employeeId}
+                      className="border-b border-gray-200 cursor-pointer hover:bg-gray-100"
+                      onClick={() => handleEmployeeClick(employee.employeeId)} // Navigate on row click
+                    >
                       <td className="px-4 py-4 sm:px-6">{employee.name}</td>
                       <td className="px-4 py-4 sm:px-6">{employee.email}</td>
                       <td className="px-4 py-4 sm:px-6">{employee.position}</td>
@@ -135,13 +145,13 @@ const EmployeeManagement = () => {
                       <td className="px-4 py-4 sm:px-6">
                         <div className="flex space-x-2 sm:space-x-4">
                           <button
-                            onClick={() => handleEditEmployee(index)}
+                            onClick={(e) => { e.stopPropagation(); handleEditEmployee(index); }} // Now index is available
                             className="text-blue-500 transition duration-200 hover:text-blue-600"
                           >
                             <BsPencilSquare size={20} />
                           </button>
                           <button
-                            onClick={() => handleDeleteEmployee(employee.employeeId)}
+                            onClick={(e) => { e.stopPropagation(); handleDeleteEmployee(employee.employeeId); }}
                             className="text-red-500 transition duration-200 hover:text-red-600"
                           >
                             <BsTrash size={20} />
@@ -195,7 +205,7 @@ const EmployeeManagement = () => {
               className="p-2 border rounded-lg"
             />
             <input
-              type="number"
+              type="text"
               name="salary"
               value={newEmployee.salary}
               onChange={handleInputChange}
@@ -203,18 +213,18 @@ const EmployeeManagement = () => {
               className="p-2 border rounded-lg"
             />
           </div>
-          <div className="flex justify-end mt-4">
+          <div className="flex justify-end mt-4 space-x-4">
             <button
-              onClick={handleSaveEmployee}
-              className="px-4 py-2 text-white transition duration-200 bg-green-500 rounded-lg shadow-lg hover:bg-green-600"
-            >
-              Save
-            </button>
-            <button
-              onClick={() => setShowForm(false)}
-              className="px-4 py-2 ml-4 text-white transition duration-200 bg-red-500 rounded-lg shadow-lg hover:bg-red-600"
+              onClick={() => setShowForm(false)} // Cancel button to close modal
+              className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600"
             >
               Cancel
+            </button>
+            <button
+              onClick={handleSaveEmployee}
+              className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+            >
+              {editingIndex !== null ? "Update" : "Add"}
             </button>
           </div>
         </Modal>

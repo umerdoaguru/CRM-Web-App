@@ -13,6 +13,7 @@ import EditProfile from './adiComponent/editProfle';
 import UserProfile from './adiComponent/userProfile';
 import Sider from './components/Sider';
 import EmployeeManagement from './adiComponent/EmployManagement';
+import EmployeeSingle from './adiComponent/EmployeSingle';
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <Route path='/leads' element={<Leads/>}/>
         <Route path='/edit-profile' element={<UserProfile/>}/>
         <Route path='/employee-management' element={<EmployeeManagement/>}/>
+        <Route path='/employee-single/:employeeId' element={<EmployeeSingle/>}/>
       </Routes>
     
     </>
