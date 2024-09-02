@@ -225,45 +225,67 @@ const createContract = (req, res) => {
   
 
 // Get all contracts
-const getAllContracts = async (req, res) => {
+const getAllContracts = (req, res) => {
     const query = 'SELECT * FROM contracts';
-    try {
-        const [results] = await db.query(query);
-        res.status(200).json(results);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error("Error fetching contracts from MySQL:", err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ success: false, message: 'No contracts found' });
+        }
+
+        // Return the list of contracts
+        return res.status(200).json({
+            success: true,
+            contracts: results
+        });
+    });
 };
 
+
 // Get a single contract by ID
-const getContractById = async (req, res) => {
+const getContractById = (req, res) => {
     const { id } = req.params;
     const query = 'SELECT * FROM contracts WHERE contract_id = ?';
-    try {
-        const [results] = await db.query(query, [id]);
+
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error("Error fetching contract from MySQL:", err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
         if (results.length === 0) {
             return res.status(404).json({ error: 'Contract not found' });
         }
-        res.status(200).json(results[0]);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+
+        // Return the contract details
+        return res.status(200).json(results[0]);
+    });
 };
 
+
 // Update a contract
-const updateContract = async (req, res) => {
+const updateContract = (req, res) => {
     const { id } = req.params;
     const { client_id, status } = req.body;
     const query = 'UPDATE contracts SET client_id = ?, status = ? WHERE contract_id = ?';
-    try {
-        const [result] = await db.query(query, [client_id, status, id]);
+
+    db.query(query, [client_id, status, id], (err, result) => {
+        if (err) {
+            console.error("Error updating contract in MySQL:", err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Contract not found' });
         }
+
         res.status(200).json({ success: true, message: 'Contract updated successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    });
 };
 
 // Delete a contract
@@ -277,9 +299,11 @@ const deleteContract = async (req, res) => {
         }
         res.status(200).json({ success: true, message: 'Contract deleted successfully' });
     } catch (error) {
+        console.error("Error deleting contract:", error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 const createInvoice = async (req, res) => {
     const { client_id, amount, status } = req.body;
     const query = 'INSERT INTO invoices (client_id, amount, status) VALUES (?, ?, ?)';
@@ -287,88 +311,123 @@ const createInvoice = async (req, res) => {
         await db.query(query, [client_id, amount, status]);
         res.status(201).json({ success: true, message: 'Invoice added successfully' });
     } catch (error) {
+        console.error("Error adding invoice:", error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 // Get all invoices
-const getAllInvoices = async (req, res) => {
+const getAllInvoices = (req, res) => {
     const query = 'SELECT * FROM invoices';
-    try {
-        const [results] = await db.query(query);
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error("Error fetching invoices:", err); // Log the error details
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        
+        if (results.length === 0) {
+            return res.status(404).json({ success: false, message: 'No invoices found' });
+        }
+
         res.status(200).json(results);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    });
 };
 
+
+
+
 // Get a single invoice by ID
-const getInvoiceById = async (req, res) => {
+const getInvoiceById = (req, res) => {
     const { id } = req.params;
     const query = 'SELECT * FROM invoices WHERE invoice_id = ?';
-    try {
-        const [results] = await db.query(query, [id]);
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error("Error fetching invoice:", err); // Log the error details
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
         if (results.length === 0) {
             return res.status(404).json({ error: 'Invoice not found' });
         }
+
         res.status(200).json(results[0]);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    });
 };
 
+
 // Update an invoice
-const updateInvoice = async (req, res) => {
+const updateInvoice = (req, res) => {
     const { id } = req.params;
     const { client_id, amount, status } = req.body;
     const query = 'UPDATE invoices SET client_id = ?, amount = ?, status = ? WHERE invoice_id = ?';
-    try {
-        const [result] = await db.query(query, [client_id, amount, status, id]);
+
+    db.query(query, [client_id, amount, status, id], (err, result) => {
+        if (err) {
+            console.error("Error updating invoice:", err); // Log the error details
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Invoice not found' });
         }
+
         res.status(200).json({ success: true, message: 'Invoice updated successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    });
 };
+
 
 // Delete an invoice
-const deleteInvoice = async (req, res) => {
+const deleteInvoice = (req, res) => {
     const { id } = req.params;
     const query = 'DELETE FROM invoices WHERE invoice_id = ?';
-    try {
-        const [result] = await db.query(query, [id]);
+    
+    db.query(query, [id], (err, result) => {
+        if (err) {
+            console.error("Error deleting invoice:", err); // Log the error details
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Invoice not found' });
         }
+
         res.status(200).json({ success: true, message: 'Invoice deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    });
 };
 
-const createPayment = async (req, res) => {
-    const { client_id, amount, date } = req.body;
-    const query = 'INSERT INTO payments (client_id, amount, date) VALUES (?, ?, ?)';
-    try {
-        await db.query(query, [client_id, amount, date]);
+
+const createPayment = (req, res) => {
+    const { client_id, received_amount, due_amount, created_at } = req.body;
+    const query = 'INSERT INTO payments (client_id, received_amount, due_amount, created_at) VALUES (?, ?, ?, ?)';
+
+    db.query(query, [client_id, received_amount, due_amount, created_at], (err, result) => {
+        if (err) {
+            console.error("Error creating payment:", err); // Log the error details
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
         res.status(201).json({ success: true, message: 'Payment added successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    });
 };
+
+
+
 
 // Get all payments
-const getAllPayments = async (req, res) => {
+const getAllPayments = (req, res) => {
     const query = 'SELECT * FROM payments';
-    try {
-        const [results] = await db.query(query);
+    
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error("Error fetching payments:", err); // Log the error details
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
         res.status(200).json(results);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    });
 };
+
 
 // Get a single payment by ID
 const getPaymentById = async (req, res) => {
