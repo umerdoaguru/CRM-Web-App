@@ -122,15 +122,38 @@ const createClient = async (req, res) => {
 
 // Get all clients
 const getAllClients = async (req, res) => {
-    const query = 'SELECT * FROM clients';
     try {
-        const [results] = await db.query(query);
-        res.status(200).json(results);
+      // Query to select all clients
+      const getAllClientsQuery = "SELECT * FROM clients";
+  
+      db.query(getAllClientsQuery, (err, result) => {
+        if (err) {
+          console.error("Error fetching clients from MySQL:", err);
+          return res.status(500).json({ success: false, message: "Internal server error" });
+        }
+  
+        if (result.length === 0) {
+          return res.status(404).json({ success: false, message: "No clients found" });
+        }
+  
+        // If you need to process the results further, you can do it here
+  
+        // Return the list of clients
+        return res.status(200).json({
+          success: true,
+          clients: result,
+        });
+      });
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+      console.error("Error in fetching clients:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error in fetching clients",
+        error: error.message,
+      });
     }
-};
-
+  };
+  
 // Get a single client by ID
 const getClientById = async (req, res) => {
     const { id } = req.params;
@@ -146,21 +169,28 @@ const getClientById = async (req, res) => {
     }
 };
 
-// Update a client
-const updateClient = async (req, res) => {
+
+const updateClient = (req, res) => {
     const { id } = req.params;
     const { name, email } = req.body;
     const query = 'UPDATE clients SET name = ?, email = ? WHERE client_id = ?';
-    try {
-        const [result] = await db.query(query, [name, email, id]);
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Client not found' });
-        }
-        res.status(200).json({ success: true, message: 'Client updated successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
+  
+    // Execute the query with the provided parameters
+    db.query(query, [name, email, id], (err, result) => {
+      if (err) {
+        console.error("Error updating client in MySQL:", err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+  
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: 'Client not found' });
+      }
+  
+      // Client updated successfully
+      res.status(200).json({ success: true, message: 'Client updated successfully' });
+    });
+  };
+  
 
 // Delete a client
 const deleteClient = async (req, res) => {
@@ -177,19 +207,22 @@ const deleteClient = async (req, res) => {
     }
 };
 
-
-
-
-const createContract = async (req, res) => {
-    const { client_id, status } = req.body;
-    const query = 'INSERT INTO contracts (client_id, status) VALUES (?, ?)';
-    try {
-        await db.query(query, [client_id, status]);
-        res.status(201).json({ success: true, message: 'Contract added successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
+const createContract = (req, res) => {
+    const { client_id, start_date, end_date, status } = req.body;  // Extracting all necessary fields
+    const query = 'INSERT INTO contracts (client_id, start_date, end_date, status) VALUES (?, ?, ?, ?)';
+  
+    // Execute the query with the provided parameters
+    db.query(query, [client_id, start_date, end_date, status], (err, result) => {
+      if (err) {
+        console.error("Error adding contract to MySQL:", err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+  
+      // Contract added successfully
+      res.status(201).json({ success: true, message: 'Contract added successfully' });
+    });
+  };
+  
 
 // Get all contracts
 const getAllContracts = async (req, res) => {
@@ -452,5 +485,4 @@ const deleteLead = async (req, res) => {
 };
 
 
-
-module.exports = { createContract, getAllContracts, getContractById, updateContract, deleteContract,createClient, getAllClients, getClientById, updateClient, deleteClient,createInvoice, getAllInvoices, getInvoiceById, updateInvoice, deleteInvoice,createPayment, getAllPayments, getPaymentById, updatePayment, deletePayment, createLead, getAllLeads, getLeadById, updateLead, deleteLead   };
+    module.exports = { createContract, getAllContracts, getContractById, updateContract, deleteContract,createClient, getAllClients, getClientById, updateClient, deleteClient,createInvoice, getAllInvoices, getInvoiceById, updateInvoice, deleteInvoice,createPayment, getAllPayments, getPaymentById, updatePayment, deletePayment, createLead, getAllLeads, getLeadById, updateLead, deleteLead,getOverviewMetrics,getPaymentsData, getLeadsData,getToDoList,getDevicesData };

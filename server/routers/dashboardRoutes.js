@@ -8,7 +8,8 @@ const {
     createClient, getAllClients, getClientById, updateClient, deleteClient,
     createInvoice, getAllInvoices, getInvoiceById, updateInvoice, deleteInvoice,
     createPayment, getAllPayments, getPaymentById, updatePayment, deletePayment,
-    createLead, getAllLeads, getLeadById, updateLead, deleteLead
+    createLead, getAllLeads, getLeadById, updateLead, deleteLead,
+    getOverviewMetrics, getPaymentsData, getLeadsData, getToDoList, getDevicesData
 } = require('../controllers/dashboard');
 
 // Contract Routes
@@ -45,5 +46,20 @@ router.get('/leads', getAllLeads);
 router.get('/leads/:id', getLeadById);
 router.put('/leads/:id', updateLead);
 router.delete('/leads/:id', deleteLead);
+
+// Overview Metrics Route
+router.get('/overview-metrics', getOverviewMetrics);
+
+// Payment Data Route
+router.get('/payments-data', getPaymentsData);
+
+// Leads Data Route
+router.get('/leads-data', getLeadsData);
+
+// To-Do List Route
+router.get('/todo-list', getToDoList);
+
+// Devices Data Route
+router.get('/devices-data', getDevicesData);
 
 module.exports = router;
