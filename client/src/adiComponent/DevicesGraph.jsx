@@ -1,6 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const DevicesGraph = () => {
+    const [chartData, setChartData] = useState({
+        labels: [],
+        data: [],
+        backgroundColor: ['#4CAF50', '#FFC107', '#2196F3'], // Old colors
+    });
+
+    useEffect(() => {
+        const fetchDeviceData = async () => {
+            try {
+                const response = await fetch('http://localhost:9000/api/v1/devices-data');
+                const data = await response.json();
+
+                // Process the data to format it for the chart
+                const labels = data.map(item => item.device_type);
+                const dataCounts = data.map(item => item.count);
+
+                setChartData({
+                    labels: labels,
+                    data: dataCounts,
+                });
+            } catch (error) {
+                console.error('Error fetching device data:', error);
+            }
+        };
+
+        fetchDeviceData();
+    }, []);
+
     useEffect(() => {
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
@@ -10,11 +38,11 @@ const DevicesGraph = () => {
             new window.Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: ['Mobile', 'Tablet', 'Desktop'],
+                    labels: chartData.labels,
                     datasets: [
                         {
-                            data: [70, 10, 20],
-                            backgroundColor: ['#4CAF50', '#FFC107', '#2196F3'],
+                            data: chartData.data,
+                            backgroundColor: chartData.backgroundColor, // Use old colors
                         },
                     ],
                 },
@@ -35,7 +63,7 @@ const DevicesGraph = () => {
         return () => {
             document.body.removeChild(script);
         };
-    }, []);
+    }, [chartData]); // Re-run effect when chartData changes
 
     return (
         <div className="p-4 bg-white rounded-lg shadow-lg">

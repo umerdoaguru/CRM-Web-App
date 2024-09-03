@@ -1,11 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Overview2 = () => {
-    const metrics = [
-        { title: 'Clients Added', value: 197, change: '+2.5%', positive: true },
-        { title: 'Contracts Signed', value: 745, change: '-1.5%', positive: false },
-        { title: 'Invoices Sent', value: 512, change: '+1.8%', positive: true },
-    ];
+    const [metrics, setMetrics] = useState([
+        { title: 'Clients Added', value: 0, positive: true },
+        { title: 'Contracts Signed', value: 0, positive: false },
+        { title: 'Invoices Sent', value: 0, positive: true },
+    ]);
+
+    useEffect(() => {
+        const fetchMetrics = async () => {
+            try {
+                const response = await fetch('http://localhost:9000/api/v1/overview-metrics');
+                const data = await response.json();
+
+                // Assuming the API response structure is:
+                // { "clientsAdded": 2, "contractsSigned": 0, "invoicesSent": 1 }
+
+                setMetrics([
+                    {
+                        title: 'Clients Added',
+                        value: data.clientsAdded,
+                        positive: true
+                    },
+                    {
+                        title: 'Contracts Signed',
+                        value: data.contractsSigned,
+                        positive: false
+                    },
+                    {
+                        title: 'Invoices Sent',
+                        value: data.invoicesSent,
+                        positive: true
+                    }
+                ]);
+            } catch (error) {
+                console.error('Error fetching overview metrics:', error);
+            }
+        };
+
+        fetchMetrics();
+    }, []);
 
     return (
         <div className="p-4">
@@ -17,9 +51,7 @@ const Overview2 = () => {
                     >
                         <h2 className="mb-2 text-lg font-semibold">{metric.title}</h2>
                         <p className="text-2xl font-bold">{metric.value}</p>
-                        <p className={`text-sm mt-2 ${metric.positive ? 'text-green-600' : 'text-red-600'}`}>
-                            {metric.change} Since last week
-                        </p>
+                        {/* Removed change field */}
                     </div>
                 ))}
             </div>

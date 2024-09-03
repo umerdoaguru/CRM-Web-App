@@ -1,12 +1,23 @@
-import React from 'react';
-
-const leads = [
-    { name: 'Charlie Donin', email: 'wdavis@aol.com', status: 'Lost Lead', duration: '3 Days', date: '25 Dec 2024 - 28 Dec 2024' },
-    { name: 'Makenna Carder', email: 'ltorres@aol.com', status: 'Active', duration: '3 Days', date: '25 Dec 2024 - 28 Dec 2024' },
-    // Add more leads as needed
-];
+import React, { useEffect, useState } from 'react';
 
 const LeadsReport = () => {
+    const [leads, setLeads] = useState([]);
+
+    useEffect(() => {
+        const fetchLeads = async () => {
+            try {
+                const response = await fetch('http://localhost:9000/api/v1/leads');
+                const data = await response.json();
+                // Process and set the lead data
+                setLeads(data);
+            } catch (error) {
+                console.error('Error fetching leads:', error);
+            }
+        };
+
+        fetchLeads();
+    }, []);
+
     return (
         <div className="p-4 mt-6 bg-white rounded-lg shadow-lg">
             <h3 className="mb-4 text-lg font-semibold">Leads Report</h3>
@@ -23,13 +34,13 @@ const LeadsReport = () => {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                         {leads.map((lead, idx) => (
-                            <tr key={idx} className={`hover:bg-gray-50 ${idx % 2 === 0 ? 'bg-gray-50' : ''}`}>
+                            <tr key={lead.lead_id} className={`hover:bg-gray-50 ${idx % 2 === 0 ? 'bg-gray-50' : ''}`}>
                                 <td className="px-4 py-2 text-sm font-medium text-gray-900">{lead.name}</td>
                                 <td className="px-4 py-2 text-sm text-gray-500">{lead.email}</td>
-                                <td className="px-4 py-2 text-sm text-gray-500">{lead.date}</td>
+                                <td className="px-4 py-2 text-sm text-gray-500">{new Date(lead.date).toLocaleDateString()}</td>
                                 <td className="px-4 py-2 text-sm text-gray-500">{lead.duration}</td>
                                 <td className={`px-4 py-2 text-sm font-medium ${lead.status === 'Lost Lead' ? 'text-red-600' : 'text-green-600'}`}>
-                                    {lead.status}
+                                    {lead.status || 'N/A'}
                                 </td>
                             </tr>
                         ))}

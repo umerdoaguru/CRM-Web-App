@@ -1,6 +1,52 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const PaymentsGraph = () => {
+    const [chartData, setChartData] = useState({
+        received: [],
+        due: [],
+        labels: [],
+    });
+
+    useEffect(() => {
+        // Fetch data from the API
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:9000/api/v1/payments');
+                const data = await response.json();
+                
+                // Process the data to format it for the chart
+                const receivedAmounts = [];
+                const dueAmounts = [];
+                const labels = [];
+
+                data.forEach(item => {
+                    const month = new Date(item.created_at).toLocaleString('default', { month: 'short' });
+                    // Check if month already exists in labels
+                    if (!labels.includes(month)) {
+                        labels.push(month);
+                        receivedAmounts.push(item.received_amount);
+                        dueAmounts.push(item.due_amount);
+                    } else {
+                        // Update amounts if the month already exists
+                        const index = labels.indexOf(month);
+                        receivedAmounts[index] += item.received_amount;
+                        dueAmounts[index] += item.due_amount;
+                    }
+                });
+
+                setChartData({
+                    received: receivedAmounts,
+                    due: dueAmounts,
+                    labels: labels,
+                });
+            } catch (error) {
+                console.error('Error fetching payment data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     useEffect(() => {
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
@@ -10,18 +56,18 @@ const PaymentsGraph = () => {
             new window.Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'],
+                    labels: chartData.labels,
                     datasets: [
                         {
                             label: 'Received Amount',
-                            data: [45, 40, 55, 50, 70, 65, 75],
+                            data: chartData.received,
                             borderColor: '#4CAF50',
                             backgroundColor: 'rgba(76, 175, 80, 0.2)',
                             fill: true,
                         },
                         {
                             label: 'Due Amount',
-                            data: [32, 30, 35, 40, 45, 42, 50],
+                            data: chartData.due,
                             borderColor: '#F44336',
                             backgroundColor: 'rgba(244, 67, 54, 0.2)',
                             fill: true,
@@ -64,7 +110,7 @@ const PaymentsGraph = () => {
         return () => {
             document.body.removeChild(script);
         };
-    }, []);
+    }, [chartData]); // Re-run effect when chartData changes
 
     return (
         <div className="p-4 bg-white rounded-lg shadow-lg">
