@@ -70,6 +70,54 @@ const getDevicesData = async (req, res) => {
     }
 };
 
+const addDeviceUsage = async (req, res) => {
+    const { device_type } = req.body;
+
+    // Check if the device_type is provided
+    if (!device_type) {
+        return res.status(400).json({ error: 'Device type is required' });
+    }
+
+    // Insert the device usage data into the database
+    const query = 'INSERT INTO device_usage (device_type) VALUES (?)';
+
+    try {
+        // Execute the query to insert the device type
+        await db.query(query, [device_type], (err, result) => {
+            if (err) {
+                console.error('Error inserting device usage:', err);
+                return res.status(500).json({ error: 'Internal server error' });
+            }
+            // Success response
+            res.status(201).json({ success: true, message: 'Device usage recorded successfully' });
+        });
+    } catch (error) {
+        console.error('Error in addDeviceUsage:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+// controllers/dashboard.js
+
+exports.recordDeviceUsage = async (req, res) => {
+    const { device_type } = req.body;
+    try {
+        // Record device usage logic here
+        // For example, increment the count in your database
+
+        // Respond with success message
+        res.json({
+            success: true,
+            message: 'Device usage recorded successfully',
+        });
+    } catch (error) {
+        console.error('Error recording device usage:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error recording device usage',
+        });
+    }
+};
+
 const getLeadsData = async (req, res) => {
     try {
         const query = `
@@ -89,23 +137,156 @@ const getLeadsData = async (req, res) => {
     }
 };
 
-const getToDoList = async (req, res) => {
-    try {
-        const query = `
-            SELECT title, time, date, status
-            FROM todo_items
-        `;
-        db.query(query, (err, results) => {
-            if (err) {
-                console.error('Error fetching to-do list:', err);
-                return res.status(500).json({ error: 'Internal server error' });
-            }
-            res.status(200).json(results);
-        });
-    } catch (error) {
-        console.error('Error in getToDoList:', error);
-        res.status(500).json({ error: 'Internal server error' });
+const getToDoList = (req, res) => {
+    const query = `
+        SELECT title, time, date, status
+        FROM todo_items
+    `;
+    
+    db.query(query, (err, results) => {
+        if (err) {
+            // Log the error and respond with a 500 status code
+            console.error('Error fetching to-do list:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        // Respond with the results if the query is successful
+        res.status(200).json(results);
+    });
+};
+
+const getToDoById = (req, res) => {
+    // Extract the ID from the request parameters
+    const { id } = req.params;
+
+    // Validate that the ID is a valid number (you can add more validation if needed)
+    if (!id || isNaN(id)) {
+        return res.status(400).json({ error: 'Invalid ID format' });
     }
+
+    // SQL query to fetch a specific to-do item by ID
+    const query = `
+        SELECT title, time, date, status
+        FROM todo_items
+        WHERE id = ?
+    `;
+    
+    // Execute the query with the ID parameter
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            // Log the error and respond with a 500 status code
+            console.error('Error fetching to-do item by ID:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        // Check if the result is empty
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'To-do item not found' });
+        }
+
+        // Respond with the result if the query is successful
+        res.status(200).json(results[0]);
+    });
+};
+
+const addToDoItem = (req, res) => {
+    const { title, time, date, status } = req.body;
+
+    // Basic validation
+    if (!title || !time || !date || typeof status === 'undefined') {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const query = `
+        INSERT INTO todo_items (title, time, date, status)
+        VALUES (?, ?, ?, ?)
+    `;
+    
+    db.query(query, [title, time, date, status], (err, results) => {
+        if (err) {
+            console.error('Error adding to-do item:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        res.status(201).json({ message: 'To-do item added successfully', id: results.insertId });
+    });
+};
+
+const deleteToDoItem = (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+        return res.status(400).json({ error: 'Missing item ID' });
+    }
+
+    const query = `
+        DELETE FROM todo_items
+        WHERE id = ?
+    `;
+    
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error('Error deleting to-do item:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: 'To-do item not found' });
+        }
+
+        res.status(200).json({ message: 'To-do item deleted successfully' });
+    });
+};
+
+const updateToDoItem = (req, res) => {
+    const { id } = req.params;
+    const { title, time, date, status } = req.body;
+
+    if (!id || (title === undefined && time === undefined && date === undefined && status === undefined)) {
+        return res.status(400).json({ error: 'Missing item ID or fields to update' });
+    }
+
+    // Build the SET clause dynamically
+    const setClause = [];
+    const values = [];
+
+    if (title !== undefined) {
+        setClause.push('title = ?');
+        values.push(title);
+    }
+    if (time !== undefined) {
+        setClause.push('time = ?');
+        values.push(time);
+    }
+    if (date !== undefined) {
+        setClause.push('date = ?');
+        values.push(date);
+    }
+    if (status !== undefined) {
+        setClause.push('status = ?');
+        values.push(status);
+    }
+
+    values.push(id); // Add the ID to the end for the WHERE clause
+
+    const query = `
+        UPDATE todo_items
+        SET ${setClause.join(', ')}
+        WHERE id = ?
+    `;
+    
+    db.query(query, values, (err, results) => {
+        if (err) {
+            console.error('Error updating to-do item:', err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: 'To-do item not found' });
+        }
+
+        res.status(200).json({ message: 'To-do item updated successfully' });
+    });
 };
 
 // Create a new client
@@ -570,4 +751,4 @@ const deleteLead = (req, res) => {
 
 
 
-    module.exports = { createContract, getAllContracts, getContractById, updateContract, deleteContract,createClient, getAllClients, getClientById, updateClient, deleteClient,createInvoice, getAllInvoices, getInvoiceById, updateInvoice, deleteInvoice,createPayment, getAllPayments, getPaymentById, updatePayment, deletePayment, createLead, getAllLeads, getLeadById, updateLead, deleteLead,getOverviewMetrics,getPaymentsData, getLeadsData,getToDoList,getDevicesData };
+    module.exports = { createContract, getAllContracts, getContractById, updateContract, deleteContract,createClient, getAllClients, getClientById, updateClient, deleteClient,createInvoice, getAllInvoices, getInvoiceById, updateInvoice, deleteInvoice,createPayment, getAllPayments, getPaymentById, updatePayment, deletePayment, createLead, getAllLeads, getLeadById, updateLead, deleteLead,getOverviewMetrics,getPaymentsData, getLeadsData,getToDoList,getDevicesData,addToDoItem,deleteToDoItem,updateToDoItem,getToDoById,addDeviceUsage };

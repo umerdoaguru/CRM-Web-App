@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('../config/multerConfig'); 
+const upload = require('../config/multerConfig');
 
 // Import the controller functions
 const {
@@ -9,43 +9,59 @@ const {
     createInvoice, getAllInvoices, getInvoiceById, updateInvoice, deleteInvoice,
     createPayment, getAllPayments, getPaymentById, updatePayment, deletePayment,
     createLead, getAllLeads, getLeadById, updateLead, deleteLead,
-    getOverviewMetrics, getPaymentsData, getLeadsData, getToDoList, getDevicesData
+    getOverviewMetrics, getPaymentsData, getLeadsData, getToDoList,
+    addToDoItem, deleteToDoItem, updateToDoItem, getDevicesData, getToDoById, addDeviceUsage
 } = require('../controllers/dashboard');
 
 // Contract Routes
-router.post('/contracts', createContract);
-router.get('/contracts', getAllContracts);
-router.get('/contracts/:id', getContractById);
-router.put('/contracts/:id', updateContract);
-router.delete('/contracts/:id', deleteContract);
+router.route('/contracts')
+    .post(createContract)
+    .get(getAllContracts);
+
+router.route('/contracts/:id')
+    .get(getContractById)
+    .put(updateContract)
+    .delete(deleteContract);
 
 // Client Routes
-router.post('/clients', createClient);
-router.get('/clients', getAllClients);
-router.get('/clients/:id', getClientById);
-router.put('/clients/:id', updateClient);
-router.delete('/clients/:id', deleteClient);
+router.route('/clients')
+    .post(createClient)
+    .get(getAllClients);
+
+router.route('/clients/:id')
+    .get(getClientById)
+    .put(updateClient)
+    .delete(deleteClient);
 
 // Invoice Routes
-router.post('/invoices', createInvoice);
-router.get('/invoices', getAllInvoices);
-router.get('/invoices/:id', getInvoiceById);
-router.put('/invoices/:id', updateInvoice);
-router.delete('/invoices/:id', deleteInvoice);
+router.route('/invoices')
+    .post(createInvoice)
+    .get(getAllInvoices);
+
+router.route('/invoices/:id')
+    .get(getInvoiceById)
+    .put(updateInvoice)
+    .delete(deleteInvoice);
 
 // Payment Routes
-router.post('/payments', createPayment);
-router.get('/payments', getAllPayments);
-router.get('/payments/:id', getPaymentById);
-router.put('/payments/:id', updatePayment);
-router.delete('/payments/:id', deletePayment);
+router.route('/payments')
+    .post(createPayment)
+    .get(getAllPayments);
+
+router.route('/payments/:id')
+    .get(getPaymentById)
+    .put(updatePayment)
+    .delete(deletePayment);
 
 // Lead Routes
-router.post('/leads', createLead);
-router.get('/leads', getAllLeads);
-router.get('/leads/:id', getLeadById);
-router.put('/leads/:id', updateLead);
-router.delete('/leads/:id', deleteLead);
+router.route('/leads')
+    .post(createLead)
+    .get(getAllLeads);
+
+router.route('/leads/:id')
+    .get(getLeadById)
+    .put(updateLead)
+    .delete(deleteLead);
 
 // Overview Metrics Route
 router.get('/overview-metrics', getOverviewMetrics);
@@ -56,10 +72,21 @@ router.get('/payments-data', getPaymentsData);
 // Leads Data Route
 router.get('/leads-data', getLeadsData);
 
-// To-Do List Route
-router.get('/todo-list', getToDoList);
+// To-Do List Routes
+router.route('/todo-list')
+    .get(getToDoList)
+    .post(addToDoItem);
 
-// Devices Data Route
-router.get('/devices-data', getDevicesData);
+router.route('/todo-list/:id')
+    .get(getToDoById)        
+    .delete(deleteToDoItem)
+    .put(updateToDoItem);
+
+// Devices Data Routes
+router.route('/devices-data')
+    .get(getDevicesData);  
+
+router.route('/device-usage')
+    .post(addDeviceUsage);  
 
 module.exports = router;
