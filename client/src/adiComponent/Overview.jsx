@@ -3,6 +3,7 @@ import axios from 'axios';
 import { BsPencilSquare, BsTrash, BsPlusCircle } from 'react-icons/bs';
 import Sider from '../components/Sider';
 import Modal from '../adiComponent/Modal';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Overview = () => {
   const [companies, setCompanies] = useState([]);
@@ -15,6 +16,7 @@ const Overview = () => {
   });
   const [editingIndex, setEditingIndex] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const navigate = useNavigate(); // Initialize navigate
 
   useEffect(() => {
     fetchCompanies();
@@ -107,6 +109,11 @@ const Overview = () => {
     }
   };
 
+  // New function to handle navigation to SingleOrganization
+  const handleViewCompany = (companyId) => {
+    navigate(`/singleOrganization/${companyId}`); // Navigate to the SingleOrganization page
+  };
+
   console.log('====================================');
   console.log(companies);
   console.log('====================================');
@@ -139,7 +146,11 @@ const Overview = () => {
             </thead>
             <tbody>
               {Array.isArray(companies) && companies.map((company, index) => (
-                <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
+                <tr
+                  key={index}
+                  className="border-b border-gray-200 hover:bg-gray-100"
+                  onClick={() => handleViewCompany(company.companyId)} // Trigger navigation on click
+                >
                   <td className="px-4 py-4 sm:px-6">{company.name}</td>
                   <td className="px-4 py-4 sm:px-6">{company.contact}</td>
                   <td className="px-4 py-4 sm:px-6">{company.bankDetails}</td>
@@ -152,13 +163,19 @@ const Overview = () => {
                   <td className="px-4 py-4 sm:px-6">
                     <div className="flex space-x-2 sm:space-x-4">
                       <button
-                        onClick={() => handleEditCompany(index)}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent row click event
+                          handleEditCompany(index);
+                        }}
                         className="text-blue-500 transition duration-200 hover:text-blue-600"
                       >
                         <BsPencilSquare size={20} />
                       </button>
                       <button
-                        onClick={() => handleDeleteCompany(company.companyId)}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent row click event
+                          handleDeleteCompany(company.companyId);
+                        }}
                         className="text-red-500 transition duration-200 hover:text-red-600"
                       >
                         <BsTrash size={20} />
@@ -211,18 +228,12 @@ const Overview = () => {
               className="p-2 border rounded-lg"
             />
           </div>
-          <div className="flex justify-end mt-4">
+          <div className="mt-6 text-right">
             <button
               onClick={handleSaveCompany}
-              className="px-4 py-2 text-white transition duration-200 bg-green-500 rounded-lg shadow-lg hover:bg-green-600"
+              className="px-4 py-2 text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600"
             >
-              Save
-            </button>
-            <button
-              onClick={() => setShowForm(false)}
-              className="px-4 py-2 ml-4 text-white transition duration-200 bg-gray-500 rounded-lg shadow-lg hover:bg-gray-600"
-            >
-              Cancel
+              {editingIndex !== null ? "Update Organization" : "Save Organization"}
             </button>
           </div>
         </Modal>
