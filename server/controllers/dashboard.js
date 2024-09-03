@@ -487,61 +487,87 @@ const createLead = async (req, res) => {
 };
 
 // Get all leads
-const getAllLeads = async (req, res) => {
+const getAllLeads = (req, res) => {
     const query = 'SELECT * FROM leads';
-    try {
-        const [results] = await db.query(query);
+    
+    db.query(query, (error, results) => {
+        if (error) {
+            // Handle the error, respond with an error status and message
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        // Respond with the results if no error
         res.status(200).json(results);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    });
 };
+
 
 // Get a single lead by ID
-const getLeadById = async (req, res) => {
+const getLeadById = (req, res) => {
     const { id } = req.params;
     const query = 'SELECT * FROM leads WHERE lead_id = ?';
-    try {
-        const [results] = await db.query(query, [id]);
+
+    db.query(query, [id], (error, results) => {
+        if (error) {
+            // Handle the error, respond with an error status and message
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
         if (results.length === 0) {
+            // Handle the case where no lead is found
             return res.status(404).json({ error: 'Lead not found' });
         }
+
+        // Respond with the first result if found
         res.status(200).json(results[0]);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    });
 };
 
+
 // Update a lead
-const updateLead = async (req, res) => {
+const updateLead = (req, res) => {
     const { id } = req.params;
     const { name, email, status, duration, date } = req.body;
     const query = 'UPDATE leads SET name = ?, email = ?, status = ?, duration = ?, date = ? WHERE lead_id = ?';
-    try {
-        const [result] = await db.query(query, [name, email, status, duration, date, id]);
+
+    db.query(query, [name, email, status, duration, date, id], (error, result) => {
+        if (error) {
+            // Handle the error, respond with an error status and message
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
         if (result.affectedRows === 0) {
+            // Handle the case where no rows were affected
             return res.status(404).json({ error: 'Lead not found' });
         }
+
+        // Respond with a success message if the lead was updated
         res.status(200).json({ success: true, message: 'Lead updated successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    });
 };
 
+
 // Delete a lead
-const deleteLead = async (req, res) => {
+const deleteLead = (req, res) => {
     const { id } = req.params;
     const query = 'DELETE FROM leads WHERE lead_id = ?';
-    try {
-        const [result] = await db.query(query, [id]);
+
+    db.query(query, [id], (error, result) => {
+        if (error) {
+            // Handle the error, respond with an error status and message
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
         if (result.affectedRows === 0) {
+            // Handle the case where no rows were affected
             return res.status(404).json({ error: 'Lead not found' });
         }
+
+        // Respond with a success message if the lead was deleted
         res.status(200).json({ success: true, message: 'Lead deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
+    });
 };
+
 
 
     module.exports = { createContract, getAllContracts, getContractById, updateContract, deleteContract,createClient, getAllClients, getClientById, updateClient, deleteClient,createInvoice, getAllInvoices, getInvoiceById, updateInvoice, deleteInvoice,createPayment, getAllPayments, getPaymentById, updatePayment, deletePayment, createLead, getAllLeads, getLeadById, updateLead, deleteLead,getOverviewMetrics,getPaymentsData, getLeadsData,getToDoList,getDevicesData };
