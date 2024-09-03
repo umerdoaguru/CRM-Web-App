@@ -18,8 +18,8 @@ const EmployeeSingle = () => {
     photo: null,
     timing: '',
   });
-  const [editingIndex, setEditingIndex] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -68,52 +68,40 @@ const EmployeeSingle = () => {
       formData.append('phone', newEmployee.phone);
       formData.append('designation', newEmployee.designation);
       formData.append('timing', newEmployee.timing);
-  
+
       if (newEmployee.signature) {
         formData.append('signature', newEmployee.signature);
       }
-  
+
       if (newEmployee.photo) {
         formData.append('photo', newEmployee.photo);
       }
-  
+
+      let response;
       if (editingIndex !== null) {
-        const response = await axios.put(`http://localhost:9000/api/v1/updateSingleEmployee/${employee.employeeId}`, formData, {
+        response = await axios.put(`http://localhost:9000/api/v1/updateSingleEmployee/${employee.employeeId}`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
-        if (response.data.success) {
-          setEmployee((prev) => ({ ...newEmployee, employeeId: prev.employeeId }));
-          setEditingIndex(null);
-        } else {
-          console.error('Failed to update employee');
-        }
       } else {
-        const response = await axios.post('http://localhost:9000/api/v1/addEmployee', formData, {
+        response = await axios.post('http://localhost:9000/api/v1/addEmployee', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
-        if (response.data.success) {
-          setEmployee(response.data.employee);
-        } else {
-          console.error('Failed to add employee');
-        }
       }
-  
-      setNewEmployee({
-        name: '',
-        email: '',
-        position: '',
-        phone: '',
-        designation: '',
-        signature: null,
-        photo: null,
-        timing: '',
-      });
-      setShowForm(false);
+
+      if (response.data.success) {
+        if (editingIndex !== null) {
+          setEmployee(prev => ({ ...prev, ...newEmployee }));
+        } else {
+          setEmployee(response.data.employee);
+        }
+        setShowForm(false);
+      } else {
+        console.error('Failed to save employee');
+      }
     } catch (error) {
       console.error('Error saving employee:', error);
     }
   };
-  
 
   const handleEditEmployee = () => {
     if (employee) {
@@ -149,75 +137,61 @@ const EmployeeSingle = () => {
         <Sider />
       </div>
       <main className="flex-1 p-4 lg:p-8">
-        <div className="flex flex-col-reverse items-start justify-between mb-8 lg:flex-row lg:items-center">
-          <h2 className="mb-4 text-2xl font-bold text-gray-800 lg:mb-0">Employee Management</h2>
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-2xl font-bold text-gray-800">Employee Profile</h2>
           <button
-            onClick={() => { handleEditEmployee(); }}
+            onClick={handleEditEmployee}
             className="flex items-center px-4 py-2 text-white transition duration-200 bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600"
           >
-            <BsPlusCircle className="mr-2" /> Edit Employee
+            <BsPencilSquare className="mr-2" /> Edit Profile
           </button>
         </div>
 
-        <div className="overflow-x-auto rounded-lg shadow-md">
-          <table className="min-w-full bg-white">
-            <thead>
-              <tr className="text-sm font-semibold text-left text-gray-600 uppercase bg-gray-200">
-                <th className="px-4 py-3 sm:px-6">Name</th>
-                <th className="px-4 py-3 sm:px-6">Email</th>
-                <th className="px-4 py-3 sm:px-6">Position</th>
-                <th className="px-4 py-3 sm:px-6">Phone</th>
-                <th className="px-4 py-3 sm:px-6">Designation</th>
-                <th className="px-4 py-3 sm:px-6">Signature</th>
-                <th className="px-4 py-3 sm:px-6">Photo</th>
-                <th className="px-4 py-3 sm:px-6">Timing</th>
-                <th className="px-4 py-3 sm:px-6">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {employee ? (
-                <tr className="border-b border-gray-200 hover:bg-gray-100">
-                  <td className="px-4 py-4 sm:px-6">{employee.name}</td>
-                  <td className="px-4 py-4 sm:px-6">{employee.email}</td>
-                  <td className="px-4 py-4 sm:px-6">{employee.position}</td>
-                  <td className="px-4 py-4 sm:px-6">{employee.phone}</td>
-                  <td className="px-4 py-4 sm:px-6">{employee.designation}</td>
-                  <td className="px-4 py-4 sm:px-6">
-                    {employee.signature ? (
-                      <img src={`http://localhost:9000${employee.signature}`} alt="Signature" className="w-12 h-12" />
-                    ) : 'No Signature'}
-                  </td>
-                  <td className="px-4 py-4 sm:px-6">
-                    {employee.photo ? (
-                      <img src={`http://localhost:9000${employee.photo}`} alt="Photo" className="w-12 h-12 rounded-full" />
-                    ) : 'No Photo'}
-                  </td>
-                  <td className="px-4 py-4 sm:px-6">{employee.timing}</td>
-                  <td className="px-4 py-4 sm:px-6">
-                    <div className="flex space-x-2 sm:space-x-4">
-                      <button
-                        onClick={() => handleEditEmployee()}
-                        className="text-blue-500 transition duration-200 hover:text-blue-600"
-                      >
-                        <BsPencilSquare size={20} />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteEmployee()}
-                        className="text-red-500 transition duration-200 hover:text-red-600"
-                      >
-                        <BsTrash size={20} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+        {employee ? (
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <div className="flex items-center mb-6">
+              {employee.photo ? (
+                <img
+                  src={`http://localhost:9000${employee.photo}`}
+                  alt="Profile"
+                  className="w-24 h-24 border-2 border-gray-300 rounded-full"
+                />
               ) : (
-                <tr>
-                  <td colSpan="9" className="py-4 text-center">No employee found</td>
-                </tr>
+                <div className="w-24 h-24 bg-gray-300 border-2 border-gray-300 rounded-full"></div>
               )}
-            </tbody>
-          </table>
-        </div>
+              <div className="ml-6">
+                <h3 className="text-xl font-semibold text-gray-800">{employee.name}</h3>
+                <p className="text-gray-600">{employee.position}</p>
+                <p className="text-gray-600">{employee.email}</p>
+                <p className="text-gray-600">{employee.phone}</p>
+                <p className="text-gray-600">{employee.designation}</p>
+                <p className="text-gray-600">{employee.timing}</p>
+              </div>
+            </div>
+
+            {employee.signature && (
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-gray-800">Signature</h4>
+                <img
+                  src={`http://localhost:9000${employee.signature}`}
+                  alt="Signature"
+                  className="w-32 h-16 border-t border-gray-300"
+                />
+              </div>
+            )}
+
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={handleDeleteEmployee}
+                className="px-4 py-2 text-white bg-red-500 rounded-lg shadow-lg hover:bg-red-600"
+              >
+                <BsTrash className="mr-2" /> Delete
+              </button>
+            </div>
+          </div>
+        ) : (
+          <p className="text-gray-600">No employee data available.</p>
+        )}
 
         <Modal isOpen={showForm} onClose={() => setShowForm(false)}>
           <h3 className="mb-4 text-lg font-bold">{editingIndex !== null ? "Edit Employee" : "Add Employee"}</h3>
