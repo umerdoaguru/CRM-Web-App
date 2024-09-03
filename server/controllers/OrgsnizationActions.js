@@ -43,6 +43,50 @@ const getAllOrganizations = async (req, res) => {
   }
 };
 
+const getOrganizationById = async (req, res) => {
+  try {
+    // Get organization ID from the route parameter
+    const organizationId = req.params.id;
+
+    // Query to select the organization by ID
+    const getOrgByIdQuery = "SELECT * FROM organization WHERE companyId = ?";
+
+    // Execute the query
+    db.query(getOrgByIdQuery, [organizationId], (err, result) => {
+      if (err) {
+        console.error("Error fetching organization from MySQL:", err);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+      }
+
+      if (result.length === 0) {
+        return res.status(404).json({ success: false, message: "Organization not found" });
+      }
+
+      // Construct the base URL for accessing assets
+      const baseUrl = `${req.protocol}://${req.get('host')}/Assets/`;
+
+      // Transform the result to include the full URL for images
+      const organization = {
+        ...result[0],
+        signature: result[0].signature ? baseUrl + result[0].signature.split('/').pop() : null,
+        logo: result[0].logo ? baseUrl + result[0].logo.split('/').pop() : null,
+      };
+
+      // Return the organization data
+      return res.status(200).json({
+        success: true,
+        organization,
+      });
+    });
+  } catch (error) {
+    console.error("Error in fetching organization:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetching organization",
+      error: error.message,
+    });
+  }
+};
 
 
 const addOrganization = async (req, res) => {
@@ -379,4 +423,4 @@ const deleteOrganization = async (req, res) => {
 
   
 
-module.exports = {getAllOrganizations, addOrganization,deleteOrganization,updateOrganization ,addEmployee,getAllEmployees,updateEmployee,deleteEmployee,getEmployeeById,updateSingleEmployee};
+module.exports = {getAllOrganizations, addOrganization,deleteOrganization,updateOrganization ,addEmployee,getAllEmployees,updateEmployee,deleteEmployee,getEmployeeById,updateSingleEmployee,getOrganizationById};
