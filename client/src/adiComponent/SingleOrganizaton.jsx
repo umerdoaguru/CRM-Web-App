@@ -5,10 +5,11 @@ import axios from 'axios';
 const SingleOrganization = () => {
   const { id } = useParams(); 
   const [organization, setOrganization] = useState(null);
+  const [error, setError] = useState(null); // To handle any errors
 
   useEffect(() => {
     fetchOrganization();
-  }, []);
+  }, [id]);
 
   const fetchOrganization = async () => {
     try {
@@ -16,39 +17,46 @@ const SingleOrganization = () => {
       setOrganization(response.data.organization);
     } catch (error) {
       console.error('Error fetching organization:', error);
+      setError('Failed to load organization details. Please try again later.');
     }
   };
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>; // Show error message if there is an error
+  }
 
   if (!organization) {
     return <div>Loading...</div>; // Show loading while fetching organization details
   }
 
+  // Basic validation: Display default placeholders if any critical data is missing
+  const displayLogo = organization.logo ? organization.logo : '/default-logo.png';
+  const displaySignature = organization.signature ? organization.signature : '/default-signature.png';
+  const displayContact = organization.contact || 'No contact information available';
+  const displayBankDetails = organization.bankDetails || 'No bank details available';
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-4xl p-8 bg-white rounded-lg shadow-lg">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">{organization.name}</h2>
+          <h2 className="text-2xl font-bold text-gray-800">{organization.name || 'No Name Available'}</h2>
           <img
-            src={organization.logo ? `${organization.logo}` : '/default-logo.png'}
+            src={displayLogo}
             alt="Company Logo"
             className="object-cover w-24 h-24 rounded-lg"
           />
         </div>
         <div className="mb-4">
           <h4 className="text-lg font-semibold text-gray-700">Contact:</h4>
-          <p>{organization.contact}</p>
+          <p>{displayContact}</p>
         </div>
         <div className="mb-4">
           <h4 className="text-lg font-semibold text-gray-700">Bank Details:</h4>
-          <pre className="p-4 bg-gray-100 rounded-lg">{organization.bankDetails}</pre>
+          <pre className="p-4 bg-gray-100 rounded-lg">{displayBankDetails}</pre>
         </div>
         <div className="mb-4">
           <h4 className="text-lg font-semibold text-gray-700">Signature:</h4>
-          {organization.signature ? (
-            <img src={`${organization.signature}`} alt="Signature" className="w-32 h-32" />
-          ) : (
-            <p>No Signature Available</p>
-          )}
+          <img src={displaySignature} alt="Signature" className="w-32 h-32" />
         </div>
         <div className="flex justify-between mt-6">
           <button

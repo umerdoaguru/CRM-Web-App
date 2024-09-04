@@ -12,10 +12,10 @@ const EmployeeManagement = () => {
     email: '',
     position: '',
     phone: '',
-    salary: '', // Added salary field
   });
   const [editingIndex, setEditingIndex] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
   const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
@@ -37,13 +37,44 @@ const EmployeeManagement = () => {
     setNewEmployee((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSaveEmployee = async () => {
-    try {
-      if (!newEmployee.name || !newEmployee.email) {
-        console.error('Name and Email are required');
-        return;
-      }
+  const validateForm = async () => {
+    const errors = {};
 
+    // Validate Name
+    if (!newEmployee.name) errors.name = 'Name is required';
+
+    // Validate Email
+    if (!newEmployee.email) errors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(newEmployee.email)) errors.email = 'Email is invalid';
+    else if (await isEmailTaken(newEmployee.email)) errors.email = 'Email is already taken';
+
+    // Validate Position
+    if (!newEmployee.position) errors.position = 'Position is required';
+
+    // Validate Phone
+    if (!newEmployee.phone) errors.phone = 'Phone number is required';
+    else if (!/^\d{10}$/.test(newEmployee.phone)) errors.phone = 'Phone number must be 10 digits';
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const isEmailTaken = async (email) => {
+    try {
+      const response = await axios.get('http://localhost:9000/api/v1/checkEmail', {
+        params: { email },
+      });
+      return response.data.exists;
+    } catch (error) {
+      console.error('Error checking email:', error);
+      return false; // Assuming email check fails means it's not taken
+    }
+  };
+
+  const handleSaveEmployee = async () => {
+    if (!await validateForm()) return; // Stop saving if validation fails
+
+    try {
       if (editingIndex !== null) {
         // Update existing employee
         const employeeToUpdate = employees[editingIndex];
@@ -62,7 +93,6 @@ const EmployeeManagement = () => {
         email: '',
         position: '',
         phone: '',
-        salary: '', // Reset salary
       });
       setShowForm(false);
     } catch (error) {
@@ -77,7 +107,6 @@ const EmployeeManagement = () => {
       email: employeeToEdit.email,
       position: employeeToEdit.position,
       phone: employeeToEdit.phone,
-      salary: employeeToEdit.salary, // Set salary
     });
     setEditingIndex(index);
     setShowForm(true);
@@ -123,7 +152,6 @@ const EmployeeManagement = () => {
                 <th className="px-4 py-3 sm:px-6">Email</th>
                 <th className="px-4 py-3 sm:px-6">Position</th>
                 <th className="px-4 py-3 sm:px-6">Phone</th>
-                <th className="px-4 py-3 sm:px-6">Salary</th>
                 <th className="px-4 py-3 sm:px-6">Actions</th>
               </tr>
             </thead>
@@ -141,7 +169,6 @@ const EmployeeManagement = () => {
                       <td className="px-4 py-4 sm:px-6">{employee.email}</td>
                       <td className="px-4 py-4 sm:px-6">{employee.position}</td>
                       <td className="px-4 py-4 sm:px-6">{employee.phone}</td>
-                      <td className="px-4 py-4 sm:px-6">{employee.salary}</td>
                       <td className="px-4 py-4 sm:px-6">
                         <div className="flex space-x-2 sm:space-x-4">
                           <button
@@ -162,7 +189,7 @@ const EmployeeManagement = () => {
                   ))
               ) : (
                 <tr>
-                  <td colSpan="6" className="py-4 text-center">No employees found</td>
+                  <td colSpan="5" className="py-4 text-center">No employees found</td>
                 </tr>
               )}
             </tbody>
@@ -178,40 +205,39 @@ const EmployeeManagement = () => {
               value={newEmployee.name}
               onChange={handleInputChange}
               placeholder="Name"
-              className="p-2 border rounded-lg"
+              className={`p-2 border rounded-lg ${validationErrors.name ? 'border-red-500' : 'border-gray-300'}`}
             />
+            {validationErrors.name && <p className="text-sm text-red-500">{validationErrors.name}</p>}
+
             <input
               type="email"
               name="email"
               value={newEmployee.email}
               onChange={handleInputChange}
               placeholder="Email"
-              className="p-2 border rounded-lg"
+              className={`p-2 border rounded-lg ${validationErrors.email ? 'border-red-500' : 'border-gray-300'}`}
             />
+            {validationErrors.email && <p className="text-sm text-red-500">{validationErrors.email}</p>}
+
             <input
               type="text"
               name="position"
               value={newEmployee.position}
               onChange={handleInputChange}
               placeholder="Position"
-              className="p-2 border rounded-lg"
+              className={`p-2 border rounded-lg ${validationErrors.position ? 'border-red-500' : 'border-gray-300'}`}
             />
+            {validationErrors.position && <p className="text-sm text-red-500">{validationErrors.position}</p>}
+
             <input
               type="text"
               name="phone"
               value={newEmployee.phone}
               onChange={handleInputChange}
               placeholder="Phone"
-              className="p-2 border rounded-lg"
+              className={`p-2 border rounded-lg ${validationErrors.phone ? 'border-red-500' : 'border-gray-300'}`}
             />
-            <input
-              type="text"
-              name="salary"
-              value={newEmployee.salary}
-              onChange={handleInputChange}
-              placeholder="Salary"
-              className="p-2 border rounded-lg"
-            />
+            {validationErrors.phone && <p className="text-sm text-red-500">{validationErrors.phone}</p>}
           </div>
           <div className="flex justify-end mt-4 space-x-4">
             <button

@@ -91,6 +91,7 @@ const Overview = () => {
       });
       setShowForm(false);
       setErrors({});
+      fetchCompanies()
     } catch (error) {
       console.error('Error saving company:', error.response?.data || error.message);
     }

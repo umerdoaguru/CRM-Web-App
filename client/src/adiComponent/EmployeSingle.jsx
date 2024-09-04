@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { BsPencilSquare, BsTrash, BsPlusCircle } from 'react-icons/bs';
+import { BsPencilSquare, BsTrash } from 'react-icons/bs';
 import Modal from '../adiComponent/Modal';
 import Sider from '../components/Sider';
 
@@ -13,42 +13,93 @@ const EmployeeSingle = () => {
     email: '',
     position: '',
     phone: '',
-    designation: '',
     signature: null,
     photo: null,
-    timing: '',
   });
   const [showForm, setShowForm] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
+  const [error, setError] = useState(null);
+  const [validationErrors, setValidationErrors] = useState({});
+
+  // Fetch employee data
+  const fetchEmployee = async () => {
+    try {
+      const response = await axios.get(`http://localhost:9000/api/v1/getEmployeeById/${employeeId}`);
+      if (response.data.success) {
+        setEmployee(response.data.employee);
+        setNewEmployee({
+          name: response.data.employee.name || '',
+          email: response.data.employee.email || '',
+          position: response.data.employee.position || '',
+          phone: response.data.employee.phone || '',
+          signature: null,
+          photo: null,
+        });
+      } else {
+        setError('Failed to fetch employee');
+      }
+    } catch (error) {
+      setError('Error fetching employee');
+      console.error('Error fetching employee:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchEmployee = async () => {
-      try {
-        const response = await axios.get(`http://localhost:9000/api/v1/getEmployeeById/${employeeId}`);
-        if (response.data.success) {
-          setEmployee(response.data.employee);
-          setNewEmployee({
-            name: response.data.employee.name,
-            email: response.data.employee.email,
-            position: response.data.employee.position,
-            phone: response.data.employee.phone,
-            designation: response.data.employee.designation,
-            signature: null,
-            photo: null,
-            timing: response.data.employee.timing,
-          });
-        } else {
-          console.error('Failed to fetch employee');
-        }
-      } catch (error) {
-        console.error('Error fetching employee:', error);
-      }
-    };
-
     if (employeeId) {
       fetchEmployee();
     }
   }, [employeeId]);
+
+  const validateForm = async () => {
+    const errors = {};
+    
+    // Validate Name
+    if (!newEmployee.name) errors.name = 'Name is required';
+    
+    // Validate Email
+    if (!newEmployee.email) errors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(newEmployee.email)) errors.email = 'Email is invalid';
+    else if (await isEmailTaken(newEmployee.email)) errors.email = 'Email is already taken';
+    
+    // Validate Position
+    if (!newEmployee.position) errors.position = 'Position is required';
+    
+    // Validate Phone
+    if (!newEmployee.phone) errors.phone = 'Phone number is required';
+    else if (!/^\d{10}$/.test(newEmployee.phone)) errors.phone = 'Phone number must be 10 digits';
+    else if (await isPhoneNumberTaken(newEmployee.phone)) errors.phone = 'Phone number is already taken';
+    
+    // Validate Files
+    if (newEmployee.photo && !['image/jpeg', 'image/png'].includes(newEmployee.photo.type)) errors.photo = 'Photo must be an image (jpeg/png)';
+    if (newEmployee.signature && !['image/jpeg', 'image/png'].includes(newEmployee.signature.type)) errors.signature = 'Signature must be an image (jpeg/png)';
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const isEmailTaken = async (email) => {
+    try {
+      const response = await axios.get('http://localhost:9000/api/v1/checkEmail', {
+        params: { email },
+      });
+      return response.data.exists;
+    } catch (error) {
+      console.error('Error checking email:', error);
+      return false; // Assuming email check fails means it's not taken
+    }
+  };
+
+  const isPhoneNumberTaken = async (phone) => {
+    try {
+      const response = await axios.get('http://localhost:9000/api/v1/checkPhoneNumber', {
+        params: { phone },
+      });
+      return response.data.exists;
+    } catch (error) {
+      console.error('Error checking phone number:', error);
+      return false; // Assuming phone number check fails means it's not taken
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -60,14 +111,14 @@ const EmployeeSingle = () => {
   };
 
   const handleSaveEmployee = async () => {
+    if (!await validateForm()) return; // Stop saving if validation fails
+
     try {
       const formData = new FormData();
       formData.append('name', newEmployee.name);
       formData.append('email', newEmployee.email);
       formData.append('position', newEmployee.position);
       formData.append('phone', newEmployee.phone);
-      formData.append('designation', newEmployee.designation);
-      formData.append('timing', newEmployee.timing);
 
       if (newEmployee.signature) {
         formData.append('signature', newEmployee.signature);
@@ -89,16 +140,23 @@ const EmployeeSingle = () => {
       }
 
       if (response.data.success) {
-        if (editingIndex !== null) {
-          setEmployee(prev => ({ ...prev, ...newEmployee }));
-        } else {
-          setEmployee(response.data.employee);
-        }
+        // Refresh the employee data after saving
+        await fetchEmployee(); // Fetch new data
+        setNewEmployee({
+          name: '',
+          email: '',
+          position: '',
+          phone: '',
+          signature: null,
+          photo: null,
+        });
         setShowForm(false);
+        setEditingIndex(null);
       } else {
-        console.error('Failed to save employee');
+        setError('Failed to save employee');
       }
     } catch (error) {
+      setError('Error saving employee');
       console.error('Error saving employee:', error);
     }
   };
@@ -106,14 +164,12 @@ const EmployeeSingle = () => {
   const handleEditEmployee = () => {
     if (employee) {
       setNewEmployee({
-        name: employee.name,
-        email: employee.email,
-        position: employee.position,
-        phone: employee.phone,
-        designation: employee.designation,
+        name: employee.name || '',
+        email: employee.email || '',
+        position: employee.position || '',
+        phone: employee.phone || '',
         signature: null,
         photo: null,
-        timing: employee.timing,
       });
       setEditingIndex(0);
       setShowForm(true);
@@ -128,6 +184,7 @@ const EmployeeSingle = () => {
           await axios.delete(`http://localhost:9000/api/v1/deleteEmployee/${employee.employeeId}`);
           setEmployee(null);
         } catch (error) {
+          setError('Error deleting employee');
           console.error('Error deleting employee:', error);
         }
       }
@@ -150,6 +207,8 @@ const EmployeeSingle = () => {
           </button>
         </div>
 
+        {error && <p className="text-red-600">{error}</p>}
+
         {employee ? (
           <div className="p-6 bg-white rounded-lg shadow-md">
             <div className="flex items-center mb-6">
@@ -163,12 +222,10 @@ const EmployeeSingle = () => {
                 <div className="w-24 h-24 bg-gray-300 border-2 border-gray-300 rounded-full"></div>
               )}
               <div className="ml-6">
-                <h3 className="text-xl font-semibold text-gray-800">{employee.name}</h3>
-                <p className="text-gray-600">{employee.position}</p>
-                <p className="text-gray-600">{employee.email}</p>
-                <p className="text-gray-600">{employee.phone}</p>
-                <p className="text-gray-600">{employee.designation}</p>
-                <p className="text-gray-600">{employee.timing}</p>
+                <h3 className="text-xl font-semibold text-gray-800">{employee.name || 'No Name Available'}</h3>
+                <p className="text-gray-600">{employee.position || 'No Position Available'}</p>
+                <p className="text-gray-600">{employee.email || 'No Email Available'}</p>
+                <p className="text-gray-600">{employee.phone || 'No Phone Available'}</p>
               </div>
             </div>
 
@@ -206,71 +263,68 @@ const EmployeeSingle = () => {
               value={newEmployee.name}
               onChange={handleInputChange}
               placeholder="Name"
-              className="p-2 border rounded-lg"
+              className={`p-2 border rounded-lg ${validationErrors.name ? 'border-red-500' : 'border-gray-300'}`}
             />
+            {validationErrors.name && <p className="text-sm text-red-500">{validationErrors.name}</p>}
+
             <input
               type="email"
               name="email"
               value={newEmployee.email}
               onChange={handleInputChange}
               placeholder="Email"
-              className="p-2 border rounded-lg"
+              className={`p-2 border rounded-lg ${validationErrors.email ? 'border-red-500' : 'border-gray-300'}`}
             />
+            {validationErrors.email && <p className="text-sm text-red-500">{validationErrors.email}</p>}
+
             <input
               type="text"
               name="position"
               value={newEmployee.position}
               onChange={handleInputChange}
               placeholder="Position"
-              className="p-2 border rounded-lg"
+              className={`p-2 border rounded-lg ${validationErrors.position ? 'border-red-500' : 'border-gray-300'}`}
             />
+            {validationErrors.position && <p className="text-sm text-red-500">{validationErrors.position}</p>}
+
             <input
               type="text"
               name="phone"
               value={newEmployee.phone}
               onChange={handleInputChange}
               placeholder="Phone"
-              className="p-2 border rounded-lg"
+              className={`p-2 border rounded-lg ${validationErrors.phone ? 'border-red-500' : 'border-gray-300'}`}
             />
-            <input
-              type="text"
-              name="designation"
-              value={newEmployee.designation}
-              onChange={handleInputChange}
-              placeholder="Designation"
-              className="p-2 border rounded-lg"
-            />
+            {validationErrors.phone && <p className="text-sm text-red-500">{validationErrors.phone}</p>}
+
             <input
               type="file"
-              onChange={(e) => handleFileInput(e, 'signature')}
-              className="p-2 border rounded-lg"
-            />
-            <input
-              type="file"
+              accept="image/jpeg, image/png"
               onChange={(e) => handleFileInput(e, 'photo')}
               className="p-2 border rounded-lg"
             />
+            {validationErrors.photo && <p className="text-sm text-red-500">{validationErrors.photo}</p>}
+            
             <input
-              type="text"
-              name="timing"
-              value={newEmployee.timing}
-              onChange={handleInputChange}
-              placeholder="Timing"
+              type="file"
+              accept="image/jpeg, image/png"
+              onChange={(e) => handleFileInput(e, 'signature')}
               className="p-2 border rounded-lg"
             />
+            {validationErrors.signature && <p className="text-sm text-red-500">{validationErrors.signature}</p>}
           </div>
-          <div className="flex justify-end mt-4 space-x-4">
-            <button
-              onClick={() => setShowForm(false)}
-              className="px-4 py-2 text-white bg-gray-500 rounded-lg"
-            >
-              Cancel
-            </button>
+          <div className="flex justify-end mt-6 space-x-4">
             <button
               onClick={handleSaveEmployee}
-              className="px-4 py-2 text-white bg-blue-500 rounded-lg"
+              className="px-4 py-2 text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600"
             >
               Save
+            </button>
+            <button
+              onClick={() => setShowForm(false)}
+              className="px-4 py-2 text-white bg-gray-500 rounded-lg shadow-lg hover:bg-gray-600"
+            >
+              Cancel
             </button>
           </div>
         </Modal>
