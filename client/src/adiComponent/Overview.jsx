@@ -44,10 +44,21 @@ const Overview = () => {
 
   const validateForm = () => {
     const newErrors = {};
+
+    // Validate Name
     if (!newCompany.name) newErrors.name = 'Company Name is required';
+
+    // Validate Contact
     if (!newCompany.contact) newErrors.contact = 'Contact No is required';
+    else if (!/^\d{10}$/.test(newCompany.contact)) newErrors.contact = 'Contact No must be a 10-digit number';
+
+    // Validate Bank Details
     if (!newCompany.bankDetails) newErrors.bankDetails = 'Bank Details are required';
+
+    // Validate Signature
     if (!newCompany.signature) newErrors.signature = 'Signature is required';
+
+    // Validate Logo
     if (!newCompany.logo) newErrors.logo = 'Logo is required';
 
     setErrors(newErrors);
@@ -91,7 +102,7 @@ const Overview = () => {
       });
       setShowForm(false);
       setErrors({});
-      fetchCompanies()
+      fetchCompanies();
     } catch (error) {
       console.error('Error saving company:', error.response?.data || error.message);
     }

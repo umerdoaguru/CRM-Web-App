@@ -79,14 +79,9 @@ const EmployeeManagement = () => {
         // Update existing employee
         const employeeToUpdate = employees[editingIndex];
         await axios.put(`http://localhost:9000/api/v1/updateEmployee/${employeeToUpdate.employeeId}`, newEmployee);
-        const updatedEmployees = [...employees];
-        updatedEmployees[editingIndex] = { ...employeeToUpdate, ...newEmployee };
-        setEmployees(updatedEmployees);
-        setEditingIndex(null);
       } else {
         // Add new employee
-        const response = await axios.post('http://localhost:9000/api/v1/addEmployee', newEmployee);
-        setEmployees((prev) => [...prev, response.data.employee]);
+        await axios.post('http://localhost:9000/api/v1/addEmployee', newEmployee);
       }
       setNewEmployee({
         name: '',
@@ -95,6 +90,7 @@ const EmployeeManagement = () => {
         phone: '',
       });
       setShowForm(false);
+      fetchEmployees(); // Fetch employees to update the list
     } catch (error) {
       console.error('Error saving employee:', error.response?.data || error.message);
     }
@@ -117,7 +113,7 @@ const EmployeeManagement = () => {
     if (isConfirmed) {
       try {
         await axios.delete(`http://localhost:9000/api/v1/deleteEmployee/${employeeId}`);
-        setEmployees(employees.filter((employee) => employee.employeeId !== employeeId));
+        fetchEmployees(); // Fetch employees to update the list
       } catch (error) {
         console.error('Error deleting employee:', error);
       }
@@ -159,7 +155,7 @@ const EmployeeManagement = () => {
               {employees.length > 0 ? (
                 employees
                   .filter((employee) => employee && employee.name) // Ensure employee and employee.name exist
-                  .map((employee, index) => ( // Add index here
+                  .map((employee, index) => (
                     <tr
                       key={employee.employeeId}
                       className="border-b border-gray-200 cursor-pointer hover:bg-gray-100"
