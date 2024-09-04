@@ -122,11 +122,14 @@ const EmployeeSingle = () => {
 
   const handleDeleteEmployee = async () => {
     if (employee) {
-      try {
-        await axios.delete(`http://localhost:9000/api/v1/deleteEmployee/${employee.employeeId}`);
-        setEmployee(null);
-      } catch (error) {
-        console.error('Error deleting employee:', error);
+      const isConfirmed = window.confirm("Are you sure you want to delete this employee?");
+      if (isConfirmed) {
+        try {
+          await axios.delete(`http://localhost:9000/api/v1/deleteEmployee/${employee.employeeId}`);
+          setEmployee(null);
+        } catch (error) {
+          console.error('Error deleting employee:', error);
+        }
       }
     }
   };
@@ -183,7 +186,8 @@ const EmployeeSingle = () => {
             <div className="flex justify-end space-x-4">
               <button
                 onClick={handleDeleteEmployee}
-                className="px-4 py-2 text-white bg-red-500 rounded-lg shadow-lg hover:bg-red-600"
+                className={`px-4 py-2 text-white rounded-lg shadow-lg ${employee ? 'bg-red-500 hover:bg-red-600' : 'bg-gray-500 cursor-not-allowed'}`}
+                disabled={!employee}
               >
                 <BsTrash className="mr-2" /> Delete
               </button>
@@ -258,13 +262,13 @@ const EmployeeSingle = () => {
           <div className="flex justify-end mt-4 space-x-4">
             <button
               onClick={() => setShowForm(false)}
-              className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300"
+              className="px-4 py-2 text-white bg-gray-500 rounded-lg"
             >
               Cancel
             </button>
             <button
               onClick={handleSaveEmployee}
-              className="px-4 py-2 text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600"
+              className="px-4 py-2 text-white bg-blue-500 rounded-lg"
             >
               Save
             </button>

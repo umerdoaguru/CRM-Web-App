@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BsPencilSquare, BsTrash, BsPlusCircle } from 'react-icons/bs';
 import Sider from '../components/Sider';
 import Modal from '../adiComponent/Modal';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const Overview = () => {
   const [companies, setCompanies] = useState([]);
@@ -16,7 +16,8 @@ const Overview = () => {
   });
   const [editingIndex, setEditingIndex] = useState(null);
   const [showForm, setShowForm] = useState(false);
-  const navigate = useNavigate(); // Initialize navigate
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchCompanies();
@@ -41,20 +42,29 @@ const Overview = () => {
     setNewCompany((prev) => ({ ...prev, [field]: e.target.files[0] }));
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    if (!newCompany.name) newErrors.name = 'Company Name is required';
+    if (!newCompany.contact) newErrors.contact = 'Contact No is required';
+    if (!newCompany.bankDetails) newErrors.bankDetails = 'Bank Details are required';
+    if (!newCompany.signature) newErrors.signature = 'Signature is required';
+    if (!newCompany.logo) newErrors.logo = 'Logo is required';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSaveCompany = async () => {
+    if (!validateForm()) return; // Prevent submission if validation fails
+
     try {
       const formData = new FormData();
       formData.append('name', newCompany.name);
       formData.append('contact', newCompany.contact);
-      formData.append('bankDetails', JSON.stringify(newCompany.bankDetails)); // Assuming bank details are an object or an array
+      formData.append('bankDetails', JSON.stringify(newCompany.bankDetails));
 
-      if (newCompany.signature) {
-        formData.append('signature', newCompany.signature);
-      }
-
-      if (newCompany.logo) {
-        formData.append('logo', newCompany.logo);
-      }
+      if (newCompany.signature) formData.append('signature', newCompany.signature);
+      if (newCompany.logo) formData.append('logo', newCompany.logo);
 
       if (editingIndex !== null) {
         const companyId = companies[editingIndex].companyId;
@@ -62,15 +72,16 @@ const Overview = () => {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
         const updatedCompanies = [...companies];
-        updatedCompanies[editingIndex] = { ...newCompany, companyId }; // Preserve the companyId for editing
+        updatedCompanies[editingIndex] = { ...newCompany, companyId };
         setCompanies(updatedCompanies);
         setEditingIndex(null);
       } else {
         await axios.post('http://localhost:9000/api/v1/addOrganization', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
-        setCompanies((prev) => [...prev, { ...newCompany, companyId: Date.now() }]); // Add a placeholder ID for new entry
+        setCompanies((prev) => [...prev, { ...newCompany, companyId: Date.now() }]);
       }
+
       setNewCompany({
         name: '',
         contact: '',
@@ -79,9 +90,23 @@ const Overview = () => {
         logo: null,
       });
       setShowForm(false);
+      setErrors({});
     } catch (error) {
       console.error('Error saving company:', error.response?.data || error.message);
     }
+  };
+
+  const handleCancel = () => {
+    setNewCompany({
+      name: '',
+      contact: '',
+      bankDetails: '',
+      signature: null,
+      logo: null,
+    });
+    setEditingIndex(null);
+    setShowForm(false);
+    setErrors({});
   };
 
   const handleEditCompany = (index) => {
@@ -109,14 +134,9 @@ const Overview = () => {
     }
   };
 
-  // New function to handle navigation to SingleOrganization
   const handleViewCompany = (companyId) => {
-    navigate(`/singleOrganization/${companyId}`); // Navigate to the SingleOrganization page
+    navigate(`/singleOrganization/${companyId}`);
   };
-
-  console.log('====================================');
-  console.log(companies);
-  console.log('====================================');
 
   return (
     <div className="flex min-h-screen">
@@ -149,7 +169,7 @@ const Overview = () => {
                 <tr
                   key={index}
                   className="border-b border-gray-200 hover:bg-gray-100"
-                  onClick={() => handleViewCompany(company.companyId)} // Trigger navigation on click
+                  onClick={() => handleViewCompany(company.companyId)}
                 >
                   <td className="px-4 py-4 sm:px-6">{company.name}</td>
                   <td className="px-4 py-4 sm:px-6">{company.contact}</td>
@@ -164,7 +184,7 @@ const Overview = () => {
                     <div className="flex space-x-2 sm:space-x-4">
                       <button
                         onClick={(e) => {
-                          e.stopPropagation(); // Prevent row click event
+                          e.stopPropagation();
                           handleEditCompany(index);
                         }}
                         className="text-blue-500 transition duration-200 hover:text-blue-600"
@@ -173,7 +193,7 @@ const Overview = () => {
                       </button>
                       <button
                         onClick={(e) => {
-                          e.stopPropagation(); // Prevent row click event
+                          e.stopPropagation();
                           handleDeleteCompany(company.companyId);
                         }}
                         className="text-red-500 transition duration-200 hover:text-red-600"
@@ -188,7 +208,7 @@ const Overview = () => {
           </table>
         </div>
 
-        <Modal isOpen={showForm} onClose={() => setShowForm(false)}>
+        <Modal isOpen={showForm} onClose={handleCancel}>
           <h3 className="mb-4 text-lg font-bold">{editingIndex !== null ? "Edit Organization" : "Add Organization"}</h3>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <input
@@ -197,43 +217,53 @@ const Overview = () => {
               value={newCompany.name}
               onChange={handleInputChange}
               placeholder="Company Name"
-              className="p-2 border rounded-lg"
+              className={`p-2 border rounded-lg ${errors.name ? 'border-red-500' : ''}`}
             />
+            {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
             <input
               type="text"
               name="contact"
               value={newCompany.contact}
               onChange={handleInputChange}
               placeholder="Contact No"
-              className="p-2 border rounded-lg"
+              className={`p-2 border rounded-lg ${errors.contact ? 'border-red-500' : ''}`}
             />
-            <input
-              type="text"
+            {errors.contact && <p className="text-sm text-red-500">{errors.contact}</p>}
+            <textarea
               name="bankDetails"
               value={newCompany.bankDetails}
               onChange={handleInputChange}
               placeholder="Bank Details"
-              className="p-2 border rounded-lg"
+              className={`p-2 border rounded-lg ${errors.bankDetails ? 'border-red-500' : ''}`}
             />
+            {errors.bankDetails && <p className="text-sm text-red-500">{errors.bankDetails}</p>}
             <input
               type="file"
-              name="signature"
+              accept="image/*"
               onChange={(e) => handleFileInput(e, 'signature')}
-              className="p-2 border rounded-lg"
+              className={`p-2 border rounded-lg ${errors.signature ? 'border-red-500' : ''}`}
             />
+            {errors.signature && <p className="text-sm text-red-500">{errors.signature}</p>}
             <input
               type="file"
-              name="logo"
+              accept="image/*"
               onChange={(e) => handleFileInput(e, 'logo')}
-              className="p-2 border rounded-lg"
+              className={`p-2 border rounded-lg ${errors.logo ? 'border-red-500' : ''}`}
             />
+            {errors.logo && <p className="text-sm text-red-500">{errors.logo}</p>}
           </div>
-          <div className="mt-6 text-right">
+          <div className="flex justify-end mt-4 space-x-4">
+            <button
+              onClick={handleCancel}
+              className="px-4 py-2 text-gray-500 transition duration-200 border border-gray-300 rounded-lg hover:bg-gray-100"
+            >
+              Cancel
+            </button>
             <button
               onClick={handleSaveCompany}
-              className="px-4 py-2 text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600"
+              className="px-4 py-2 text-white transition duration-200 bg-blue-500 rounded-lg hover:bg-blue-600"
             >
-              {editingIndex !== null ? "Update Organization" : "Save Organization"}
+              Save
             </button>
           </div>
         </Modal>
