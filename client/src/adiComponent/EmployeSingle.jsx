@@ -1,18 +1,20 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { BsPencilSquare, BsTrash } from 'react-icons/bs';
 import Modal from '../adiComponent/Modal';
 import Sider from '../components/Sider';
 
 const EmployeeSingle = () => {
   const { employeeId } = useParams();
+  const navigate = useNavigate();
   const [employee, setEmployee] = useState(null);
   const [newEmployee, setNewEmployee] = useState({
     name: '',
     email: '',
     position: '',
     phone: '',
+    salary: '', // Added salary
     signature: null,
     photo: null,
   });
@@ -32,6 +34,7 @@ const EmployeeSingle = () => {
           email: response.data.employee.email || '',
           position: response.data.employee.position || '',
           phone: response.data.employee.phone || '',
+          salary: response.data.employee.salary || '', // Set salary from API
           signature: null,
           photo: null,
         });
@@ -69,6 +72,10 @@ const EmployeeSingle = () => {
     else if (!/^\d{10}$/.test(newEmployee.phone)) errors.phone = 'Phone number must be 10 digits';
     else if (await isPhoneNumberTaken(newEmployee.phone)) errors.phone = 'Phone number is already taken';
     
+    // Validate Salary
+    if (!newEmployee.salary) errors.salary = 'Salary is required';
+    else if (isNaN(newEmployee.salary) || newEmployee.salary <= 0) errors.salary = 'Salary must be a positive number';
+    
     // Validate Files
     if (newEmployee.photo && !['image/jpeg', 'image/png'].includes(newEmployee.photo.type)) errors.photo = 'Photo must be an image (jpeg/png)';
     if (newEmployee.signature && !['image/jpeg', 'image/png'].includes(newEmployee.signature.type)) errors.signature = 'Signature must be an image (jpeg/png)';
@@ -85,7 +92,7 @@ const EmployeeSingle = () => {
       return response.data.exists;
     } catch (error) {
       console.error('Error checking email:', error);
-      return false; // Assuming email check fails means it's not taken
+      return false;
     }
   };
 
@@ -97,15 +104,14 @@ const EmployeeSingle = () => {
       return response.data.exists;
     } catch (error) {
       console.error('Error checking phone number:', error);
-      return false; // Assuming phone number check fails means it's not taken
+      return false;
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    // For phone number, allow only numeric values
     if (name === 'phone') {
-      const numericValue = value.replace(/[^0-9]/g, '').slice(0, 10); // Allow only digits and limit to 10 characters
+      const numericValue = value.replace(/[^0-9]/g, '').slice(0, 10);
       setNewEmployee((prev) => ({ ...prev, [name]: numericValue }));
     } else {
       setNewEmployee((prev) => ({ ...prev, [name]: value }));
@@ -113,7 +119,6 @@ const EmployeeSingle = () => {
   };
 
   const handleKeyPress = (e) => {
-    // Allow only numeric keys and control keys (e.g., backspace, arrow keys)
     if (e.target.name === 'phone') {
       if (!/[0-9]/.test(e.key) && !['Backspace', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
         e.preventDefault();
@@ -126,7 +131,7 @@ const EmployeeSingle = () => {
   };
 
   const handleSaveEmployee = async () => {
-    if (!await validateForm()) return; // Stop saving if validation fails
+    if (!await validateForm()) return;
 
     try {
       const formData = new FormData();
@@ -134,6 +139,7 @@ const EmployeeSingle = () => {
       formData.append('email', newEmployee.email);
       formData.append('position', newEmployee.position);
       formData.append('phone', newEmployee.phone);
+      formData.append('salary', newEmployee.salary); // Append salary
 
       if (newEmployee.signature) {
         formData.append('signature', newEmployee.signature);
@@ -155,13 +161,13 @@ const EmployeeSingle = () => {
       }
 
       if (response.data.success) {
-        // Refresh the employee data after saving
-        await fetchEmployee(); // Fetch new data
+        await fetchEmployee();
         setNewEmployee({
           name: '',
           email: '',
           position: '',
           phone: '',
+          salary: '', // Reset salary
           signature: null,
           photo: null,
         });
@@ -183,6 +189,7 @@ const EmployeeSingle = () => {
         email: employee.email || '',
         position: employee.position || '',
         phone: employee.phone || '',
+        salary: employee.salary || '', // Set salary for editing
         signature: null,
         photo: null,
       });
@@ -197,7 +204,7 @@ const EmployeeSingle = () => {
       if (isConfirmed) {
         try {
           await axios.delete(`http://localhost:9000/api/v1/deleteEmployee/${employee.employeeId}`);
-          setEmployee(null);
+          navigate('/employee-management');
         } catch (error) {
           setError('Error deleting employee');
           console.error('Error deleting employee:', error);
@@ -241,6 +248,7 @@ const EmployeeSingle = () => {
                 <p className="text-gray-600">{employee.position || 'No Position Available'}</p>
                 <p className="text-gray-600">{employee.email || 'No Email Available'}</p>
                 <p className="text-gray-600">{employee.phone || 'No Phone Available'}</p>
+                <p className="text-gray-600">{employee.salary ? `₹${employee.salary}` : 'No Salary Available'}</p> {/* Display salary */}
               </div>
             </div>
 
@@ -312,6 +320,16 @@ const EmployeeSingle = () => {
               className={`p-2 border rounded-lg ${validationErrors.phone ? 'border-red-500' : 'border-gray-300'}`}
             />
             {validationErrors.phone && <p className="text-sm text-red-500">{validationErrors.phone}</p>}
+
+            <input
+              type="text"
+              name="salary"
+              value={newEmployee.salary}
+              onChange={handleInputChange}
+              placeholder="Salary"
+              className={`p-2 border rounded-lg ${validationErrors.salary ? 'border-red-500' : 'border-gray-300'}`}
+            />
+            {validationErrors.salary && <p className="text-sm text-red-500">{validationErrors.salary}</p>}
 
             <input
               type="file"
