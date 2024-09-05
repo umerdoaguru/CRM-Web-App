@@ -92,15 +92,57 @@ const getOrganizationById = async (req, res) => {
 const addOrganization = async (req, res) => {
   try {
     // Destructure organization fields from request body
-    const { name, contact, bankDetails } = req.body;
+    const {
+      name,
+      contact,
+      bankDetails,
+      email_id,
+      bankname,
+      ifsc_code,
+      acc_no,
+      type,
+      zip_code,
+      location,
+      district
+    } = req.body;
 
     // Retrieve file paths for signature and logo, if available
     const signaturePath = req.files.signature ? `/Assets/${req.files.signature[0].filename}` : null;
     const logoPath = req.files.logo ? `/Assets/${req.files.logo[0].filename}` : null;
 
     // Insert data into the database
-    const query = 'INSERT INTO organization (name, contact, bankDetails, signature, logo) VALUES (?, ?, ?, ?, ?)';
-    const values = [name, contact, bankDetails, signaturePath, logoPath];
+    const query = `
+      INSERT INTO organization (
+        name,
+        contact,
+        bankDetails,
+        email_id,
+        bankname,
+        ifsc_code,
+        acc_no,
+        type,
+        zip_code,
+        location,
+        district,
+        signature,
+        logo
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    
+    const values = [
+      name,
+      contact,
+      bankDetails,
+      email_id,
+      bankname,
+      ifsc_code,
+      acc_no,
+      type,
+      zip_code,
+      location,
+      district,
+      signaturePath,
+      logoPath
+    ];
 
     // Execute the database query
     db.query(query, values, (err, results) => {
@@ -117,6 +159,7 @@ const addOrganization = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 
 const addEmployee = async (req, res) => {
@@ -383,21 +426,61 @@ const deleteOrganization = async (req, res) => {
   const updateOrganization = async (req, res) => {
     try {
       const { companyId } = req.params; // Changed to companyId
-      const { name, contact, bankDetails } = req.body;
+      const {
+        name,
+        contact,
+        bankDetails,
+        email_id,
+        bankname,
+        ifsc_code,
+        acc_no,
+        type,
+        zip_code,
+        location,
+        district
+      } = req.body;
   
       // Retrieve file paths for signature and logo, if available
       const signaturePath = req.files.signature ? `/Assets/${req.files.signature[0].filename}` : null;
       const logoPath = req.files.logo ? `/Assets/${req.files.logo[0].filename}` : null;
   
-      // Construct the SQL query
+      // Construct the SQL query with placeholders for all fields
       const query = `
         UPDATE organization 
-        SET name = ?, contact = ?, bankDetails = ?, signature = COALESCE(?, signature), logo = COALESCE(?, logo) 
+        SET 
+          name = COALESCE(?, name),
+          contact = COALESCE(?, contact),
+          bankDetails = COALESCE(?, bankDetails),
+          email_id = COALESCE(?, email_id),
+          bankname = COALESCE(?, bankname),
+          ifsc_code = COALESCE(?, ifsc_code),
+          acc_no = COALESCE(?, acc_no),
+          type = COALESCE(?, type),
+          zip_code = COALESCE(?, zip_code),
+          location = COALESCE(?, location),
+          district = COALESCE(?, district),
+          signature = COALESCE(?, signature),
+          logo = COALESCE(?, logo)
         WHERE companyId = ?
       `;
   
-      // Values for the query
-      const values = [name, contact, bankDetails, signaturePath, logoPath, companyId];
+      
+      const values = [
+        name,
+        contact,
+        bankDetails,
+        email_id,
+        bankname,
+        ifsc_code,
+        acc_no,
+        type,
+        zip_code,
+        location,
+        district,
+        signaturePath,
+        logoPath,
+        companyId
+      ];
   
       // Execute the database query
       db.query(query, values, (err, results) => {
