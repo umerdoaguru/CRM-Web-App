@@ -11,6 +11,14 @@ const Overview = () => {
     name: '',
     contact: '',
     bankDetails: '',
+    email_id: '',
+    bankname: '',
+    ifsc_code: '',
+    acc_no: '',
+    type: '',
+    zip_code: '',
+    location: '',
+    district: '',
     signature: null,
     logo: null,
   });
@@ -35,8 +43,11 @@ const Overview = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    // Allow only numeric values and limit to 10 characters
-    const numericValue = value.replace(/[^0-9]/g, '').slice(0, 10);
+    // Allow only numeric values and limit to 10 characters for specific fields
+    const numericFields = ['contact', 'zip_code', 'acc_no'];
+    const numericValue = numericFields.includes(name) 
+      ? value.replace(/[^0-9]/g, '').slice(0, 10) 
+      : value;
     setNewCompany((prev) => ({ ...prev, [name]: numericValue }));
   };
 
@@ -54,20 +65,20 @@ const Overview = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    // Validate Name
+    // Validate fields
     if (!newCompany.name) newErrors.name = 'Company Name is required';
-
-    // Validate Contact 
     if (!newCompany.contact) newErrors.contact = 'Contact No is required';
     else if (!/^\d{10}$/.test(newCompany.contact)) newErrors.contact = 'Contact No must be a 10-digit number';
-
-    // Validate Bank Details
     if (!newCompany.bankDetails) newErrors.bankDetails = 'Bank Details are required';
-
-    // Validate Signature
+    if (!newCompany.email_id) newErrors.email_id = 'Email ID is required';
+    if (!newCompany.bankname) newErrors.bankname = 'Bank Name is required';
+    if (!newCompany.ifsc_code) newErrors.ifsc_code = 'IFSC Code is required';
+    if (!newCompany.acc_no) newErrors.acc_no = 'Account Number is required';
+    if (!newCompany.type) newErrors.type = 'Type is required';
+    if (!newCompany.zip_code) newErrors.zip_code = 'Zip Code is required';
+    if (!newCompany.location) newErrors.location = 'Location is required';
+    if (!newCompany.district) newErrors.district = 'District is required';
     if (!newCompany.signature) newErrors.signature = 'Signature is required';
-
-    // Validate Logo
     if (!newCompany.logo) newErrors.logo = 'Logo is required';
 
     setErrors(newErrors);
@@ -82,6 +93,14 @@ const Overview = () => {
       formData.append('name', newCompany.name);
       formData.append('contact', newCompany.contact);
       formData.append('bankDetails', JSON.stringify(newCompany.bankDetails));
+      formData.append('email_id', newCompany.email_id);
+      formData.append('bankname', newCompany.bankname);
+      formData.append('ifsc_code', newCompany.ifsc_code);
+      formData.append('acc_no', newCompany.acc_no);
+      formData.append('type', newCompany.type);
+      formData.append('zip_code', newCompany.zip_code);
+      formData.append('location', newCompany.location);
+      formData.append('district', newCompany.district);
 
       if (newCompany.signature) formData.append('signature', newCompany.signature);
       if (newCompany.logo) formData.append('logo', newCompany.logo);
@@ -106,6 +125,14 @@ const Overview = () => {
         name: '',
         contact: '',
         bankDetails: '',
+        email_id: '',
+        bankname: '',
+        ifsc_code: '',
+        acc_no: '',
+        type: '',
+        zip_code: '',
+        location: '',
+        district: '',
         signature: null,
         logo: null,
       });
@@ -122,6 +149,14 @@ const Overview = () => {
       name: '',
       contact: '',
       bankDetails: '',
+      email_id: '',
+      bankname: '',
+      ifsc_code: '',
+      acc_no: '',
+      type: '',
+      zip_code: '',
+      location: '',
+      district: '',
       signature: null,
       logo: null,
     });
@@ -136,6 +171,14 @@ const Overview = () => {
       name: companyToEdit.name,
       contact: companyToEdit.contact,
       bankDetails: companyToEdit.bankDetails,
+      email_id: companyToEdit.email_id,
+      bankname: companyToEdit.bankname,
+      ifsc_code: companyToEdit.ifsc_code,
+      acc_no: companyToEdit.acc_no,
+      type: companyToEdit.type,
+      zip_code: companyToEdit.zip_code,
+      location: companyToEdit.location,
+      district: companyToEdit.district,
       signature: null, // File inputs won't be prefilled
       logo: null, // File inputs won't be prefilled
     });
@@ -260,6 +303,80 @@ const Overview = () => {
               className={`p-2 border rounded-lg ${errors.bankDetails ? 'border-red-500' : ''}`}
             />
             {errors.bankDetails && <p className="text-sm text-red-500">{errors.bankDetails}</p>}
+            <input
+              type="text"
+              name="email_id"
+              value={newCompany.email_id}
+              onChange={handleInputChange}
+              placeholder="Email ID"
+              className={`p-2 border rounded-lg ${errors.email_id ? 'border-red-500' : ''}`}
+            />
+            {errors.email_id && <p className="text-sm text-red-500">{errors.email_id}</p>}
+            <input
+              type="text"
+              name="bankname"
+              value={newCompany.bankname}
+              onChange={handleInputChange}
+              placeholder="Bank Name"
+              className={`p-2 border rounded-lg ${errors.bankname ? 'border-red-500' : ''}`}
+            />
+            {errors.bankname && <p className="text-sm text-red-500">{errors.bankname}</p>}
+            <input
+              type="text"
+              name="ifsc_code"
+              value={newCompany.ifsc_code}
+              onChange={handleInputChange}
+              placeholder="IFSC Code"
+              className={`p-2 border rounded-lg ${errors.ifsc_code ? 'border-red-500' : ''}`}
+            />
+            {errors.ifsc_code && <p className="text-sm text-red-500">{errors.ifsc_code}</p>}
+            <input
+              type="text"
+              name="acc_no"
+              value={newCompany.acc_no}
+              onChange={handleInputChange}
+              placeholder="Account Number"
+              className={`p-2 border rounded-lg ${errors.acc_no ? 'border-red-500' : ''}`}
+            />
+            {errors.acc_no && <p className="text-sm text-red-500">{errors.acc_no}</p>}
+            <input
+              type="text"
+              name="type"
+              value={newCompany.type}
+              onChange={handleInputChange}
+              placeholder="Type"
+              className={`p-2 border rounded-lg ${errors.type ? 'border-red-500' : ''}`}
+            />
+            {errors.type && <p className="text-sm text-red-500">{errors.type}</p>}
+            <input
+              type="text"
+              name="zip_code"
+              value={newCompany.zip_code}
+              onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
+              placeholder="Zip Code"
+              maxLength="10"
+              className={`p-2 border rounded-lg ${errors.zip_code ? 'border-red-500' : ''}`}
+            />
+            {errors.zip_code && <p className="text-sm text-red-500">{errors.zip_code}</p>}
+            <input
+              type="text"
+              name="location"
+              value={newCompany.location}
+              onChange={handleInputChange}
+              placeholder="Location"
+              className={`p-2 border rounded-lg ${errors.location ? 'border-red-500' : ''}`}
+            />
+            {errors.location && <p className="text-sm text-red-500">{errors.location}</p>}
+            <input
+              type="text"
+              name="district"
+              value={newCompany.district}
+              onChange={handleInputChange}
+              placeholder="District"
+              className={`p-2 border rounded-lg ${errors.district ? 'border-red-500' : ''}`}
+            />
+            {errors.district && <p className="text-sm text-red-500">{errors.district}</p>}
             <input
               type="file"
               accept="image/*"
