@@ -35,7 +35,16 @@ const Overview = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewCompany((prev) => ({ ...prev, [name]: value }));
+    // Allow only numeric values and limit to 10 characters
+    const numericValue = value.replace(/[^0-9]/g, '').slice(0, 10);
+    setNewCompany((prev) => ({ ...prev, [name]: numericValue }));
+  };
+
+  const handleKeyPress = (e) => {
+    // Allow only numeric keys and control keys (e.g., backspace, arrow keys)
+    if (!/[0-9]/.test(e.key) && !['Backspace', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+      e.preventDefault();
+    }
   };
 
   const handleFileInput = (e, field) => {
@@ -48,7 +57,7 @@ const Overview = () => {
     // Validate Name
     if (!newCompany.name) newErrors.name = 'Company Name is required';
 
-    // Validate Contact
+    // Validate Contact 
     if (!newCompany.contact) newErrors.contact = 'Contact No is required';
     else if (!/^\d{10}$/.test(newCompany.contact)) newErrors.contact = 'Contact No must be a 10-digit number';
 
@@ -233,11 +242,13 @@ const Overview = () => {
             />
             {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
             <input
-              type="text"
+              type="tel"
               name="contact"
               value={newCompany.contact}
               onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
               placeholder="Contact No"
+              maxLength="10"
               className={`p-2 border rounded-lg ${errors.contact ? 'border-red-500' : ''}`}
             />
             {errors.contact && <p className="text-sm text-red-500">{errors.contact}</p>}
