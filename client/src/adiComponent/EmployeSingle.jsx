@@ -103,7 +103,22 @@ const EmployeeSingle = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewEmployee((prev) => ({ ...prev, [name]: value }));
+    // For phone number, allow only numeric values
+    if (name === 'phone') {
+      const numericValue = value.replace(/[^0-9]/g, '').slice(0, 10); // Allow only digits and limit to 10 characters
+      setNewEmployee((prev) => ({ ...prev, [name]: numericValue }));
+    } else {
+      setNewEmployee((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    // Allow only numeric keys and control keys (e.g., backspace, arrow keys)
+    if (e.target.name === 'phone') {
+      if (!/[0-9]/.test(e.key) && !['Backspace', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault();
+      }
+    }
   };
 
   const handleFileInput = (e, field) => {
@@ -292,6 +307,7 @@ const EmployeeSingle = () => {
               name="phone"
               value={newEmployee.phone}
               onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
               placeholder="Phone"
               className={`p-2 border rounded-lg ${validationErrors.phone ? 'border-red-500' : 'border-gray-300'}`}
             />
