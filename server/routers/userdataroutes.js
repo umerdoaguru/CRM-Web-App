@@ -3,25 +3,20 @@ const multer = require('multer');
 const router = express.Router();
 
 // const {Register,Allregister, Login,} = require('../controllers/UserController');
-const {Quotation, GetQuotation, Quotationviaid, GetServices,  deleteQuotation, updateServices, Notes, getNotes, deleteNote, addServices, deleteService, getnotes_text, UpdateQuotationName, CopyQuotationData, GetQuotationName, updateNote, leads_data, createLead, getLeads, updateLead, deleteLead, employeeData} = require('../controllers/UserController');
+const {Quotation, GetQuotation, Quotationviaid, GetServices,  deleteQuotation, updateServices, Notes, getNotes, deleteNote, addServices, deleteService, getnotes_text, UpdateQuotationName, CopyQuotationData, GetQuotationName, updateNote, leads_data, createLead, getLeads, updateLead, deleteLead, employeeData,editProfile, getAllUsers ,deleteProfile} = require('../controllers/UserController');
 const upload = require("../controllers/fileUploadController");
+const upload1 = require('../config/multerConfig'); // Import multer configuration
+
 const {  fetchcompanyname, company_name_header_footer, deleteCompanydata, CompanyDataUpload, updateCompanyData, getCompanydata, getcompany_name_data } = require("../controllers/Company_Data_Controller");
+
 const { register, login } = require("../controllers/UserRegitrationlLogin");
+
 const { createServiceList, getServicelist, deleteServicename, updateServiceList } = require("../controllers/ServicesList");
+
 const { createInvoice, getInvoice, deleteInvoice, UpdateInvoiceName, GetInvoiceName, invoiceserviceid, deleteServiceInvoice, addServicesInvoice, updateServicesInvoice, getInvoiceiddata, getInvoiceAddress, CompanyIncoiceData, fetchcompanyinvoicename, company_name_invoice_data, CopyInvoiceData, createNote, deleteInvoiceNote, getInvoiceNotes, createInvoiceNote, InvoiceNotes, InvoicegetNotes, InvoicedeleteNote, InvoiceupdateNote, UpdateInvoice_No, UpdateInvoice_date, UpdateInvoice_start_date, UpdateInvoice_end_date, getInvoiceDate } = require("../controllers/InvoiceController");
 
 
 
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, 'uploads/');
-//     },
-//     filename: (req, file, cb) => {
-//         const imageFileName = Date.now() + '-' + file.originalname;
-//         cb(null, imageFileName);
-//     },
-// });
-// const upload = multer({ storage: storage });
 
 
 
@@ -112,6 +107,22 @@ router.delete('/leads/:id',  deleteLead);
 router.get('/employee', employeeData);
 
 
+// aditya routes
+
+
+
+
+// Fetch all users
+router.get("/getUser", getAllUsers);
+
+// Edit profile with profile picture upload
+router.post("/editProfile", upload1.single('profile_picture'), editProfile);
+router.delete('/deleteUser',deleteProfile);
+// Error handling middleware
+router.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
 
 

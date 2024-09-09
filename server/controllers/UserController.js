@@ -800,6 +800,160 @@ res.status(500).json({error: "Error fetchinf data "})
 }
 
    
+const editProfile = async (req, res) => {
+  try {
+    // Extract data from request body and file
+    const { user_name, email, phone, mobile, address, interested_in, bio } = req.body;
+    const profile_picture = req.file ? req.file.buffer : null;
+
+    console.log('Request Body:', req.body);
+    console.log('File:', req.file);
+
+    // Validate required fields
+    if (!user_name || !email) {
+      return res.status(400).json({ error: "Name and email are required" });
+    }
+
+    // Check if the user exists
+    const checkUserQuery = "SELECT * FROM user_data WHERE email = ?";
+    db.query(checkUserQuery, [email], (err, result) => {
+      if (err) {
+        console.error("Error checking if user exists in MySQL:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+
+      if (result.length === 0) {
+        // User not found, insert a new user
+        const insertUserQuery = `
+          INSERT INTO user_data (user_name, email, profile_picture, phone, mobile, address, interested_in, bio)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        const insertParams = [
+          user_name,
+          email,
+          profile_picture,
+          phone,
+          mobile,
+          address,
+          interested_in,
+          bio
+        ];
+
+        db.query(insertUserQuery, insertParams, (insertErr) => {
+          if (insertErr) {
+            console.error("Error inserting new user profile:", insertErr);
+            return res.status(500).json({ error: "Internal server error" });
+          } else {
+            console.log("New user profile created successfully");
+            return res.status(201).json({
+              success: true,
+              message: "New user profile created successfully"
+            });
+          }
+        });
+      } else {
+        // User found, update the existing user's profile
+        const updateUserQuery = `
+          UPDATE user_data
+          SET user_name = ?, profile_picture = ?, phone = ?, mobile = ?, address = ?, interested_in = ?, bio = ?
+          WHERE email = ?
+        `;
+
+        const updateParams = [
+          user_name,
+          profile_picture,
+          phone,
+          mobile,
+          address,
+          interested_in,
+          bio,
+          email
+        ];
+
+        db.query(updateUserQuery, updateParams, (updateErr) => {
+          if (updateErr) {
+            console.error("Error updating user profile:", updateErr);
+            return res.status(500).json({ error: "Internal server error" });
+          } else {
+            console.log("User profile updated successfully");
+            return res.status(200).json({
+              success: true,
+              message: "User profile updated successfully"
+            });
+          }
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error in editing profile:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in editing profile",
+      error: error.message,
+    });
+  }
+};
+
+const deleteProfile = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Validate email
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
+    // Delete user profile from the database
+    const deleteUserQuery = "DELETE FROM user_data WHERE email = ?";
+    db.query(deleteUserQuery, [email], (err, result) => {
+      if (err) {
+        console.error("Error deleting user profile from MySQL:", err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      if (result.affectedRows === 0) {
+        // No user found with the provided email
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Profile successfully deleted
+      return res.status(200).json({ success: true, message: 'Profile deleted successfully' });
+    });
+  } catch (error) {
+    console.error("Error in deleting profile:", error);
+    res.status(500).json({ error: 'Internal server error', details: error.message });
+  }
+};
+ 
+const getAllUsers = async (req, res) => {
+  try {
+    // Query to get all users from the user_data table
+    const getAllUsersQuery = "SELECT * FROM user_data";
+
+    // Execute the query
+    db.query(getAllUsersQuery, (err, result) => {
+      if (err) {
+        console.error("Error fetching users from MySQL:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+
+      // Return the result as a JSON response
+      return res.status(200).json({
+        success: true,
+        data: result,
+        message: "Users retrieved successfully",
+      });
+    });
+  } catch (error) {
+    console.error("Error in retrieving users:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in retrieving users",
+      error: error.message,
+    });
+  }
+};
 
   
   
@@ -812,7 +966,7 @@ res.status(500).json({error: "Error fetchinf data "})
     deleteNote , UpdateQuotationName,CopyQuotationData ,GetQuotationName,updateNote,createLead,
     getLeads,
     updateLead,
-    deleteLead,employeeData};
+    deleteLead,employeeData,editProfile,getAllUsers,deleteProfile};
   
   
 

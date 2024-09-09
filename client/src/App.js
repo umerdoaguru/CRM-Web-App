@@ -1,5 +1,5 @@
 import React from 'react'
-import Dashboard from './pages/Dashboard'
+
 
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -38,6 +38,13 @@ import DataExport from './pages/DataExport';
 import LeadData from './components/DataExport/LeadData';
 import QuotationData from './components/DataExport/QuotationData';
 import InvoiceData from './components/DataExport/InvoiceData';
+import Dashboard from './adiComponent/Dashboard';
+import Overview from './adiComponent/Overview';
+import UserProfile from './adiComponent/userProfile';
+import EmployeeManagement from './adiComponent/EmployManagement';
+import EmployeeSingle from './adiComponent/EmployeSingle';
+import SingleOrganization from './adiComponent/SingleOrganizaton';
+import Reporting from './adiComponent/Reporting';
 
 
 function App() {
@@ -52,7 +59,7 @@ function App() {
         <Route path="/" element={user? <Dashboard />:<Login/>} />
        
         <Route path="/admincrmdoaguru" element={<Registration />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+       
         <Route path="/leads" element={user ? <Leads/>: <Navigate to="/" />} />
         <Route path="/quotation-form" element={user ? <QuotationForm1 /> : <Navigate to="/" />} />
         <Route path="/quotation-section" element={user ? <CreateCompanyProfile /> : <Navigate to="/" />} />
@@ -92,6 +99,16 @@ function App() {
         <Route path="/quotation-data" element={user ? <QuotationData/>: <Navigate to="/" />} />
         <Route path="/invoice-data" element={user ? <InvoiceData/>: <Navigate to="/" />} />
 
+   {/* aditya routes */}
+
+   <Route path="/dashboard" element={<Dashboard />} />
+        <Route path='/overview' element={<Overview/>}/>
+     
+        <Route path='/edit-profile' element={<UserProfile/>}/>
+        <Route path='/employee-management' element={<EmployeeManagement/>}/>
+        <Route path='/employee-single/:employeeId' element={<EmployeeSingle/>}/>
+        <Route path='/singleOrganization/:id' element={<SingleOrganization/>}/>
+        <Route path='/reporting' element={<Reporting/>}/>
       </Routes>
 </div>
 

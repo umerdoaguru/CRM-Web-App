@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaHistory } from "react-icons/fa";
 import { RiSecurePaymentLine } from "react-icons/ri";
-import { BsFileEarmarkPerson, BsHouse } from "react-icons/bs";
+import { BsFileEarmarkPerson, BsHouse, BsEye, BsPerson } from "react-icons/bs";
 import { TbReportAnalytics } from "react-icons/tb";
+import { MdOutlineManageAccounts } from "react-icons/md";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"; // Import AiOutlineClose for the cross button
 import styled from "styled-components";
 
@@ -110,6 +111,28 @@ const Sider = () => {
             </li>
 
             <hr className="w-full border-gray-400" />
+            <li className={`w-full ${getSidebarClass("/employee-management")}`}>
+              <Link to="/employee-management" className="flex flex-col items-center py-3">
+                <MdOutlineManageAccounts className="text-white text-2xl lg:text-3xl" />
+                <h3 className="hidden lg:inline text-white text-sm lg:text-base">
+                Employees Management
+                </h3>
+              </Link>
+            </li>
+
+            <hr className="w-full border-gray-400" />
+            <li className={`w-full ${getSidebarClass("/overview")}`}>
+              <Link to="/overview" className="flex flex-col items-center py-3">
+                <BsEye className="text-white text-2xl lg:text-3xl" />
+                <h3 className="hidden lg:inline text-white text-sm lg:text-base">
+                Organization Management
+                </h3>
+              </Link>
+            </li>
+
+            <hr className="w-full border-gray-400" />
+         
+
           </ul>
         </div>
       </div>
