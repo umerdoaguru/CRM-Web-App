@@ -53,10 +53,10 @@ router.route('/payments/:id')
     .put(updatePayment)
     .delete(deletePayment);
 
-// Lead Routes
-router.route('/leads')
-    .post(createLead)
-    .get(getAllLeads);
+// // Lead Routes
+// router.route('/leads')
+//     .post(createLead)
+//     .get(getAllLeads);
 
 router.route('/leads/:id')
     .get(getLeadById)

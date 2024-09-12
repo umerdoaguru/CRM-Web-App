@@ -543,6 +543,27 @@ const invoiceserviceid = (req, res) => {
   }
 };
 
+const getAllInvoice = async (req, res) => {
+  try {
+    const sql = "SELECT * FROM  invoice_data";
+
+    const allQuotations = await new Promise((resolve, reject) => {
+      db.query(sql,(err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+
+    res.status(200).json({message: "Successfull", data: allQuotations});
+  } catch (error) {
+    console.error("Error processing request:", error);
+    res.status(500).json({ message: "Internal Server Error", success: false, error });
+  }
+}
+
 const deleteServiceInvoice = async (req, res) => {
   try {
     const { serviceId } = req.params;
@@ -1032,6 +1053,7 @@ module.exports = {
   UpdateInvoiceName,
   GetInvoiceName,
   invoiceserviceid,
+  getAllInvoice,
   deleteServiceInvoice,
   addServicesInvoice,
   updateServicesInvoice,

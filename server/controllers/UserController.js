@@ -200,6 +200,27 @@ const JWT = require('jsonwebtoken');
         res.status(500).json({ error: "Internal Server Error" });
       }
     };
+
+    const getAllQuotation = async (req, res) => {
+      try {
+        const sql = "SELECT * FROM quotations_data";
+  
+        const allQuotations = await new Promise((resolve, reject) => {
+          db.query(sql,(err, results) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(results);
+            }
+          });
+        });
+  
+        res.status(200).json({message: "Successfull", data: allQuotations});
+      } catch (error) {
+        console.error("Error processing request:", error);
+        res.status(500).json({ message: "Internal Server Error", success: false, error });
+      }
+    }
   
   
    const  GetQuotationName = async (req, res) => {
@@ -961,7 +982,7 @@ const getAllUsers = async (req, res) => {
   
   
   
-  module.exports = { Quotation, GetQuotation, Quotationviaid,addServices,deleteService, GetServices,deleteQuotation,updateServices,Notes,getNotes,
+  module.exports = { Quotation, GetQuotation, getAllQuotation, Quotationviaid,addServices,deleteService, GetServices,deleteQuotation,updateServices,Notes,getNotes,
     getnotes_text,
     deleteNote , UpdateQuotationName,CopyQuotationData ,GetQuotationName,updateNote,createLead,
     getLeads,
