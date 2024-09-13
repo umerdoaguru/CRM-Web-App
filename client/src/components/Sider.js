@@ -121,16 +121,6 @@ const Sider = () => {
             </li>
 
             <hr className="w-full border-gray-400" />
-            <li className={`w-full ${getSidebarClass("/overview")}`}>
-              <Link to="/overview" className="flex flex-col items-center py-3">
-                <BsEye className="text-white text-2xl lg:text-3xl" />
-                <h3 className="hidden lg:inline text-white text-sm lg:text-base">
-                Organization Management
-                </h3>
-              </Link>
-            </li>
-
-            <hr className="w-full border-gray-400" />
          
 
           </ul>

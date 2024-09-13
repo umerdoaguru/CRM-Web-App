@@ -7,6 +7,7 @@ import ToDoList from './Todo';
 import Sider from '../components/Sider';
 import { FaBars, FaTimes } from 'react-icons/fa'; // Icons for hamburger and close
 import MainHeader from './../components/MainHeader';
+import Invoice from './invoice';
 
 
 
@@ -23,9 +24,6 @@ const Dashboard = () => {
         <MainHeader/>
         <Sider/>
          <div className="flex min-h-screen overflow-hidden">
-          
-        
-
             {/* Main Content */}
             <div className="flex-1 max-w-full p-4 bg-gray-100 lg:ml-64">
                 {/* Hamburger Menu Button for Mobile */}
@@ -40,11 +38,12 @@ const Dashboard = () => {
                     <Overview />
                 </div>
                 <div className="grid grid-cols-1 gap-4 mt-6 md:grid-cols-2 lg:grid-cols-3">
+                    <Invoice />
                     <PaymentsGraph />
-                    <DevicesGraph />
+                    {/* <DevicesGraph /> */}
                 </div>
                 <LeadsReport />
-                <ToDoList />
+                {/* <ToDoList /> will not use remote it  */}
             </div>
         </div>
         </>

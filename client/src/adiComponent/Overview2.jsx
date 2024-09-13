@@ -22,11 +22,11 @@ const Overview2 = () => {
                         value: data.clientsAdded,
                         positive: true
                     },
-                    {
-                        title: 'Contracts Signed',
-                        value: data.contractsSigned,
-                        positive: false
-                    },
+                    // {
+                    //     title: 'Contracts Signed',
+                    //     value: data.contractsSigned,
+                    //     positive: false
+                    // },
                     {
                         title: 'Invoices Sent',
                         value: data.invoicesSent,

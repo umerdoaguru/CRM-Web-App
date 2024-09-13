@@ -1,20 +1,26 @@
-# 11 Sep
-- > Hume kuch aur table se data lana hoga 
-- > jese 
-    - quotationke liye  
-        - service se laayenge price bagera aur baki informaiton mil jayengi
-        - company profile yaha se name le le rahe company se
-        - 
-    - invoice ke liye bhi 
-        - company profileke name lag sakta hai 
-        - and invoice name and copmay profile name kya same hai 
-        - 
-    - employe 
-        - lead kijarurat
-        - aur jo bhi informaiton dikhani hiho 
+# 13 sep
+- > are lead client se udpateni ho rahi hai 
+- > dashboard 
+    - client data tab hata do
+    - contact sign tabl hata do
+    - invoice sent rahega
+    - 
+- > leada page mai 
+    - lead management mai particular employe ka aana chahiye
+    - 
+- > payment overview 
+    - isme dikat hai ki payment mai data le raha hai to employ ei dnahi h ai 
+    - 
+- > device usage 
+    - mujhe nahi lgat aye employ eke hisaab se hai puchnap daega
+    - 
+- > assign leads 
+    - proper invoice create karne ka button dena chahiye 
+    - reason ka bhi 
+    - quotaiton ka bhi button hona chhaiye
+    - update status     
 
-1. get quoatation ki api banni hai 
-2. get invoice ki bhi api banni hai 
-3. chalo employe ki to bani hai
-4. chalo leads ki to bani hai
- 
+## see
+- > invooic grpah mai maount calluat hona hai us date ka to 
+- > assigned lead hai to usme usko statud bagea reason bagera bhi dikhna chhaiye
+- > 

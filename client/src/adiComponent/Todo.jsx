@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 const statusStyles = {
@@ -12,11 +13,9 @@ const ToDoList = () => {
 
     useEffect(() => {
         const fetchTodos = async () => {
-            try {
-                const response = await fetch('http://localhost:9000/api/todo-list');
-                const data = await response.json();
-                // Process and set the to-do data
-                setTodos(data);
+            try { 
+                const response = await axios.get(`http://localhost:9000/api/employee-todo-list/${1}`);
+                setTodos(response.data);
             } catch (error) {
                 console.error('Error fetching to-dos:', error);
             }
