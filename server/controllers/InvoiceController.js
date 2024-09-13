@@ -118,6 +118,7 @@ const getInvoice = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 const getAllInvoice = async (req, res) => {
   try {
     const { UserId } = req.params; // Extracting UserId from req.params
@@ -141,6 +142,8 @@ const getAllInvoice = async (req, res) => {
   }
 };
 
+=======
+>>>>>>> 1ff02d008d05f7aba92c8e122b092480bba3cfd0
 const getInvoiceAddress = async (req, res) => {
   try {
     const { id } = req.params;
@@ -1071,5 +1074,9 @@ module.exports = {
   UpdateInvoice_No,
   UpdateInvoice_date,
   UpdateInvoice_start_date,
+<<<<<<< HEAD
   UpdateInvoice_end_date, getInvoiceDate,getAllInvoice
+=======
+  UpdateInvoice_end_date, getInvoiceDate
+>>>>>>> 1ff02d008d05f7aba92c8e122b092480bba3cfd0
 };

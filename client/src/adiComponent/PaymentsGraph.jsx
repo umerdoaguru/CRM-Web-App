@@ -114,7 +114,11 @@ const PaymentsGraph = () => {
 
     return (
         <div className="p-4 bg-white rounded-lg shadow-lg">
+<<<<<<< HEAD
             <h3 className="mb-4 text-lg font-semibold">Lead</h3>
+=======
+            <h3 className="mb-4 text-lg font-semibold">Payments Overview</h3>
+>>>>>>> 1ff02d008d05f7aba92c8e122b092480bba3cfd0
             <div className="relative w-full h-64">
                 <canvas id="paymentsChart" className="absolute top-0 left-0 w-full h-full"></canvas>
             </div>
