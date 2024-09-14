@@ -152,7 +152,7 @@ const EmployeeManagement = () => {
     <>
      <MainHeader/>
      <Sider/>
-     <div className="flex flex-col min-h-screen lg:flex-row">
+     <div className="flex flex-col min-h-screen lg:flex-row lg:ml-64 xl:ml-52">
       
       <main className="flex-1 p-4 lg:p-8">
         <div className="flex flex-col-reverse items-start justify-between mb-8 lg:flex-row lg:items-center">

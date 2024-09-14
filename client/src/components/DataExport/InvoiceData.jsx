@@ -18,7 +18,7 @@ const InvoiceData = () => {
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/invoice-data/${UserId}`);
+        const response = await axios.get(`http://localhost:9000/api/invoice-data`);
         setInvoices(response.data);
       } catch (error) {
         console.error("Error fetching invoices:", error);
@@ -79,7 +79,7 @@ const InvoiceData = () => {
              <div className="respo mx-2 ">
             <button
               onClick={downloadExcel}
-              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
             >
               Download Excel
             </button>

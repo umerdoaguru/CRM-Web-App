@@ -34,12 +34,12 @@ const Dashboard = () => {
         <>
         <MainHeader/>
         <Sider/>
-         <div className="flex min-h-screen overflow-hidden">
+         <div className="flex min-h-screen overflow-hidden ">
           
         
 
             {/* Main Content */}
-            <div className="flex-1 max-w-full p-4 bg-gray-100 lg:ml-64">
+            <div className="flex-1 max-w-full lg:ml-64 xl:ml-52 mr-3 ">
                 {/* Hamburger Menu Button for Mobile */}
                 {/* <div className="p-4 lg:hidden">
                     <button onClick={toggleSidebar} className="text-2xl">

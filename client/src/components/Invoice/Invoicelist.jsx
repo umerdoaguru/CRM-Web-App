@@ -11,7 +11,7 @@
 //   useEffect(() => {
 //     const fetchinvoice = async () => {
 //       try {
-//         const response = await axios.get(`http://localhost:9000/api/invoice-data/${UserId}`);
+//         const response = await axios.get(`http://localhost:9000/api/invoice-data`);
 //         setInvoice(response.data);
 //         console.log(response);
 //       } catch (error) {
@@ -120,7 +120,7 @@ const Invoicelist = () => {
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/invoice-data/${UserId}`);
+        const response = await axios.get(`http://localhost:9000/api/invoice-data`);
         setInvoices(response.data);
         console.log(response);
       } catch (error) {

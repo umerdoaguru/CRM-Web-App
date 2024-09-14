@@ -370,7 +370,7 @@ function Leads() {
                 {/* Button to create a new lead */}
                 <div className="mb-4">
                     <button
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
                         onClick={handleCreateClick}
                     >
                         Add Lead

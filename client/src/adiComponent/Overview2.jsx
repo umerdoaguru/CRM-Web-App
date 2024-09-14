@@ -53,8 +53,9 @@ const Overview2 = () => {
     
       const fetchQuotation = async () => {
         try {
-          const response = await axios.get(`http://localhost:9000/api/quotation-data/${UserId}`);
-          setQuotation(response.data);
+          const response = await axios.get(`http://localhost:9000/api/get-quotation-data`);
+          console.log(response.data);
+          setQuotation(response.data.data);
         } catch (error) {
           console.error("Error fetching quotations:", error);
         }
@@ -62,7 +63,7 @@ const Overview2 = () => {
     
       const fetchInvoice = async () => {
         try {
-          const response = await axios.get(`http://localhost:9000/api/invoice-data/${UserId}`);
+          const response = await axios.get(`http://localhost:9000/api/invoice-data`);
           setInvoice(response.data);
         } catch (error) {
           console.error("Error fetching invoices:", error);
@@ -75,60 +76,9 @@ const Overview2 = () => {
       const invoiceCount = invoice.length;
     
 
-    // useEffect(() => {
-    //     const fetchMetrics = async () => {
-    //         try {
-    //             const response = await fetch('http://localhost:9000/api/overview-metrics');
-    //             const data = await response.json();
-
-    //             // Assuming the API response structure is:
-    //             // { "clientsAdded": 2, "contractsSigned": 0, "invoicesSent": 1 }
-
-    //             setMetrics([
-    //                 {
-    //                     title: 'Total Leads',
-    //                     value: data.totalLeads,
-    //                     positive: true
-    //                 },
-    //                 {
-    //                     title: 'Total Invoices',
-    //                     value: data.totalInvoices,
-    //                     positive: false
-    //                 },
-    //                 {
-    //                     title: 'Total Quotation',
-    //                     value: data.totalQuotation,
-    //                     positive: true
-    //                 },
-    //                 {
-    //                     title: 'Total Employees',
-    //                     value: data.totalEmployees,
-    //                     positive: true
-    //                 }
-    //             ]);
-    //         } catch (error) {
-    //             console.error('Error fetching overview metrics:', error);
-    //         }
-    //     };
-
-    //     fetchMetrics();
-    // }, []);
-
+  
     return (
-        // <div className="p-4">
-        //     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        //         {metrics.map((metric, idx) => (
-        //             <div 
-        //                 key={idx} 
-        //                 className={`p-6 rounded-lg shadow-md ${metric.positive ? 'bg-green-100' : 'bg-red-100'} flex flex-col justify-between`}
-        //             >
-        //                 <h2 className="mb-2 text-lg font-semibold">{metric.title}</h2>
-        //                 <p className="text-2xl font-bold">{metric.value}</p>
-        //                 {/* Removed change field */}
-        //             </div>
-        //         ))}
-        //     </div>
-        // </div>
+        
        <>
        
      
@@ -136,9 +86,9 @@ const Overview2 = () => {
      
 
         <div className="flex flex-wrap justify-around mt-5">
-          <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3 ">
+          <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3  ">
             <div
-                 className="shadow-lg rounded-lg overflow-hidden cursor-pointer text-gray-600"  // Change background color if active
+                 className="shadow-lg rounded-lg overflow-hidden cursor-pointer text-gray-600 border-1"  // Change background color if active
             //   onClick={() => setSelectedComponent('LeadData')}  // Set selected component
             >
              <div className="p-4 flex flex-col items-center text-center">
@@ -203,6 +153,7 @@ const Overview2 = () => {
             </div>
           </div>
         </div>
+
 
         {/* Conditionally render the selected component */}
         {/* <div className="w-full h-[calc(100vh-10rem)] overflow-y-auto">

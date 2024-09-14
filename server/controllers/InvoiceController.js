@@ -97,12 +97,11 @@ const createInvoice = async (req, res) => {
 
 const getInvoice = async (req, res) => {
   try {
-    const { UserId } = req.params; // Extracting UserId from req.params
     const sql =
-      "SELECT * FROM invoice_data WHERE user_id = ? ORDER BY invoice_id DESC";
+      "SELECT * FROM invoice_data ORDER BY invoice_id DESC";
 
     const invoices = await new Promise((resolve, reject) => {
-      db.query(sql, [UserId], (err, results) => {
+      db.query(sql, (err, results) => {
         if (err) {
           reject(err);
         } else {
@@ -542,6 +541,27 @@ const invoiceserviceid = (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+const getAllInvoice = async (req, res) => {
+  try {
+    const sql = "SELECT * FROM  invoice_data";
+
+    const allQuotations = await new Promise((resolve, reject) => {
+      db.query(sql,(err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+
+    res.status(200).json({message: "Successfull", data: allQuotations});
+  } catch (error) {
+    console.error("Error processing request:", error);
+    res.status(500).json({ message: "Internal Server Error", success: false, error });
+  }
+}
 
 const deleteServiceInvoice = async (req, res) => {
   try {
@@ -1048,5 +1068,6 @@ module.exports = {
   UpdateInvoice_No,
   UpdateInvoice_date,
   UpdateInvoice_start_date,
-  UpdateInvoice_end_date, getInvoiceDate
+  UpdateInvoice_end_date, getInvoiceDate,
+  getAllInvoice,
 };

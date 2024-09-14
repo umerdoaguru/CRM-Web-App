@@ -3,7 +3,7 @@ const multer = require('multer');
 const router = express.Router();
 
 // const {Register,Allregister, Login,} = require('../controllers/UserController');
-const {Quotation, GetQuotation, Quotationviaid, GetServices,  deleteQuotation, updateServices, Notes, getNotes, deleteNote, addServices, deleteService, getnotes_text, UpdateQuotationName, CopyQuotationData, GetQuotationName, updateNote, leads_data, createLead, getLeads, updateLead, deleteLead, employeeData,editProfile, getAllUsers ,deleteProfile} = require('../controllers/UserController');
+const {Quotation, GetQuotation, getAllQuotation, Quotationviaid, GetServices,  deleteQuotation, updateServices, Notes, getNotes, deleteNote, addServices, deleteService, getnotes_text, UpdateQuotationName, CopyQuotationData, GetQuotationName, updateNote, leads_data, createLead, getLeads, updateLead, deleteLead, employeeData,editProfile, getAllUsers ,deleteProfile} = require('../controllers/UserController');
 const upload = require("../controllers/fileUploadController");
 const upload1 = require('../config/multerConfig'); // Import multer configuration
 
@@ -13,7 +13,7 @@ const { register, login } = require("../controllers/UserRegitrationlLogin");
 
 const { createServiceList, getServicelist, deleteServicename, updateServiceList } = require("../controllers/ServicesList");
 
-const { createInvoice, getInvoice, deleteInvoice, UpdateInvoiceName, GetInvoiceName, invoiceserviceid, deleteServiceInvoice, addServicesInvoice, updateServicesInvoice, getInvoiceiddata, getInvoiceAddress, CompanyIncoiceData, fetchcompanyinvoicename, company_name_invoice_data, CopyInvoiceData, createNote, deleteInvoiceNote, getInvoiceNotes, createInvoiceNote, InvoiceNotes, InvoicegetNotes, InvoicedeleteNote, InvoiceupdateNote, UpdateInvoice_No, UpdateInvoice_date, UpdateInvoice_start_date, UpdateInvoice_end_date, getInvoiceDate } = require("../controllers/InvoiceController");
+const { createInvoice, getInvoice, getAllInvoice, deleteInvoice, UpdateInvoiceName, GetInvoiceName, invoiceserviceid, deleteServiceInvoice, addServicesInvoice, updateServicesInvoice, getInvoiceiddata, getInvoiceAddress, CompanyIncoiceData, fetchcompanyinvoicename, company_name_invoice_data, CopyInvoiceData, createNote, deleteInvoiceNote, getInvoiceNotes, createInvoiceNote, InvoiceNotes, InvoicegetNotes, InvoicedeleteNote, InvoiceupdateNote, UpdateInvoice_No, UpdateInvoice_date, UpdateInvoice_start_date, UpdateInvoice_end_date, getInvoiceDate } = require("../controllers/InvoiceController");
 
 
 
@@ -29,7 +29,7 @@ router.delete("/quotation/:id",deleteQuotation);
 router.post('/services/:id', addServices);
 router.delete('/services/:serviceId', deleteService);
 router.get("/quotation/:id",Quotationviaid);
-// router.get("/quotation",GetQuotation);
+router.get("/get-quotation-data", getAllQuotation);
 router.get("/quotation-data/:UserId", GetQuotation);
 router.put("/quotation-data/:quotationId", UpdateQuotationName);
 router.post("/copy-quotation/:quotationId", CopyQuotationData);
@@ -59,12 +59,13 @@ router.put('/companydata/:id',upload.fields([{ name: 'header_img' }, { name: 'fo
 router.post('/company-name-data',getcompany_name_data); //fcf
 
 router.post('/create-servicelist/:userId',createServiceList);
-router.get('/servicelist/:userId',getServicelist);
+router.get('/servicelist',getServicelist);
 router.delete('/servicelist/:serviceId',deleteServicename);
 router.put('/servicelist',updateServiceList);
 
 router.post('/create-invoice',createInvoice);
-router.get("/invoice-data/:UserId", getInvoice);
+router.get("/invoice-data", getInvoice);
+router.get("/get-invoice-data", getAllInvoice);
 router.delete("/invoice/:id",deleteInvoice);
 router.put("/invoice-data/:invoiceId", UpdateInvoiceName);
 

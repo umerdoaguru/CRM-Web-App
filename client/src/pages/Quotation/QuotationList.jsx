@@ -19,7 +19,7 @@ const QuotationList = () => {
   useEffect(() => {
     const fetchQuotations = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/quotation-data/${UserId}`);
+        const response = await axios.get(`http://localhost:9000/api/get-quotation-data`);
         setQuotations(response.data);
         console.log(response);
       } catch (error) {

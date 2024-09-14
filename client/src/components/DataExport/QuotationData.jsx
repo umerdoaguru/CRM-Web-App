@@ -18,7 +18,7 @@ const QuotationData = () => {
   useEffect(() => {
     const fetchQuotations = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/quotation-data/${UserId}`);
+        const response = await axios.get(`http://localhost:9000/api/get-quotation-data`);
         setQuotations(response.data);
       } catch (error) {
         console.error("Error fetching quotations:", error);
@@ -80,7 +80,7 @@ const QuotationData = () => {
             <div className="respo mx-2 ">
             <button
               onClick={downloadExcel}
-              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
             >
               Download Excel
             </button></div>

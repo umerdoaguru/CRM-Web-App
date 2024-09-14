@@ -49,8 +49,9 @@ function DataExport() {
 
   const fetchQuotation = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/quotation-data/${UserId}`);
-      setQuotation(response.data);
+      const response = await axios.get(`http://localhost:9000/api/get-quotation-data`);
+      console.log(response.data);
+      setQuotation(response.data.data);
     } catch (error) {
       console.error("Error fetching quotations:", error);
     }
@@ -58,7 +59,7 @@ function DataExport() {
 
   const fetchInvoice = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/invoice-data/${UserId}`);
+      const response = await axios.get(`http://localhost:9000/api/invoice-data`);
       setInvoice(response.data);
     } catch (error) {
       console.error("Error fetching invoices:", error);
@@ -74,11 +75,11 @@ function DataExport() {
     <>
       <MainHeader />
       <Sider />
-      <div className="w-full overflow-y-auto h-screen">
+      <div className=" overflow-y-auto  lg:ml-40 xl:ml-20">
         <h1 className="text-2xl text-center mt-[2rem]">Data Export</h1>
         <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
 
-        <div className="flex flex-wrap justify-around mt-5">
+        <div className="flex flex-wrap justify-around xl:justify-center  mt-5  ">
           <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3 ">
             <div
               className={` shadow-lg rounded-lg overflow-hidden cursor-pointer ${

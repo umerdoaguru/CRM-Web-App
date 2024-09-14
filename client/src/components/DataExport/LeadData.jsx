@@ -158,7 +158,7 @@ function LeadData() {
                       <div className="respo mx-2 ">
                     <button
                         onClick={downloadExcel}
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
                     >
                         Download Excel
                     </button>

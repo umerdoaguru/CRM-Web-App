@@ -114,13 +114,13 @@ const Sider = () => {
             <li className={`w-full ${getSidebarClass("/employee-management")}`}>
               <Link to="/employee-management" className="flex flex-col items-center py-3">
                 <MdOutlineManageAccounts className="text-white text-2xl lg:text-3xl" />
-                <h3 className="hidden lg:inline text-white text-sm lg:text-base">
+                <h3 className="hidden lg:inline text-white text-center text-sm lg:text-base">
                 Employees Management
                 </h3>
               </Link>
             </li>
 
-            <hr className="w-full border-gray-400" />
+            {/* <hr className="w-full border-gray-400" />
             <li className={`w-full ${getSidebarClass("/overview")}`}>
               <Link to="/overview" className="flex flex-col items-center py-3">
                 <BsEye className="text-white text-2xl lg:text-3xl" />
@@ -128,9 +128,9 @@ const Sider = () => {
                 Organization Management
                 </h3>
               </Link>
-            </li>
-
-            <hr className="w-full border-gray-400" />
+            </li> */}
+{/* 
+            <hr className="w-full border-gray-400" /> */}
          
 
           </ul>
