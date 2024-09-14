@@ -13,16 +13,16 @@ const JWT = require('jsonwebtoken');
   const Quotation = async (req, res) => {
     try {
       const { quotation_name, services } = req.body;
-      const { user_id } = req.body; // Assuming user_id is retrieved from the authenticated user
+      const { employeeId } = req.body; // Assuming employeeId is retrieved from the authenticated user
   
       if (!quotation_name || !services || services.length === 0) {
         return res.status(400).json({ error: "Quotation name and services are required" });
       }
   
-      // Insert quotation with user_id
-      const sqlQuotation = "INSERT INTO quotations_data (quotation_name, user_id) VALUES (?, ?)";
+      // Insert quotation with employeeId
+      const sqlQuotation = "INSERT INTO quotations_data (quotation_name, employeeId) VALUES (?, ?)";
       const resultQuotation = await new Promise((resolve, reject) => {
-        db.query(sqlQuotation, [quotation_name, user_id], (err, result) => {
+        db.query(sqlQuotation, [quotation_name, employeeId], (err, result) => {
           if (err) {
             reject(err);
           } else {
@@ -182,7 +182,7 @@ const JWT = require('jsonwebtoken');
     const GetQuotation = async (req, res) => {
       try {
         const { UserId } = req.params; // Extracting UserId from req.params
-        const sql = "SELECT * FROM quotations_data WHERE user_id = ? ORDER BY quotation_id DESC";
+        const sql = "SELECT * FROM quotations_data WHERE employeeId = ? ORDER BY quotation_id DESC";
   
         const quotations = await new Promise((resolve, reject) => {
           db.query(sql, [UserId], (err, results) => {

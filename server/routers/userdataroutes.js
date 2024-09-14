@@ -60,7 +60,7 @@ router.put('/companydata/:id',upload.fields([{ name: 'header_img' }, { name: 'fo
 router.post('/company-name-data',getcompany_name_data); //fcf
 
 router.post('/create-servicelist/:userId',createServiceList);
-router.get('/servicelist/:userId',getServicelist);
+router.get('/servicelist',getServicelist);
 router.delete('/servicelist/:serviceId',deleteServicename);
 router.put('/servicelist',updateServiceList);
 
