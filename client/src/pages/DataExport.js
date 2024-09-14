@@ -11,11 +11,11 @@ import { useSelector } from "react-redux";
 import LeadData from '../components/DataExport/LeadData';
 import QuotationData from '../components/DataExport/QuotationData';
 import InvoiceData from '../components/DataExport/InvoiceData';  // Add your invoice component here if it exists
-import Employees from '../components/DataExport/Employees';
+// import Employees from '../components/DataExport/Employees';
 
 function DataExport() {
   const [leads, setLeads] = useState([]);
-  const [employee, setEmployee] = useState([]);
+  // const [employee, setEmployee] = useState([]);
   const [quotation, setQuotation] = useState([]);
   const [invoice, setInvoice] = useState([]);
   const [selectedComponent, setSelectedComponent] = useState('LeadData');  // Set 'LeadData' as default
@@ -24,32 +24,32 @@ function DataExport() {
 
   useEffect(() => {
     fetchLeads();
-    fetchEmployee();
+    // fetchEmployee();
     fetchQuotation();
     fetchInvoice();
   }, []);
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get('http://localhost:9000/api/leads');
+      const response = await axios.get(`http://localhost:9000/api/employe-leads/${1}`);
       setLeads(response.data);
     } catch (error) {
       console.error('Error fetching leads:', error);
     }
   };
 
-  const fetchEmployee = async () => {
-    try {
-      const response = await axios.get(`http://localhost:9000/api/employee`);
-      setEmployee(response.data);
-    } catch (error) {
-      console.error("Error fetching employee data:", error);
-    }
-  };
+  // const fetchEmployee = async () => {
+  //   try {
+  //     const response = await axios.get(`http://localhost:9000/api/employee`);
+  //     setEmployee(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching employee data:", error);
+  //   }
+  // };
 
   const fetchQuotation = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/quotation-data/${UserId}`);
+      const response = await axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${1}`);
       setQuotation(response.data);
     } catch (error) {
       console.error("Error fetching quotations:", error);
@@ -58,7 +58,7 @@ function DataExport() {
 
   const fetchInvoice = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/invoice-data/${UserId}`);
+      const response = await axios.get(`http://localhost:9000/api/get-employee-invoice/${1}`);
       setInvoice(response.data);
     } catch (error) {
       console.error("Error fetching invoices:", error);
@@ -66,7 +66,7 @@ function DataExport() {
   };
 
   const leadCount = leads.length;
-  const employeeCount = employee.length;
+  // const employeeCount = employee.length;
   const quotationCount = quotation.length;
   const invoiceCount = invoice.length;
 
@@ -97,7 +97,7 @@ function DataExport() {
               </div>
             </div>
           </div>
-
+{/* 
           <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
             <div
               className={` shadow-lg rounded-lg overflow-hidden cursor-pointer ${
@@ -115,7 +115,7 @@ function DataExport() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
             <div
@@ -159,7 +159,7 @@ function DataExport() {
         {/* Conditionally render the selected component */}
         <div className="w-full h-[calc(100vh-10rem)] overflow-y-auto">
           {selectedComponent === 'LeadData' && <LeadData />}
-          {selectedComponent === 'EmployeeData' && <Employees />}
+          {/* {selectedComponent === 'EmployeeData' && <Employees />} */}
           {selectedComponent === 'QuotationData' && <QuotationData />}
           {selectedComponent === 'InvoiceData' && <InvoiceData />}
         </div>

@@ -115,7 +115,7 @@ const Sider = () => {
               <Link to="/employee-management" className="flex flex-col items-center py-3">
                 <MdOutlineManageAccounts className="text-white text-2xl lg:text-3xl" />
                 <h3 className="hidden lg:inline text-white text-sm lg:text-base">
-                Employees Management
+                  My profile
                 </h3>
               </Link>
             </li>

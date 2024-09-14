@@ -358,13 +358,14 @@ function Leads() {
     };
 
     const saveChanges = async () => {
-        // Validate required fields
+        
         try {
           // Send updated data to the backend using Axios
-          const response = await axios.put(`http://localhost:9000/api/updateLeadStatus/${currentLead.id}`, currentLead);
+          const response = await axios.put(`http://localhost:9000/api/updateLeadStatus/${currentLead.lead_id}`, currentLead);
       
           if (response.status === 200) {
             console.log('Updated successfully:', response.data);
+            cogoToast.success({ general: 'Lead status updated successfully.' });
             closePopup();  // Close the popup on success
           } else {
             console.error('Error updating:', response.data);

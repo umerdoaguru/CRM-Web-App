@@ -1,3 +1,7 @@
+# 14 sep 
+- > header and sidebar sab mai lagana hai 
+- > 
+
 # 13 sep
 - > are lead client se udpateni ho rahi hai 
 - > dashboard 

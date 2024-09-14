@@ -14,6 +14,8 @@ import Logout from "../../components/Logout";
 import Sider from "../../components/Sider";
 
 import MainHeader from "../../components/MainHeader";
+import QuotationForm1 from "./QuotationForm1";
+import CreateInvoice from "../../components/Invoice/CreateInvoice";
 
 function CreateCompanyProfile() {
   const { id } = useParams();
@@ -37,12 +39,13 @@ function CreateCompanyProfile() {
   const navigate = useNavigate();
   const UserId = useSelector((state) => state.auth.user.id);
   const [companydata, setcompanydata] = useState([]);
+  const [selectedComponent, setSelectedComponent] = useState('LeadData');  // Set 'LeadData' as default
   
  
   useEffect(() => {
     const fetchinvoice = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/company-data/${UserId}`);
+        const response = await axios.get(`http://localhost:9000/api/company-data`);
         setcompanydata(response.data);
         console.log(response);
       } catch (error) {
@@ -169,7 +172,6 @@ function CreateCompanyProfile() {
      
       <Sider/>
       <div className=" container px-3 ">
-        <form className="p-4 bg-white rounded shadow-md mt-5" onSubmit={handleUpload}>
           <div className="flex justify-between">
             <div className="mx-3 mt-3">
               <UserLogin />
@@ -178,7 +180,8 @@ function CreateCompanyProfile() {
               <Logout />
             </div>
           </div>
-          <div className="grid lg:grid-cols-4 gap-2 mt-2">
+        <form className="p-4 bg-white rounded shadow-md mt-5" onSubmit={handleUpload}>
+          {/* <div className="grid lg:grid-cols-4 gap-2 mt-2">
             <div className="col-span-1">
               <Link
                 to="/quotation-form"
@@ -211,13 +214,13 @@ function CreateCompanyProfile() {
                 Invoice List
               </Link>
             </div>
-          </div>
+          </div> */}
   
           <div className="flex justify-center mt-4">
             <h3 className="text-center">Create Company Profile</h3>
           </div>
   
-          <div className="grid lg:grid-cols-5 md:grid-cols-4 gap-2 mt-4">
+          {/* <div className="grid lg:grid-cols-5 md:grid-cols-4 gap-2 mt-4">
             <div className="">
               <label className="block">
                 Company Name:
@@ -320,9 +323,9 @@ function CreateCompanyProfile() {
                 </label>
               </div>
             )}
-          </div>
+          </div> */}
   
-          <div className="mt-4">
+          {/* <div className="mt-4">
             <h6>Company Name Payment Detail:</h6>
             <div className="grid lg:grid-cols-5 md:grid-cols-4 gap-2">
               <div className=" ">
@@ -438,10 +441,93 @@ function CreateCompanyProfile() {
             >
               Upload Company Profile
             </button>
-          </div>
+          </div> */}
         </form>
       </div>
   
+      <div className="flex flex-wrap justify-around mt-5">
+          <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3 ">
+            <div
+              className={` shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                selectedComponent === 'LeadData' ? 'bg-blue-500 text-white' : ''
+              }`}  // Change background color if active
+              onClick={() => setSelectedComponent('LeadData')}  // Set selected component
+            >
+              <div className="p-4 flex flex-col items-center text-center">
+                <div className={`text-3xl ${selectedComponent === 'LeadData' ? 'text-white' : 'text-gray-700'}`}>
+                  {/* <GiFiles /> */}
+                </div>
+                <div className="mt-2">
+                  <h5 className={`text-xl font-semibold ${selectedComponent === 'LeadData' ? 'text-white' : 'text-gray-800'}`}>Create Quotation</h5>
+                  <p className={`${selectedComponent === 'LeadData' ? 'text-white' : 'text-gray-600'}`}>{"leadCount"}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
+            <div
+              className={` shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                selectedComponent === 'EmployeeData' ? 'bg-blue-500 text-white' : ''
+              }`}  // Change background color if active
+              onClick={() => setSelectedComponent('EmployeeData')}  // Set selected component
+            >
+              <div className="p-4 flex flex-col items-center text-center">
+                <div className={`text-3xl ${selectedComponent === 'EmployeeData' ? 'text-white' : 'text-gray-700'}`}>
+                  {/* <SiMoneygram /> */}
+                </div>
+                <div className="mt-2">
+                  <h5 className={`text-xl font-semibold ${selectedComponent === 'EmployeeData' ? 'text-white' : 'text-gray-800'}`}>Create Invoice</h5>
+                  <p className={`${selectedComponent === 'EmployeeData' ? 'text-white' : 'text-gray-600'}`}>{"employeeCount"}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
+            <div
+              className={` shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                selectedComponent === 'QuotationData' ? 'bg-blue-500 text-white' : ''
+              }`}  // Change background color if active
+              onClick={() => setSelectedComponent('QuotationData')}  // Set selected component
+            >
+              <div className="p-4 flex flex-col items-center text-center">
+                <div className={`text-3xl ${selectedComponent === 'QuotationData' ? 'text-white' : 'text-gray-700'}`}>
+                  {/* <MdOutlineNextWeek /> */}
+                </div>
+                <div className="mt-2">
+                  <h5 className={`text-xl font-semibold ${selectedComponent === 'QuotationData' ? 'text-white' : 'text-gray-800'}`}>   Quotation List</h5>
+                  <p className={`${selectedComponent === 'QuotationData' ? 'text-white' : 'text-gray-600'}`}>{"quotationCount"}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3 ">
+            <div
+              className={` shadow-lg rounded-lg overflow-hidden cursor-pointer ${
+                selectedComponent === 'InvoiceData' ? 'bg-blue-500 text-white' : ''
+              }`}  // Change background color if active
+              onClick={() => setSelectedComponent('InvoiceData')}  // Set selected component
+            >
+              <div className="p-4 flex flex-col items-center text-center">
+                <div className={`text-3xl ${selectedComponent === 'InvoiceData' ? 'text-white' : 'text-gray-700'}`}>
+                  {/* <GiMoneyStack /> */}
+                </div>
+                <div className="mt-2">
+                  <h5 className={`text-xl font-semibold ${selectedComponent === 'InvoiceData' ? 'text-white' : 'text-gray-800'}`}> Invoice List</h5>
+                  <p className={`${selectedComponent === 'InvoiceData' ? 'text-white' : 'text-gray-600'}`}>{"invoiceCount"}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="w-full h-[calc(100vh-10rem)] overflow-y-auto">
+          {selectedComponent === 'LeadData' && <QuotationForm1 />}
+          {selectedComponent === 'EmployeeData' && <CreateInvoice />}
+          {/* {selectedComponent === 'QuotationData' && <QuotationData />}
+          {selectedComponent === 'InvoiceData' && <InvoiceData />} */}
+        </div>
+        </div>
       <div className="container mt-4">
         <h2>List of Company Profile Created Data</h2>
         <div className="overflow-y-auto" style={{ maxHeight: "700px" }}>
@@ -451,7 +537,6 @@ function CreateCompanyProfile() {
                 <th className="border border-gray-300 p-2">ID</th>
                 <th className="border border-gray-300 p-2">Company Name</th>
                 <th className="border border-gray-300 p-2">Created Date</th>
-                <th className="border border-gray-300 p-2">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -461,20 +546,6 @@ function CreateCompanyProfile() {
                   <td className="border border-gray-300 p-2">{company.company_name}</td>
                   <td className="border border-gray-300 p-2">
                   {moment(company.created_date).format('DD/MM/YYYY')}
-                  </td>
-                  <td className="border border-gray-300 p-2">
-                  <button
-                                            className="text-blue-500 hover:text-blue-700"
-                                            onClick={() => handleEditCompany(company.company_name)}
-                                        >
-                                            Edit /
-                                        </button>
-                    <button
-                     onClick={() => handleDeleteCompanyData(company.company_name)}
-                      className=" text-[red] px-2 py-2 rounded"
-                    >
-                      Delete
-                    </button>
                   </td>
                 </tr>
               ))}

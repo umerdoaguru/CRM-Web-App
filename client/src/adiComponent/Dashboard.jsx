@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import Overview from './Overview2';
-import PaymentsGraph from './PaymentsGraph';
-import DevicesGraph from './DevicesGraph';
 import LeadsReport from './LeadsReport';
+import LeadsGraph from './LeadsGraph';
+import QuotationGraph from './QuotationGraph';
 import ToDoList from './Todo';
 import Sider from '../components/Sider';
 import { FaBars, FaTimes } from 'react-icons/fa'; // Icons for hamburger and close
 import MainHeader from './../components/MainHeader';
 import Invoice from './invoice';
-
-
 
 const Dashboard = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -39,8 +37,8 @@ const Dashboard = () => {
                 </div>
                 <div className="grid grid-cols-1 gap-4 mt-6 md:grid-cols-2 lg:grid-cols-3">
                     <Invoice />
-                    <PaymentsGraph />
-                    {/* <DevicesGraph /> */}
+                    <LeadsGraph />
+                    <QuotationGraph />
                 </div>
                 <LeadsReport />
                 {/* <ToDoList /> will not use remote it  */}

@@ -73,11 +73,9 @@ const createServiceList = async (req, res) => {
 
 const getServicelist = async (req,res)=>{
 
- const {userId} = req.params
+ const sql = `SELECT * FROM services`;
 
- const sql = `SELECT * FROM services WHERE user_id = ?`;
-
- db.query(sql,[userId],(err,result)=>{
+ db.query(sql,(err,result)=>{
   if(err){
     console.error('Error feching services:',err);
     res.status(500).json({error:"Internal Server Error"})

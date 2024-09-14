@@ -16,7 +16,6 @@ const createInvoice = async (req, res) => {
       duration_start_date,
       duration_end_date,
     } = req.body;
-    const { user_id } = req.body; // Assuming user_id is retrieved from the authenticated user
 
     if (!invoice_name || !services || services.length === 0) {
       return res
@@ -26,14 +25,13 @@ const createInvoice = async (req, res) => {
 
     // Insert Invoice with user_id
     const sqlInvoice =
-      "INSERT INTO invoice_data (invoice_name,  invoice_no, user_id,invoice_address,payment_mode,  client_gst_no,  client_gst_per, client_pan_no,company_type,invoice_date,duration_start_date, duration_end_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO invoice_data (invoice_name,  invoice_no, invoice_address,payment_mode,  client_gst_no,  client_gst_per, client_pan_no,company_type,invoice_date,duration_start_date, duration_end_date) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
     const resultInvoice = await new Promise((resolve, reject) => {
       db.query(
         sqlInvoice,
         [
           invoice_name,
           invoice_no,
-          user_id,
           invoice_address,
           payment_mode,
           client_gst_no,

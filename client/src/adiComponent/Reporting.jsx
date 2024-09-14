@@ -8,8 +8,8 @@ import Pagination from "./comp/pagination";
 
 const d_fileds = {
   quotation: {
-    heading: ["Id", "Company", "Name", "Date"],
-    columns: ["quotation_id", "user_id", "quotation_name", "created_date"],
+    heading: ["Id", "employee ID", "Name", "Date"],
+    columns: ["quotation_id", "employeeId", "quotation_name", "created_date"],
     quotation: [],
   },
   invoice: {
@@ -17,14 +17,9 @@ const d_fileds = {
     columns: ["invoice_id", "user_id", "payment_mode", "created_date"],
     invoice: [],
   },
-  employee: {
-    heading: ["Id", "Name", "Email", "Designation", "date"],
-    columns: ["employeeId", "name", "email", "designation", "createdTime"],
-    employee: [],
-  },
   leads: {
     heading: ["Id", "Assign", "Date", "Source"],
-    columns: ["id", "assignedTo", "createdTime", "leadSource"],
+    columns: ["lead_no", "assignedTo", "createdTime", "leadSource"],
     leads: [],
   },
 }
@@ -32,9 +27,8 @@ const d_fileds = {
 const Reporting = () => {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState("All");
-  const [selectedCategory, setSelectedCategory] = useState("employee");
+  const [selectedCategory, setSelectedCategory] = useState("quotation");
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredData, setFilteredData] = useState(data);
   const [rowPerPage, setRowPerPage] = useState(5);
   const [dataFields, setDataFields] = useState(d_fileds);
 
@@ -147,36 +141,30 @@ const Reporting = () => {
       const [
         quotationResponse,
         invoiceResponse,
-        employeeResponse,
         leadsResponse,
       ] = await Promise.all([
-        axios.get("http://localhost:9000/api/get-quotation-data"),
-        axios.get("http://localhost:9000/api/get-invoice-data"),
-        axios.get("http://localhost:9000/api/employee"),
-        axios.get("http://localhost:9000/api/leads"),
+        axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${1}`),
+        axios.get(`http://localhost:9000/api/get-employee-invoice/${1}`),
+        axios.get(`http://localhost:9000/api/employe-leads/${1}`),
       ]);
 
-      // Combine all responses as needed
       const combinedData = {
-        quotation: quotationResponse.data.data,
-        invoice: invoiceResponse.data.data,
-        employee: employeeResponse.data,
+        quotation: quotationResponse.data,
+        invoice: invoiceResponse.data,
         leads: leadsResponse.data,
       };
+
+      console.log(combinedData);
 
       const updatedDataFields = {
         ...dataFields,
         quotation: {
           ...dataFields.quotation,
-          quotation: quotationResponse.data.data,
+          quotation: quotationResponse.data,
         },
         invoice: {
           ...dataFields.invoice,
-          invoice: invoiceResponse.data.data,
-        },
-        employee: {
-          ...dataFields.employee,
-          employee: employeeResponse.data,
+          invoice: invoiceResponse.data,
         },
         leads: {
           ...dataFields.leads,
@@ -185,7 +173,6 @@ const Reporting = () => {
       };
 
       setDataFields(updatedDataFields);
-      console.log(combinedData);
       setData(combinedData);
     } catch (error) {
       console.log(error);
@@ -203,7 +190,7 @@ const Reporting = () => {
       <div className="flex flex-col min-h-screen p-4 lg:p-8">
         <div className="flex flex-col space-y-4 lg:space-y-0 lg:flex-row justify-between mb-8">
           <div className="flex flex-wrap justify-center max-sm:justify-start">
-            {["quotation", "invoice", "employee", "leads"].map((category) => (
+            {["quotation", "invoice", "leads"].map((category) => (
               <button
                 key={category}
                 onClick={() => handleCategoryClick(category)}
@@ -262,8 +249,8 @@ const Reporting = () => {
           <table className="min-w-full bg-white">
             <thead>
               <tr className="text-sm font-semibold text-left text-gray-600 uppercase bg-gray-200">
-                {dataFields?.[selectedCategory].heading.map((heading) => (
-                  <th className="px-4 py-3">{heading}</th>
+                {dataFields?.[selectedCategory].heading.map((head) => (
+                  <th className="px-4 py-3">{head}</th>
                 ))}
               </tr>
             </thead>

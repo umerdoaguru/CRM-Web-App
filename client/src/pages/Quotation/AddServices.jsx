@@ -142,7 +142,7 @@ const Addservices = () => {
 
   const getServicelist = async () => {
     try {
-      const res = await axios.get(`http://localhost:9000/api/servicelist/${userId}`);
+      const res = await axios.get(`http://localhost:9000/api/servicelist`);
       console.log(res.data);
       setServiceslist(res.data);
     } catch (error) {

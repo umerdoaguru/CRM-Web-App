@@ -102,7 +102,7 @@ function LeadData() {
 
     const fetchLeads = async () => {
         try {
-            const response = await axios.get('http://localhost:9000/api/leads');
+            const response = await axios.get(`http://localhost:9000/api/employe-leads/${1}`);
             setLeads(response.data);
             setFilteredLeads(response.data); // Initial data set for filtering
         } catch (error) {

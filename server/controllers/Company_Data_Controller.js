@@ -171,11 +171,10 @@ const fetchcompanyname = async (req, res) => {
 
 const getCompanydata = async (req, res) => {
   try {
-    const { UserId } = req.params; // Extracting UserId from req.params
-    const sql = "SELECT * FROM company_profile WHERE user_id = ? ";
+    const sql = "SELECT * FROM company_profile ";
 
     const company_data = await new Promise((resolve, reject) => {
-      db.query(sql, [UserId], (err, results) => {
+      db.query(sql, (err, results) => {
         if (err) {
           reject(err);
         } else {

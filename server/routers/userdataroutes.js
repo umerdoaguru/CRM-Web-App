@@ -53,7 +53,7 @@ router.put('/notes', updateNote);
 
 router.post('/upload-company-profile', upload.fields([{ name: 'header_img' }, { name: 'footer_img' } , {name: 'logo'},{name:'digital_sign'}]),CompanyDataUpload); //ff
 router.get('/header-footer-images/company-names/:UserId',fetchcompanyname);
-router.get('/company-data/:UserId',getCompanydata);//hh
+router.get('/company-data',getCompanydata);//hh
 router.post('/company-header-footer',company_name_header_footer);
 router.post('/companydata',deleteCompanydata);
 router.put('/companydata/:id',upload.fields([{ name: 'header_img' }, { name: 'footer_img' } , {name: 'logo'},{name:'digital_sign'}]),updateCompanyData); //ff
