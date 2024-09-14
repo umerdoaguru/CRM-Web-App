@@ -3,7 +3,7 @@ const multer = require('multer');
 const router = express.Router();
 
 // const {Register,Allregister, Login,} = require('../controllers/UserController');
-const {Quotation, GetQuotation, Quotationviaid, GetServices,  deleteQuotation, updateServices, Notes, getNotes, deleteNote, addServices, deleteService, getnotes_text, UpdateQuotationName, CopyQuotationData, GetQuotationName, updateNote, leads_data, createLead, getLeads, updateLead, deleteLead, employeeData,editProfile, getAllUsers ,deleteProfile} = require('../controllers/UserController');
+const {Quotation, GetQuotation, Quotationviaid, GetServices,  deleteQuotation, updateServices, Notes, getNotes, deleteNote, addServices, deleteService, getnotes_text, UpdateQuotationName, CopyQuotationData, GetQuotationName, updateNote, leads_data, createLead, getLeads, updateLead, deleteLead, employeeData,editProfile, getAllUsers ,deleteProfile, getleadbyid} = require('../controllers/UserController');
 const upload = require("../controllers/fileUploadController");
 const upload1 = require('../config/multerConfig'); // Import multer configuration
 
@@ -52,7 +52,7 @@ router.put('/notes', updateNote);
 
 router.post('/upload-company-profile', upload.fields([{ name: 'header_img' }, { name: 'footer_img' } , {name: 'logo'},{name:'digital_sign'}]),CompanyDataUpload); //ff
 router.get('/header-footer-images/company-names/:UserId',fetchcompanyname);
-router.get('/company-data/:UserId',getCompanydata);//hh
+router.get('/company-data',getCompanydata);//hh
 router.post('/company-header-footer',company_name_header_footer);
 router.post('/companydata',deleteCompanydata);
 router.put('/companydata/:id',upload.fields([{ name: 'header_img' }, { name: 'footer_img' } , {name: 'logo'},{name:'digital_sign'}]),updateCompanyData); //ff
@@ -100,9 +100,10 @@ router.put('/invoice-update-notes', InvoiceupdateNote);
 
 
 router.post('/leads',  createLead);
+router.get('/leads/:id',  getleadbyid);
 router.get('/leads',  getLeads);
-router.put('/leads/:id',  updateLead);
-router.delete('/leads/:id',  deleteLead);
+router.put('/leads/:leadId', updateLead);
+router.delete('/leads/:leadId',  deleteLead);
 
 router.get('/employee', employeeData);
 

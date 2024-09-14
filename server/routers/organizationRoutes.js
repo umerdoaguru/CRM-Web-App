@@ -13,7 +13,8 @@ const {
   deleteEmployee,
   getEmployeeById,
   updateSingleEmployee,
-  getOrganizationById 
+  getOrganizationById, 
+  employeelogin
 } = require('../controllers/OrgsnizationActions');
 
 // Route to add an organization (with file upload)
@@ -33,6 +34,9 @@ router.put('/updateOrganization/:companyId', upload.fields([{ name: 'signature' 
 
 // Route to add an employee
 router.post("/addEmployee", addEmployee);
+
+// Route to add an employee
+router.post("/employee-login", employeelogin);
 
 // Route to get all employees
 router.get('/getAllEmployees', getAllEmployees);

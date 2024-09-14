@@ -42,7 +42,7 @@ function CreateCompanyProfile() {
   useEffect(() => {
     const fetchinvoice = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/company-data/${UserId}`);
+        const response = await axios.get(`http://localhost:9000/api/company-data`);
         setcompanydata(response.data);
         console.log(response);
       } catch (error) {
@@ -98,7 +98,7 @@ function CreateCompanyProfile() {
       formData.append("header_img", headerImage);
       formData.append("footer_img", footerImage);
 
-      formData.append("user_id", UserId);
+     
       formData.append("company_name", companyNameBranch);
       formData.append("company_name_account_name", accountName);
       formData.append("company_name_account_ifsc", accountIFSC);

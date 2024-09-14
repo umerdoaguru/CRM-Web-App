@@ -11,7 +11,7 @@ const CompanyDataUpload = async (req, res) => {
 
     const { header_img, footer_img, logo,	digital_sign } = req.files;
     const {
-      user_id,
+    
       company_name,
       company_name_account_name,
       company_name_account_ifsc,
@@ -36,11 +36,11 @@ const CompanyDataUpload = async (req, res) => {
     // Insert header and footer images with the associated company_id
     const insertHeaderFooterImages = await new Promise((resolve, reject) => {
       const sqlImages =
-        "INSERT INTO company_profile ( header_img, footer_img, user_id,company_name,company_name_account_name,company_name_account_ifsc,company_name_account_number,  bank, company_address, moblie_no,gst_no,pan_no,email_id,logo,digital_sign) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        "INSERT INTO company_profile ( header_img, footer_img, company_name,company_name_account_name,company_name_account_ifsc,company_name_account_number,  bank, company_address, moblie_no,gst_no,pan_no,email_id,logo,digital_sign) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       const values = [
         headerImagePath,
         footerImagePath,
-        user_id,
+     
         company_name,
         company_name_account_name,
         company_name_account_ifsc,
@@ -171,11 +171,11 @@ const fetchcompanyname = async (req, res) => {
 
 const getCompanydata = async (req, res) => {
   try {
-    const { UserId } = req.params; // Extracting UserId from req.params
-    const sql = "SELECT * FROM company_profile WHERE user_id = ? ";
+
+    const sql = "SELECT * FROM company_profile";
 
     const company_data = await new Promise((resolve, reject) => {
-      db.query(sql, [UserId], (err, results) => {
+      db.query(sql, (err, results) => {
         if (err) {
           reject(err);
         } else {
@@ -236,7 +236,7 @@ const updateCompanyData = async (req, res) => {
 
     const { header_img, footer_img, logo,	digital_sign } = req.files;
     const {
-      user_id,
+     
       company_name,
       company_name_account_name,
       company_name_account_ifsc,
@@ -266,7 +266,7 @@ const updateCompanyData = async (req, res) => {
         SET 
           header_img = ?,
           footer_img = ?,
-          user_id = ?,
+        
           company_name = ?,
           company_name_account_name = ?,
           company_name_account_ifsc = ?,
@@ -285,7 +285,7 @@ const updateCompanyData = async (req, res) => {
       const values = [
         headerImagePath,
         footerImagePath,
-        user_id,
+     
         company_name,
         company_name_account_name,
         company_name_account_ifsc,

@@ -11,6 +11,7 @@ const EmployeeManagement = () => {
   const [newEmployee, setNewEmployee] = useState({
     name: '',
     email: '',
+    password:'',
     position: '',
     phone: '',
     salary: '' // Added salary to the state
@@ -65,6 +66,9 @@ const EmployeeManagement = () => {
     else if (!/\S+@\S+\.\S+/.test(newEmployee.email)) errors.email = 'Email is invalid';
     else if (await isEmailTaken(newEmployee.email)) errors.email = 'Email is already taken';
 
+    // Validate Password
+    if (!newEmployee.password) errors.password = 'Password is required';
+
     // Validate Position
     if (!newEmployee.position) errors.position = 'Position is required';
 
@@ -107,6 +111,7 @@ const EmployeeManagement = () => {
       setNewEmployee({
         name: '',
         email: '',
+        password:'',
         position: '',
         phone: '',
         salary: '' // Reset salary field
@@ -241,7 +246,17 @@ const EmployeeManagement = () => {
               className={`p-2 border rounded-lg ${validationErrors.email ? 'border-red-500' : 'border-gray-300'}`}
             />
             {validationErrors.email && <p className="text-sm text-red-500">{validationErrors.email}</p>}
-
+            {editingIndex == null && (
+            <input
+              type="text"
+              name="password"
+              value={newEmployee.password}
+              onChange={handleInputChange}
+              placeholder="password"
+              className={`p-2 border rounded-lg ${validationErrors.password ? 'border-red-500' : 'border-gray-300'}`}
+              />
+          
+            )}
             <input
               type="text"
               name="position"

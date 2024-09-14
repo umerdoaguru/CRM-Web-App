@@ -731,15 +731,35 @@ const JWT = require('jsonwebtoken');
   };
 
   const createLead = (req, res) => {
-    const { lead_no, name, phone, assignedTo, leadSource } = req.body;
-    const sql = `INSERT INTO leads (lead_no, name, phone, assignedTo, leadSource) VALUES (?, ?, ?, ?, ?)`;
-    db.query(sql, [lead_no, name, phone, assignedTo, leadSource], (err, results) => {
+    const { lead_no, name, phone, assignedTo, leadSource, employeeId,subject } = req.body;
+    const sql = `INSERT INTO leads (lead_no, name, phone, assignedTo, leadSource, employeeId,subject) VALUES (?,?, ?, ?, ?, ?,?)`;
+    db.query(sql, [lead_no, name, phone, assignedTo, leadSource, employeeId,subject], (err, results) => {
         if (err) {
             res.status(500).json({ error: "Error inserting data" });
         } else {
             res.status(201).json({ success: true, message: "Lead data successfully submitted" });
         }
     });
+};
+
+const getleadbyid = (req, res) => {
+  try {
+    const {id} = req.params;
+
+    const getQuery = `SELECT * FROM leads WHERE lead_id = ?`;
+
+    db.query(getQuery, [id], (error, result) => {
+      if (error) {
+        console.log("Lead not found", error);
+        res.status(500).json({ error: "Internal Server Error" });
+      } else {
+        res.status(200).json(result);
+      }
+    });
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 
@@ -755,29 +775,104 @@ const getLeads = (req, res) => {
 };
 
 
-const updateLead = (req, res) => {
-    const { id } = req.params;
-    const { lead_no ,name, phone, assignedTo, leadSource } = req.body;
-    const sql = `UPDATE leads SET lead_no=? ,name=?, phone=?, assignedTo=?, leadSource=? WHERE id=?`;
-    db.query(sql, [lead_no,name, phone, assignedTo, leadSource, id], (err, results) => {
-        if (err) {
-            res.status(500).json({ error: "Error updating data" });
-        } else {
-            res.status(200).json({ success: true, message: "Lead data successfully updated" });
+// const updateLead = (req, res) => {
+//     const { lead_id} = req.params;
+//     const { lead_no ,name, phone, assignedTo, leadSource } = req.body;
+//     const sql = `UPDATE leads SET lead_no=? ,name=?, phone=?, assignedTo=?, leadSource=? WHERE lead_id=?`;
+//     db.query(sql, [lead_no,name, phone, assignedTo, leadSource, lead_id], (err, results) => {
+//         if (err) {
+//             res.status(500).json({ error: "Error updating data" });
+//         } else {
+//             res.status(200).json({ success: true, message: "Lead data successfully updated" });
+//         }
+//     });
+// };
+
+// const updateLead = async (req, res) => {
+//   try {
+//     const { leadId} = req.params;
+//     const { lead_no ,name, phone, assignedTo, leadSource, employeeId,createdTime,subject } = req.body;
+//     // Construct SQL query to update the invoice name
+  
+//     const sql = `UPDATE leads SET lead_no=? ,name=?, phone=?, assignedTo=?,employeeId=?,leadSource=?,createdTime=?,subject=? WHERE lead_id=?`;
+
+//     // Execute the update query asynchronously
+//     await new Promise((resolve, reject) => {   
+   
+//         db.query(sql, [lead_no,name, phone, assignedTo, leadSource, employeeId,createdTime,subject, leadId],
+//         (err, results) => {
+//           if (err) {
+//             reject(err);
+//           } else {
+//             resolve(results);
+//           }
+//         }
+//       );
+//     });
+   
+
+//     res.status(200).json({ message: "Invoice number updated successfully" });
+//   } catch (error) {
+//     console.error("Error updating Invoice number:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+const updateLead = async (req, res) => {
+  try {
+    const { leadId } = req.params;
+    const { lead_no, name, phone, assignedTo, leadSource, employeeId, createdTime, subject } = req.body;
+
+    // Construct SQL query to update the lead
+    const sql = `UPDATE leads 
+                 SET lead_no = ?, name = ?, phone = ?, assignedTo = ?, employeeId = ?, leadSource = ?, createdTime = ?, subject = ? 
+                 WHERE lead_id = ?`;
+
+    // Execute the update query asynchronously
+    await new Promise((resolve, reject) => {
+      db.query(sql, [lead_no, name, phone, assignedTo, employeeId, leadSource, createdTime, subject, leadId],
+        (err, results) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(results);
+          }
         }
+      );
     });
+
+    res.status(200).json({ message: "Lead updated successfully" });
+  } catch (error) {
+    console.error("Error updating lead:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 
-const deleteLead = (req, res) => {
-    const { id } = req.params;
-    const sql = `DELETE FROM leads WHERE id=?`;
-    db.query(sql, [id], (err, results) => {
+
+
+const  deleteLead = (req, res) => {
+    const { leadId } = req.params;
+
+    // Validate the lead_id
+    if (!leadId) {
+        return res.status(400).json({ error: "Lead ID is required" });
+    }
+
+    // SQL query to delete the lead
+    const sql = `DELETE FROM leads WHERE lead_id = ?`;
+
+    // Execute the delete query
+    db.query(sql, [leadId], (err, results) => {
         if (err) {
-            res.status(500).json({ error: "Error deleting data" });
-        } else {
-            res.status(200).json({ success: true, message: "Lead data successfully deleted" });
+            console.error("Error deleting lead:", err);
+            return res.status(500).json({ error: "Error deleting data" });
         }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: "Lead not found" });
+        }
+
+        res.status(200).json({ success: true, message: "Lead data successfully deleted" });
     });
 };
 
@@ -963,7 +1058,7 @@ const getAllUsers = async (req, res) => {
   
   module.exports = { Quotation, GetQuotation, Quotationviaid,addServices,deleteService, GetServices,deleteQuotation,updateServices,Notes,getNotes,
     getnotes_text,
-    deleteNote , UpdateQuotationName,CopyQuotationData ,GetQuotationName,updateNote,createLead,
+    deleteNote , UpdateQuotationName,CopyQuotationData ,GetQuotationName,updateNote,createLead,getleadbyid,
     getLeads,
     updateLead,
     deleteLead,employeeData,editProfile,getAllUsers,deleteProfile};

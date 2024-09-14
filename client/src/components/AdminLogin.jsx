@@ -186,7 +186,7 @@ import { useDispatch } from 'react-redux';
 import { loginUser } from '../store/UserSlice';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
-function Login() {
+function AdminLogin() {
   const [formData, setFormData] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -270,4 +270,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default AdminLogin;
