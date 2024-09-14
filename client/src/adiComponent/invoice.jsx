@@ -29,23 +29,25 @@ const Invoice = () => {
         const getDate = new Date();
         const year = getDate.getFullYear();
         const month = String(getDate.getMonth() + 1).padStart(2, "0");
-        const formattedDate = `${year}-${month}`;
+        const formattedDate = `${year}-${month}-${getDate.getDate()}`;
 
         const filteredInvoices = invoiceList.filter(
-          (item) => item.created_date?.split(" ")[0]?.slice(0, 7) === formattedDate // Matching month and year
+          (item) => item.created_date?.split("T")[0]?.slice(0, 10) === formattedDate // Matching month and year
         );
+
+        console.log(filteredInvoices);
 
         let result = {};
 
         filteredInvoices.forEach((item) => {
-          const date = item.created_date.split(" ")[0]; // Extract the date part
+          const date = item.created_date.split("T")[0]; // Extract the date part
           if (!result[date]) {
             result[date] = { date, invoices: 0, Amount: 0 }; // Initialize
           }
           result[date].invoices += 1; // Count invoices
           result[date].Amount += parseFloat(item.offer_price); // Sum amounts
         });
-
+        
         // Convert the result object to an array of objects
         const structuredData = Object.values(result);
 
