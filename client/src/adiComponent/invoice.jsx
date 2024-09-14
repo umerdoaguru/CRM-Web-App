@@ -32,18 +32,18 @@ const Invoice = () => {
         const formattedDate = `${year}-${month}`;
 
         const filteredInvoices = invoiceList.filter(
-          (item) => item.created_at?.split(" ")[0]?.slice(0, 7) === formattedDate // Matching month and year
+          (item) => item.created_date?.split(" ")[0]?.slice(0, 7) === formattedDate // Matching month and year
         );
 
         let result = {};
 
         filteredInvoices.forEach((item) => {
-          const date = item.created_at.split(" ")[0]; // Extract the date part
+          const date = item.created_date.split(" ")[0]; // Extract the date part
           if (!result[date]) {
             result[date] = { date, invoices: 0, Amount: 0 }; // Initialize
           }
           result[date].invoices += 1; // Count invoices
-          result[date].Amount += parseFloat(item.amount); // Sum amounts
+          result[date].Amount += parseFloat(item.offer_price); // Sum amounts
         });
 
         // Convert the result object to an array of objects
