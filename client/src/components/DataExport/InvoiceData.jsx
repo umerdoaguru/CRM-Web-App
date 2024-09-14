@@ -147,7 +147,3 @@ const Wrapper = styled.div`
 }
 
 `;
-<<<<<<< HEAD
-
-=======
->>>>>>> 1ff02d008d05f7aba92c8e122b092480bba3cfd0

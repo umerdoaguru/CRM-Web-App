@@ -121,8 +121,7 @@ exports.recordDeviceUsage = async (req, res) => {
 const getLeadsData = async (req, res) => {
     try {
         const query = `
-            SELECT name, email, status, duration, date
-            FROM leads
+           SELECT name, email, status, duration, date FROM leads
         `;
         db.query(query, (err, results) => {
             if (err) {
@@ -136,6 +135,8 @@ const getLeadsData = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+
 
 const getToDoList = (req, res) => {
     const query = `
@@ -500,7 +501,10 @@ const createInvoice = async (req, res) => {
 
 // Get all invoices
 const getAllInvoices = (req, res) => {
-    const query = 'SELECT * FROM invoices';
+
+    const query = `SELECT * FROM  
+                    invoice_data 
+                    JOIN  invoice_services_data ON invoice_data.invoice_id = invoice_services_data.invoice_id`; 
     db.query(query, (err, results) => {
         if (err) {
             console.error("Error fetching invoices:", err); // Log the error details

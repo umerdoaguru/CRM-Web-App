@@ -1,54 +1,74 @@
 import React, { useEffect, useState } from 'react';
+import moment from 'moment'; // Import moment for date formatting
 
 const LeadsReport = () => {
-    const [leads, setLeads] = useState([]);
+  const [leads, setLeads] = useState([]);
 
-    useEffect(() => {
-        const fetchLeads = async () => {
-            try {
-                const response = await fetch('http://localhost:9000/api/leads');
-                const data = await response.json();
-                // Process and set the lead data
-                setLeads(data);
-            } catch (error) {
-                console.error('Error fetching leads:', error);
-            }
-        };
+  useEffect(() => {
+    const fetchLeads = async () => {
+      try {
+        const response = await fetch('http://localhost:9000/api/leads');
+        const data = await response.json();
+        console.log('Fetched leads data:', data); // Debugging line
+        
+        // Filter leads to include only those created today
+        const filteredLeads = data.filter(lead =>
+          moment(lead.createdTime).isSame(moment(), 'day')
+        );
 
-        fetchLeads();
-    }, []);
+        setLeads(filteredLeads);
+      } catch (error) {
+        console.error('Error fetching leads:', error);
+      }
+    };
 
-    return (
-        <div className="p-4 mt-6 bg-white rounded-lg shadow-lg">
-            <h3 className="mb-4 text-lg font-semibold">Leads Report</h3>
-            <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-100">
-                        <tr>
-                            <th className="px-4 py-2 text-sm font-medium text-left text-gray-500">Name</th>
-                            <th className="px-4 py-2 text-sm font-medium text-left text-gray-500">Email</th>
-                            <th className="px-4 py-2 text-sm font-medium text-left text-gray-500">Date</th>
-                            <th className="px-4 py-2 text-sm font-medium text-left text-gray-500">Duration</th>
-                            <th className="px-4 py-2 text-sm font-medium text-left text-gray-500">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                        {leads.map((lead, idx) => (
-                            <tr key={lead.lead_id} className={`hover:bg-gray-50 ${idx % 2 === 0 ? 'bg-gray-50' : ''}`}>
-                                <td className="px-4 py-2 text-sm font-medium text-gray-900">{lead.name}</td>
-                                <td className="px-4 py-2 text-sm text-gray-500">{lead.email}</td>
-                                <td className="px-4 py-2 text-sm text-gray-500">{new Date(lead.date).toLocaleDateString()}</td>
-                                <td className="px-4 py-2 text-sm text-gray-500">{lead.duration}</td>
-                                <td className={`px-4 py-2 text-sm font-medium ${lead.status === 'Lost Lead' ? 'text-red-600' : 'text-green-600'}`}>
-                                    {lead.status || 'N/A'}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    );
+    fetchLeads();
+  }, []);
+
+  return (
+
+    <div className="p-4 mt-6 bg-white rounded-lg shadow-lg">
+            <h3 className="mb-4 text-lg font-semibold">Todays Leads</h3>
+    <div className="overflow-x-auto mt-4">
+      
+      <table className="min-w-full bg-white border">
+        <thead>
+          <tr>
+            <th className="px-6 py-3 border-b-2 border-gray-300">S.no</th>
+            <th className="px-6 py-3 border-b-2 border-gray-300">Lead Number</th>
+            <th className="px-6 py-3 border-b-2 border-gray-300">Name</th>
+            <th className="px-6 py-3 border-b-2 border-gray-300">Phone</th>
+            <th className="px-6 py-3 border-b-2 border-gray-300">Lead Source</th>
+            <th className="px-6 py-3 border-b-2 border-gray-300">Assigned To</th>
+            <th className="px-6 py-3 border-b-2 border-gray-300">Subject</th>
+            <th className="px-6 py-3 border-b-2 border-gray-300">Lead Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {leads.map((lead, index) => (
+            <tr key={lead.id} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
+              <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{index + 1}</td>
+              <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.lead_no}</td>
+              <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.name}</td>
+              <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.phone}</td>
+              <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.leadSource}</td>
+              <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.assignedTo}</td>
+              <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.subject}</td>
+              <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.lead_status}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    </div>
+  );
 };
 
 export default LeadsReport;
+
+
+        
+       
+           
+      
+  

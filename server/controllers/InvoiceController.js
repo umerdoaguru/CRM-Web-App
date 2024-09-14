@@ -118,32 +118,6 @@ const getInvoice = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
-const getAllInvoice = async (req, res) => {
-  try {
-    const { UserId } = req.params; // Extracting UserId from req.params
-    const sql =
-      "SELECT * FROM invoice_data";
-
-    const invoices = await new Promise((resolve, reject) => {
-      db.query(sql, [UserId], (err, results) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(results);
-        }
-      });
-    });
-
-    res.status(200).json(invoices);
-  } catch (error) {
-    console.error("Error processing request:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-=======
->>>>>>> 1ff02d008d05f7aba92c8e122b092480bba3cfd0
 const getInvoiceAddress = async (req, res) => {
   try {
     const { id } = req.params;
@@ -1074,9 +1048,5 @@ module.exports = {
   UpdateInvoice_No,
   UpdateInvoice_date,
   UpdateInvoice_start_date,
-<<<<<<< HEAD
-  UpdateInvoice_end_date, getInvoiceDate,getAllInvoice
-=======
   UpdateInvoice_end_date, getInvoiceDate
->>>>>>> 1ff02d008d05f7aba92c8e122b092480bba3cfd0
 };
