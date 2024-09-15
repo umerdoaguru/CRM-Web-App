@@ -40,6 +40,7 @@
 // export default LeadsGraph;
 
 
+
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
@@ -53,24 +54,27 @@ const LeadsGraph = () => {
       try {
         const response = await axios.get('http://localhost:9000/api/leads');
         const allLeads = response.data;
-  
+
         // Get today's date and the date 28 days ago (to include today and 27 previous days)
         const today = new Date();
         const startDate = new Date(today);
-        startDate.setDate(today.getDate() - 28);
-  
-        // Convert dates to YYYY-MM-DD format for comparison
-        const formatDate = (date) => date.toISOString().split('T')[0];
+        startDate.setDate(today.getDate() - 28); // 28 days range including today
+
+        // Format dates to 'MMM dd' for display
+        const formatDate = (date) => {
+          const options = { month: 'short', day: '2-digit' };
+          return new Intl.DateTimeFormat('en-US', options).format(date);
+        };
         const startDateString = formatDate(startDate);
         const todayString = formatDate(today);
-  
+
         // Filter the data for the last 28 days including today
         const filteredLeads = allLeads.filter(lead => {
-          // Extract the date part from `createdTime` and ensure it matches the date format
-          const leadDate = new Date(lead.createdTime).toISOString().split('T')[0];
-          return leadDate >= startDateString && leadDate <= todayString;
+          const leadDate = new Date(lead.createdTime);
+          const leadDateString = formatDate(leadDate);
+          return leadDateString >= startDateString && leadDateString <= todayString;
         });
-  
+
         // Group by date
         const groupedLeads = filteredLeads.reduce((acc, lead) => {
           const date = formatDate(new Date(lead.createdTime));
@@ -80,38 +84,29 @@ const LeadsGraph = () => {
           acc[date] += 1; // Count the number of leads per day
           return acc;
         }, {});
-  
+
         // Convert to array format for Recharts
-        const leadsData = Object.keys(groupedLeads).map(date => ({
-          createdDate: date,
-          Leads: groupedLeads[date],
-        }));
-  
-        // Sort the data in ascending order by date
-        leadsData.sort((a, b) => new Date(a.createdDate) + new Date(b.createdDate));
-  
-        // Ensure that all dates in the range are represented
-        const allDates = [];
-        for (let i = 0; i <= 28; i++) {
+        const leadsData = [];
+        for (let i = 0; i <= 27; i++) {
           const date = new Date();
           date.setDate(date.getDate() - i);
           const formattedDate = formatDate(date);
-          allDates.push({
-            createdDate: formattedDate,
+          leadsData.push({
+            createdDate: formattedDate, 
             Leads: groupedLeads[formattedDate] || 0, // Default to 0 if no data for that day
           });
         }
-  
+
         // Reverse to display the most recent dates first
-        allDates.reverse();
+        leadsData.reverse();
         
-        setLeadsData(allDates);
+        setLeadsData(leadsData);
       } catch (error) {
         console.error('Error fetching leads data:', error);
         setError('Failed to load leads data');
       }
     };
-  
+
     fetchLeadsData();
   }, []);
 
@@ -124,9 +119,9 @@ const LeadsGraph = () => {
         <>
           <p className="text-sm text-gray-500 mb-4">Leads for the past 28 days</p>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={leadsData} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
+            <BarChart data={leadsData} margin={{ top: 5, right: 30, left: 0, bottom: 25 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="createdDate" tick={{ fill: 'gray' }} angle={360} textAnchor="end" />
+              <XAxis dataKey="createdDate" tick={{ fill: 'gray' }} angle={0} textAnchor="middle" />
               <YAxis tick={{ fill: 'gray' }} />
               <Tooltip />
               <Bar dataKey="Leads" name="Leads" fill="#EA6A47" radius={[10, 10, 0, 0]} barSize={15} />
@@ -139,6 +134,10 @@ const LeadsGraph = () => {
 };
 
 export default LeadsGraph;
+
+
+
+
 
 
 
