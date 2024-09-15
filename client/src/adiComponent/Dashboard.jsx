@@ -11,7 +11,7 @@ import Invoice from './Invoice';
 import axios from 'axios';
 import LeadsGraph from './LeadsGraph';
 import QuotationGraph from './QuotationGraph';
-import styled from "styled-components";
+
 
 
 
@@ -31,7 +31,7 @@ const Dashboard = () => {
 
 
     return (
-        <Wrapper>
+       
         <>
         <MainHeader/>
         <Sider/>
@@ -40,7 +40,7 @@ const Dashboard = () => {
         
 
             {/* Main Content */}
-            <div className="flex-1 max-w-full lg:ml-48 xl:ml-52 mr-3 ">
+            <div className="flex-1 max-w-full lg:ml-64 xl:ml-52 mr-3 ">
                 {/* Hamburger Menu Button for Mobile */}
                 {/* <div className="p-4 lg:hidden">
                     <button onClick={toggleSidebar} className="text-2xl">
@@ -64,14 +64,10 @@ const Dashboard = () => {
             </div>
         </div>
         </>
-        </Wrapper>
+         
     );
 };
 
 export default Dashboard;
 
-/* Global CSS or a module CSS file */
 
-const Wrapper = styled.div`
-
-`;

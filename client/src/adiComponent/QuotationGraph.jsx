@@ -114,7 +114,7 @@ const QuotationGraph = () => {
 
     return (
         <Wrapper>
-        <div className="w-full max-w-4xl mx-auto p-4 border rounded-lg shadow-md bg-white lg:max-xl:w-[380px]">
+        <div className="w-full max-w-4xl mx-auto p-4 border rounded-lg shadow-md bg-white ">
             <h2 className="text-xl font-bold mb-2">Daily Quotation Overview</h2>
             <p className="text-sm text-gray-500 mb-4">Quotation for the past 28 days</p>
             <ResponsiveContainer width="100%" height={300}>
