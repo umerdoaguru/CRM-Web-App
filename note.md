@@ -1,3 +1,7 @@
+# 15 sep
+- > back wali dikkat hai wuoaiton seciton maia ya fir single page rakhe ya fir isko sahi rkahe
+- > 
+
 # 14 sep 
 - > header and sidebar sab mai lagana hai 
 - > 

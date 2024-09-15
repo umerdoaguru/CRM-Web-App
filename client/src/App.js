@@ -41,10 +41,12 @@ import InvoiceData from './components/DataExport/InvoiceData';
 import Dashboard from './adiComponent/Dashboard';
 import Overview from './adiComponent/Overview';
 import UserProfile from './adiComponent/userProfile';
+import Single_Lead_Profile from './components/Leads/Single_Lead_Profile';
 import EmployeeManagement from './adiComponent/EmployManagement';
 import EmployeeSingle from './adiComponent/EmployeSingle';
 import SingleOrganization from './adiComponent/SingleOrganizaton';
 import Reporting from './adiComponent/Reporting';
+import Profile from './pages/Profile';
 
 
 function App() {
@@ -98,6 +100,7 @@ function App() {
         <Route path="/lead-data" element={user ? <LeadData/>: <Navigate to="/" />} />
         <Route path="/quotation-data" element={user ? <QuotationData/>: <Navigate to="/" />} />
         <Route path="/invoice-data" element={user ? <InvoiceData/>: <Navigate to="/" />} />
+        <Route path="/lead-single-data/:id" element={  <Single_Lead_Profile/>} />
 
    {/* aditya routes */}
 
@@ -109,6 +112,8 @@ function App() {
         <Route path='/employee-single/:employeeId' element={<EmployeeSingle/>}/>
         <Route path='/singleOrganization/:id' element={<SingleOrganization/>}/>
         <Route path='/reporting' element={<Reporting/>}/>
+        <Route path='/profile' element={<Profile/>}/>
+
       </Routes>
 </div>
 

@@ -183,7 +183,7 @@ const QuotationForm1 = () => {
                 </div>
     
                 <div className="lg:col-span-7 lg:text-center  ">
-                  <h5 className="mb-4">Quotation Generation System :</h5>
+                  <h5 className="mb-4">Quotation Generation System</h5>
                 </div>
     
                 {/* <div className="lg:col-span-2">

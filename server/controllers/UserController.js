@@ -293,67 +293,34 @@ const JWT = require('jsonwebtoken');
   
   const CopyQuotationData = async (req, res) => {
     try {
-      const { quotationId } = req.params; // Extract quotationId from req.params
-    
-      // Retrieve the quotation data based on the provided quotation ID
-      const sqlQuotation = "SELECT * FROM quotations_data WHERE quotation_id = ?";
-    
-      // Execute the query asynchronously to fetch the quotation data
-      const [quotation] = await new Promise((resolve, reject) => {
-        db.query(sqlQuotation, [quotationId], (err, results) => {
-          if (err) {
-            reject(err);
-          } else {
+      const { quotationId } = req.params;
+  
+      const queryAsync = (sql, params) =>
+        new Promise((resolve, reject) => {
+          db.query(sql, params, (err, results) => {
+            if (err) return reject(err);
             resolve(results);
-          }
+          });
         });
-      });
-      
-      // Check if the quotation data exists
-      if (!quotation) {
+  
+      // Retrieve the quotation data
+      const quotation = await queryAsync("SELECT * FROM quotations_data WHERE quotation_id = ?", [quotationId]);
+      const quotationData = quotation[0];
+      if (!quotationData) {
         return res.status(404).json({ error: "Quotation not found" });
       }
   
-      // Extract the quotation name
-      const newQuotationName = `Copy of ${quotation.quotation_name}`;
+      // Create a new quotation name
+      const newQuotationName = `Copy of ${quotationData.quotation_name}`;
   
-      // Insert the copied quotation into the database
-      const result = await db.query("INSERT INTO quotations_data (quotation_name, user_id) VALUES (?, ?)", [newQuotationName, quotation.user_id]);
+      // Insert the copied quotation
+      const result = await queryAsync("INSERT INTO quotations_data (quotation_name, employeeId) VALUES (?, ?)", [newQuotationName, quotationData.employeeId]);
+      const newQuotationId = result.insertId;
   
-  
-      const sqlgetId = "SELECT * FROM quotations_data WHERE quotation_name = ?";
-      const [getId] = await new Promise((resolve, reject) => {
-        db.query(sqlgetId, [newQuotationName], (err, results) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(results);
-          }
-        });
-      });
-      const newQuotationId = getId.quotation_id
-      
-  
-  
-      
-      // Retrieve services associated with the original quotation ID
-      const sqlGetServices = "SELECT * FROM services_data WHERE quotation_id = ?";
-    
-      // Execute the query asynchronously to fetch the services data
-      const services = await new Promise((resolve, reject) => {
-        db.query(sqlGetServices, [quotationId], (err, results) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(results);
-          }
-        });
-      });
-  
-        // Copy service data associated with the original quotation ID to the new quotation ID
-      const sqlServices = "INSERT INTO services_data (quotation_id, quotation_name, service_type, service_name, service_description, actual_price, offer_price, subscription_frequency) VALUES ?";
+      // Retrieve and copy services
+      const services = await queryAsync("SELECT * FROM services_data WHERE quotation_id = ?", [quotationId]);
       const servicesValues = services.map((service) => [
-        newQuotationId, // Use the new quotation ID
+        newQuotationId,
         newQuotationName,
         service.service_type,
         service.service_name,
@@ -362,65 +329,22 @@ const JWT = require('jsonwebtoken');
         service.offer_price,
         service.subscription_frequency,
       ]);
+      await queryAsync("INSERT INTO services_data (quotation_id, quotation_name, service_type, service_name, service_description, actual_price, offer_price, subscription_frequency) VALUES ?", [servicesValues]);
   
-      await new Promise((resolve, reject) => {
-        db.query(sqlServices, [servicesValues], (err, result) => {
-          if (err) {
-            console.error("Error copying services data:", err); // Log the error
-            reject(err);
-          } else {
-            resolve(result);
-          }
-        });
-      });
-  
-   
-      // SQL query to retrieve notes data associated with the quotation ID
-  const sqlNotes = 'SELECT * FROM notes WHERE quotation_id = ?';
-  
-  // Execute the query asynchronously and retrieve the notes data
-  const getNotes = await new Promise((resolve, reject) => {
-    db.query(sqlNotes, [quotationId], (err, results) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(results);
+      // Retrieve and copy notes
+      const getNotes = await queryAsync("SELECT * FROM notes WHERE quotation_id = ?", [quotationId]);
+      if (Array.isArray(getNotes) && getNotes.length > 0) {
+        const notesValues = getNotes.map((note) => [note.note_text, newQuotationId]);
+        await queryAsync("INSERT INTO notes (note_text, quotation_id) VALUES ?", [notesValues]);
       }
-    });
-  });
   
-  // Check if notes data is retrieved successfully
-  if (!Array.isArray(getNotes)) {
-    console.error('Error fetching notes data:', getNotes);
-    // Handle the error appropriately, such as returning an error response
-  } else {
-    // Prepare notes data for insertion
-    const notesValues = getNotes.map(note => [note.note_text, newQuotationId]);
-  
-    // SQL query to insert notes data into the database
-    const insertNotesQuery = 'INSERT INTO notes (note_text, quotation_id) VALUES ?';
-  
-    // Execute the insertion query
-    db.query(insertNotesQuery, [notesValues], (err, result) => {
-      if (err) {
-        console.error('Error inserting notes data:', err);
-        // Handle the error appropriately, such as returning an error response
-      } else {
-        console.log('Notes data inserted successfully:', result);
-        // Handle the successful insertion, such as returning a success response
-      }
-    });
-  }
-  
-  
-     
-      
-      res.status(200).json({ message: "Quotation and services data copied successfully" });
+      res.status(200).json({ message: "Quotation, services, and notes copied successfully" });
     } catch (error) {
-      console.error("Error copying quotation and services data:", error);
+      console.error("Error copying quotation, services, or notes data:", error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
+  
   
   
   

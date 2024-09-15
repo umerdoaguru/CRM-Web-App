@@ -105,10 +105,10 @@ const updateLeadStatus = async (req, res) => {
     }
 };
 
-const getEmployeeInvoiceData = async (req, res) => {
+const employeeProfile = async (req, res) => {
     try {
         const { id } = req.params;
-        const sql = "SELECT * FROM invoice_data WHERE employeeId = ?";
+        const sql = "SELECT * FROM employee WHERE employeeId = ?";
     
         const result = await new Promise((resolve, reject) => {
             db.query(sql, [id], (err, results) => {
@@ -122,10 +122,10 @@ const getEmployeeInvoiceData = async (req, res) => {
         
         // Send the result as a response
         res.status(200).json(result);
-    } catch (err) { 
+    } catch (err) {
         console.error('Database query error:', err); // Log the error for debugging
         res.status(500).json({ message: "Internal Server Error", error: err });
-    }
+    } 
 }
  
 module.exports = {
@@ -133,6 +133,6 @@ module.exports = {
     getEmployeeLeads,
     updateLeadStatus,
     getEmployeeQuotation,
-    getEmployeeInvoiceData,
+    employeeProfile,
 };
   

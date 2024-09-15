@@ -28,7 +28,7 @@ const QuotationList = () => {
     };
 
     fetchQuotations();
-  }, [UserId]);
+  }, []);
 
   const handleDelete = async (id) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this quotation?");
@@ -78,11 +78,11 @@ const QuotationList = () => {
   return (
     <>
     <div className="w-full px-2 mx-auto p-4">
-  <Link to="/quotation-section" className="text-white">
+  {/* <Link to="/quotation-section" className="text-white">
     <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mt-2">
       <i className="bi bi-arrow-return-left mx-1"></i>Back
     </button>
-  </Link>
+  </Link> */}
   
   <div className="w-full px-2 mt-4">
     <h2 className="text-2xl font-bold mb-4">List of Quotations</h2>

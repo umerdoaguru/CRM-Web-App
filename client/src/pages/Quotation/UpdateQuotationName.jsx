@@ -133,7 +133,7 @@ const UpdateQuotationName = () => {
 
     const handleClose = () => {
         setShowModal(false);
-        navigate('/quotationlist');
+        navigate('/quotation-section');
     };
 
     return (

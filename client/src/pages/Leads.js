@@ -229,6 +229,7 @@ import Sider from '../components/Sider';
 import moment from 'moment';
 import FormField from '../adiComponent/comp/updateLeadField';
 import cogoToast from 'cogo-toast';
+import { Link } from 'react-router-dom';
 const fieldConfig = [
     {
       name: 'lead_status',
@@ -417,7 +418,9 @@ function Leads() {
                             {leads.map((lead, index) => (
                                 <tr key={lead.id} className={index % 2 === 0 ? "bg-gray-100" : ""}>
                                     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{index + 1}</td>
+                                    <Link to={`/lead-single-data/${lead.lead_id}`}>
                                     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.lead_no}</td>
+                                    </Link>
                                     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.assignedTo}</td>
                                     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{moment(lead.createdTime).format('DD/MM/YYYY')}</td>
                                     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.name}</td>

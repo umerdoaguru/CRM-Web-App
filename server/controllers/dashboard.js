@@ -700,7 +700,7 @@ const getLeadById = (req, res) => {
         }
 
         // Respond with the first result if found
-        res.status(200).json(results[0]);
+        res.status(200).json(results);
     });
 };
 

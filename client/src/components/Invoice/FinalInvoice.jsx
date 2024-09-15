@@ -123,7 +123,7 @@ function FinalInvoice() {
     <div className="grid grid-cols-12 gap-2">
       <div className="col-span-12 lg:col-span-3">
         <Link
-          to="/"
+          to="/quotation-section"
           className="text-white bg-green-600 hover:bg-green-700 btn w-full"
         >
           <i className="bi bi-arrow-return-left mr-1"></i>Back

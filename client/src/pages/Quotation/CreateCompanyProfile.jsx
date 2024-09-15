@@ -16,6 +16,8 @@ import Sider from "../../components/Sider";
 import MainHeader from "../../components/MainHeader";
 import QuotationForm1 from "./QuotationForm1";
 import CreateInvoice from "../../components/Invoice/CreateInvoice";
+import QuotationList from "./QuotationList";
+import Invoicelist from "../../components/Invoice/Invoicelist";
 
 function CreateCompanyProfile() {
   const { id } = useParams();
@@ -215,10 +217,6 @@ function CreateCompanyProfile() {
               </Link>
             </div>
           </div> */}
-  
-          <div className="flex justify-center mt-4">
-            <h3 className="text-center">Create Company Profile</h3>
-          </div>
   
           {/* <div className="grid lg:grid-cols-5 md:grid-cols-4 gap-2 mt-4">
             <div className="">
@@ -459,7 +457,7 @@ function CreateCompanyProfile() {
                 </div>
                 <div className="mt-2">
                   <h5 className={`text-xl font-semibold ${selectedComponent === 'LeadData' ? 'text-white' : 'text-gray-800'}`}>Create Quotation</h5>
-                  <p className={`${selectedComponent === 'LeadData' ? 'text-white' : 'text-gray-600'}`}>{"leadCount"}</p>
+                  {/* <p className={`${selectedComponent === 'LeadData' ? 'text-white' : 'text-gray-600'}`}>{"leadCount"}</p> */}
                 </div>
               </div>
             </div>
@@ -478,7 +476,7 @@ function CreateCompanyProfile() {
                 </div>
                 <div className="mt-2">
                   <h5 className={`text-xl font-semibold ${selectedComponent === 'EmployeeData' ? 'text-white' : 'text-gray-800'}`}>Create Invoice</h5>
-                  <p className={`${selectedComponent === 'EmployeeData' ? 'text-white' : 'text-gray-600'}`}>{"employeeCount"}</p>
+                  {/* <p className={`${selectedComponent === 'EmployeeData' ? 'text-white' : 'text-gray-600'}`}>{"employeeCount"}</p> */}
                 </div>
               </div>
             </div>
@@ -497,7 +495,7 @@ function CreateCompanyProfile() {
                 </div>
                 <div className="mt-2">
                   <h5 className={`text-xl font-semibold ${selectedComponent === 'QuotationData' ? 'text-white' : 'text-gray-800'}`}>   Quotation List</h5>
-                  <p className={`${selectedComponent === 'QuotationData' ? 'text-white' : 'text-gray-600'}`}>{"quotationCount"}</p>
+                  {/* <p className={`${selectedComponent === 'QuotationData' ? 'text-white' : 'text-gray-600'}`}>{"quotationCount"}</p> */}
                 </div>
               </div>
             </div>
@@ -516,19 +514,20 @@ function CreateCompanyProfile() {
                 </div>
                 <div className="mt-2">
                   <h5 className={`text-xl font-semibold ${selectedComponent === 'InvoiceData' ? 'text-white' : 'text-gray-800'}`}> Invoice List</h5>
-                  <p className={`${selectedComponent === 'InvoiceData' ? 'text-white' : 'text-gray-600'}`}>{"invoiceCount"}</p>
+                  {/* <p className={`${selectedComponent === 'InvoiceData' ? 'text-white' : 'text-gray-600'}`}>{"invoiceCount"}</p> */}
                 </div>
               </div>
             </div>
           </div>
-          <div className="w-full h-[calc(100vh-10rem)] overflow-y-auto">
+          {/* <div className="w-full h-[calc(100vh-10rem)] overflow-y-auto"> */}
+          <div className="w-full h-full">
           {selectedComponent === 'LeadData' && <QuotationForm1 />}
           {selectedComponent === 'EmployeeData' && <CreateInvoice />}
-          {/* {selectedComponent === 'QuotationData' && <QuotationData />}
-          {selectedComponent === 'InvoiceData' && <InvoiceData />} */}
+          {selectedComponent === 'QuotationData' && <QuotationList />}
+          {selectedComponent === 'InvoiceData' && <Invoicelist />}
         </div>
         </div>
-      <div className="container mt-4">
+      <div className="m-4 pb-10">
         <h2>List of Company Profile Created Data</h2>
         <div className="overflow-y-auto" style={{ maxHeight: "700px" }}>
           <table className="w-full table-auto border-collapse border border-gray-300">

@@ -175,11 +175,11 @@ const Invoicelist = () => {
   return (
     <>
     <div className="container mx-auto px-4">
-  <Link to="/quotation-section" className="text-white">
+  {/* <Link to="/quotation-section" className="text-white">
     <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2 flex items-center">
       <i className="bi bi-arrow-return-left mr-1"></i>Back
     </button>
-  </Link>
+  </Link> */}
 
   <div className="container mx-auto mt-4">
     <h2 className="text-2xl font-bold mb-4">List of Invoices</h2>

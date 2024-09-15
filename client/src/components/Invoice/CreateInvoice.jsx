@@ -157,9 +157,9 @@ const CreateInvoice = () => {
   const getServicelist = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:9000/api/servicelist/${userId}`
+        `http://localhost:9000/api/servicelist`
       );
-      
+      // alert(res.data);
       setServiceslist(res.data);
     } catch (error) {
       
@@ -169,7 +169,7 @@ const CreateInvoice = () => {
   useEffect(() => {
     const fetchinvoice = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/company-data/${UserId}`);
+        const response = await axios.get(`http://localhost:9000/api/company-data`);
         setCompany_data(response.data);
         
         console.log(response);
@@ -197,10 +197,6 @@ const CreateInvoice = () => {
         setCompanyGST_no(companyData.gst_no);
         setCompanyPan_no(companyData.pan_no);
        
-       
-        
-
-     
         } else {
           console.error('Error Company Data:', response.statusText);
         }
@@ -242,7 +238,7 @@ const CreateInvoice = () => {
 
   return (
     <Wrapper>
-      <div className="w-full mt-4">
+      {/* <div className="w-full mt-4">
 
         <Link
       to={`/quotation-section`}
@@ -250,7 +246,7 @@ const CreateInvoice = () => {
     >
       <i className="bi bi-arrow-return-left"></i> Back
     </Link>   
-      </div>
+      </div> */}
  
     <div className="container mx-auto mt-5">
       <div className="grid grid-cols-1">
@@ -261,21 +257,21 @@ const CreateInvoice = () => {
             </div>
   
             <div className="lg:col-span-6 text-center lg:text-left">
-              <h5 className="text-xl font-semibold mb-4">Invoice Generation System :</h5>
+              <h5 className="text-xl font-semibold mb-4">Invoice Generation System </h5>
             </div>
   
-            <div className="lg:col-span-2">
+            {/* <div className="lg:col-span-2">
               <Link
                 to="/invoicelist"
                 className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded text-center block"
               >
                 Invoice List
               </Link>
-            </div>
+            </div> */}
   
-            <div className="lg:col-span-1">
+            {/* <div className="lg:col-span-1">
               <Logout />
-            </div>
+            </div> */}
           </div>
   
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">

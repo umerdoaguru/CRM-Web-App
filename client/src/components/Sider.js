@@ -112,7 +112,7 @@ const Sider = () => {
 
             <hr className="w-full border-gray-400" />
             <li className={`w-full ${getSidebarClass("/employee-management")}`}>
-              <Link to="/employee-management" className="flex flex-col items-center py-3">
+              <Link to="/profile" className="flex flex-col items-center py-3">
                 <MdOutlineManageAccounts className="text-white text-2xl lg:text-3xl" />
                 <h3 className="hidden lg:inline text-white text-sm lg:text-base">
                   My profile
