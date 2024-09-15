@@ -6,6 +6,7 @@ const path = require('path');
 dotenv.config();
 const bodyParser = require('body-parser');
 
+const Router4 = require("./routers/employeRouter");
 const Router2 = require("./routers/organizationRoutes");
 const Router3 = require("./routers/dashboardRoutes");
 const Router = require("./routers/userdataroutes")
@@ -19,6 +20,7 @@ app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.use('/api', Router3);
 app.use("/api", Router2);
+app.use("/api", Router4);
 app.use('/api', Router);
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use('/Assets', express.static(path.join(__dirname, 'Assets')));

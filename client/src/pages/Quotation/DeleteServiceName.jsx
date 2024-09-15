@@ -9,7 +9,7 @@ function DeleteServiceName() {
 
 const fetchServicelist = async () =>{
     try {
-        const response = await axios.get(`http://localhost:9000/api/servicelist/${serviceId}`);
+        const response = await axios.get(`http://localhost:9000/api/servicelist`);
         if (response.status === 200) {
             SetServiceList(response.data)
         } 

@@ -164,12 +164,14 @@ function CreateCompanyProfile() {
 
   return (
     <>
-       <Wrapper>
      <MainHeader/>
+       <Wrapper>
      
       <Sider/>
-      <div className=" container px-3 ">
-        <form className="p-4 bg-white rounded shadow-md mt-5" onSubmit={handleUpload}>
+      <div className=" container px-3 pt-5">
+      <h1 className="text-2xl text-center mt-[2rem]">Quotation & Invoice Management</h1>
+      <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
+        <form className="p-4 bg-white rounded shadow-lg mt-5" onSubmit={handleUpload}>
           <div className="flex justify-between">
             <div className="mx-3 mt-3">
               <UserLogin />
@@ -178,8 +180,8 @@ function CreateCompanyProfile() {
               <Logout />
             </div>
           </div>
-          <div className="grid lg:grid-cols-4 gap-2 mt-2">
-            <div className="col-span-1">
+          <div className="grid lg:grid-cols-3 gap-2 mt-2">
+            {/* <div className="col-span-1">
               <Link
                 to="/quotation-form"
                 className="bg-green-600 text-white px-4 py-2 rounded block text-center"
@@ -194,7 +196,7 @@ function CreateCompanyProfile() {
               >
                 Create Invoice
               </Link>
-            </div>
+            </div> */}
             <div className="col-span-1">
               <Link
                 to="/quotationlist"
@@ -209,6 +211,14 @@ function CreateCompanyProfile() {
                 className="bg-green-600 text-white px-4 py-2 rounded block text-center"
               >
                 Invoice List
+              </Link>
+            </div>
+            <div className="col-span-1">
+              <Link
+to="/servicenamelist"
+                className="bg-green-600 text-white px-4 py-2 rounded block text-center"
+              >
+                 Service Name List
               </Link>
             </div>
           </div>
@@ -323,7 +333,7 @@ function CreateCompanyProfile() {
           </div>
   
           <div className="mt-4">
-            <h6>Company Name Payment Detail:</h6>
+            <h6 className="text-center mb-4">Company Name Payment Detail:</h6>
             <div className="grid lg:grid-cols-5 md:grid-cols-4 gap-2">
               <div className=" ">
                 <label className="block">
@@ -442,9 +452,11 @@ function CreateCompanyProfile() {
         </form>
       </div>
   
-      <div className="container mt-4">
-        <h2>List of Company Profile Created Data</h2>
-        <div className="overflow-y-auto" style={{ maxHeight: "700px" }}>
+      <div className="container mt-4 ">
+        <h2 className="text-center text-xl ">List of Company Profile Created Data</h2>
+       
+        <div className="mx-auto h-[2px] w-16 bg-[#34495E] my-3"></div>
+        <div className="overflow-y-auto mb-4" style={{ maxHeight: "700px" }}>
           <table className="w-full table-auto border-collapse border border-gray-300">
             <thead>
               <tr className="bg-gray-200">

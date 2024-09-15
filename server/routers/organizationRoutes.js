@@ -35,8 +35,7 @@ router.put('/updateOrganization/:companyId', upload.fields([{ name: 'signature' 
 // Route to add an employee
 router.post("/addEmployee", addEmployee);
 
-// Route to add an employee
-router.post("/employee-login", employeelogin);
+
 
 // Route to get all employees
 router.get('/getAllEmployees', getAllEmployees);

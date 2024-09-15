@@ -135,5 +135,75 @@ const register = async (req, res) => {
     res.status(500).send({success:false , message:"error in login ", error})
     }
   };
-
-  module.exports = {register,login}
+  const employeelogin = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      // Validation 
+      if (!email || !password) {
+        return res.status(404).send({
+          success: false,
+          message: "Invalid email or password",
+        });
+      }
+  
+      // Check user in MySQL
+      const checkUserQuery = "SELECT * FROM employee WHERE email = ?";
+      db.query(checkUserQuery, [email], (err, results) => {
+        if (err) {
+          console.log("Error checking user in MySQL", err);
+          return res.status(500).send({
+            success: false,
+            message: "Server error",
+          });
+        }
+  
+        if (results.length === 0) {
+          return res.status(404).send({
+            success: false,
+            message: "Email is not registered",
+          });
+        }
+  
+        const user = results[0];
+  
+        // Compare passwords (direct comparison since bcrypt is not used)
+        if (password !== user.password) {
+          return res.status(404).send({
+            success: false,
+            message: "Invalid password",
+          });
+        }
+  
+        // Generate token 
+        const token = JWT.sign(
+          { id: user.employeeId },
+          process.env.JWT_SECRET,
+          { expiresIn: "7d" }
+        );
+  
+        // Send response
+        res.status(200).send({
+          success: true,
+          message: "Login successfully",
+          user: {
+            id: user.employeeId,
+            name: user.name,
+            email: user.email,
+            position: user.position,
+            salary: user.salary,
+          },
+          token,
+        });
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({
+        success: false,
+        message: "Error in login",
+        error,
+      });
+    }
+  };
+  
+  module.exports = {register,login,employeelogin}

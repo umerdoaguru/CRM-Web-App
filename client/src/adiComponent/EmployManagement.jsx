@@ -128,6 +128,7 @@ const EmployeeManagement = () => {
     setNewEmployee({
       name: employeeToEdit.name,
       email: employeeToEdit.email,
+      password: employeeToEdit.password,
       position: employeeToEdit.position,
       phone: employeeToEdit.phone,
       salary: employeeToEdit.salary // Set salary for editing
@@ -157,7 +158,7 @@ const EmployeeManagement = () => {
     <>
      <MainHeader/>
      <Sider/>
-     <div className="flex flex-col min-h-screen lg:flex-row">
+     <div className=" container  mt-12 flex flex-col min-h-screen lg:flex-row">
       
       <main className="flex-1 p-4 lg:p-8">
         <div className="flex flex-col-reverse items-start justify-between mb-8 lg:flex-row lg:items-center">
@@ -246,7 +247,7 @@ const EmployeeManagement = () => {
               className={`p-2 border rounded-lg ${validationErrors.email ? 'border-red-500' : 'border-gray-300'}`}
             />
             {validationErrors.email && <p className="text-sm text-red-500">{validationErrors.email}</p>}
-            {editingIndex == null && (
+          
             <input
               type="text"
               name="password"
@@ -256,7 +257,7 @@ const EmployeeManagement = () => {
               className={`p-2 border rounded-lg ${validationErrors.password ? 'border-red-500' : 'border-gray-300'}`}
               />
           
-            )}
+           
             <input
               type="text"
               name="position"

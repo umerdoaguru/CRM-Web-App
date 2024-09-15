@@ -1,107 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { BsDownload, BsFilter } from "react-icons/bs";
 import * as XLSX from "xlsx";
-import MainHeader from "../components/MainHeader";
-import Sider from "../components/Sider";
-import axios from "axios";
-import Pagination from "./comp/pagination";
 
-const Reporting = () => {
+import axios from "axios";
+
+import Pagination from './../../adiComponent/comp/pagination';
+import MainHeader from "../MainHeader";
+import EmployeeSider from "./EmployeeSider";
+
+const d_fileds = {
+  quotation: {
+    heading: ["Id", "employee ID", "Name", "Date"],
+    columns: ["quotation_id", "employeeId", "quotation_name", "created_date"],
+    quotation: [],
+  },
+  invoice: {
+    heading: ["id ", "Company", "Payment Mode", "Date"],
+    columns: ["invoice_id", "user_id", "payment_mode", "created_date"],
+    invoice: [],
+  },
+  leads: {
+    heading: ["Id", "Assign", "Date", "Source"],
+    columns: ["lead_no", "assignedTo", "createdTime", "leadSource"],
+    leads: [],
+  },
+}
+
+const EmployeeReport = () => {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState("All");
-  const [selectedCategory, setSelectedCategory] = useState("employee");
+  const [selectedCategory, setSelectedCategory] = useState("quotation");
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredData, setFilteredData] = useState(data);
   const [rowPerPage, setRowPerPage] = useState(5);
-  const [dataFields, setDataFields] = useState({
-    quotation: {
-      heading: ["Id", "Company", "Name", "Date"],
-      columns: ["quotation_id", "user_id", "quotation_name", "created_date"],
-      quotation: [],
-    },
-    invoice: {
-      heading: ["id ", "Company", "Payment Mode", "Date"],
-      columns: ["invoice_id", "user_id", "payment_mode", "created_date"],
-      invoice: [],
-    },
-    employee: {
-      heading: ["Id", "Name", "Email", "Designation", "date"],
-      columns: ["employeeId", "name", "email", "designation", "createdTime"],
-      employee: [],
-    },
-    leads: {
-      heading: ["Id", "Assign", "Date", "Source"],
-      columns: ["id", "assignedTo", "createdTime", "leadSource"],
-      leads: [],
-    },
-  });
-
-  const staticData = {
-    quotation: [
-      {
-        id: 1,
-        name: "Quotation 1",
-        date: "2024-08-12",
-        amount: "$500",
-        details: "Details of Quotation 1",
-      },
-      {
-        id: 2,
-        name: "Quotation 2",
-        date: "2024-08-15",
-        amount: "$300",
-        details: "Details of Quotation 2",
-      },
-    ],
-    invoice: [
-      {
-        id: 1,
-        name: "Invoice 1",
-        date: "2024-08-10",
-        amount: "$1000",
-        details: "Details of Invoice 1",
-      },
-      {
-        id: 2,
-        name: "Invoice 2",
-        date: "2024-08-20",
-        amount: "$2000",
-        details: "Details of Invoice 2",
-      },
-    ],
-    employee: [
-      {
-        id: 1,
-        name: "Employee 1",
-        date: "2024-08-11",
-        amount: "$1200",
-        details: "Details of Employee 1",
-      },
-      {
-        id: 2,
-        name: "Employee 2",
-        date: "2024-08-21",
-        amount: "$1300",
-        details: "Details of Employee 2",
-      },
-    ],
-    user: [
-      {
-        id: 1,
-        name: "User 1",
-        date: "2024-08-14",
-        amount: "$400",
-        details: "Details of User 1",
-      },
-      {
-        id: 2,
-        name: "User 2",
-        date: "2024-08-19",
-        amount: "$600",
-        details: "Details of User 2",
-      },
-    ],
-  };
+  const [dataFields, setDataFields] = useState(d_fileds);
 
   useEffect(() => {
     filterData();
@@ -212,37 +143,30 @@ const Reporting = () => {
       const [
         quotationResponse,
         invoiceResponse,
-        employeeResponse,
         leadsResponse,
       ] = await Promise.all([
-        axios.get("http://localhost:9000/api/get-quotation-data"),
-        axios.get("http://localhost:9000/api/get-invoice-data"),
-        axios.get("http://localhost:9000/api/employee"),
-        axios.get("http://localhost:9000/api/leads"),
+        axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${1}`),
+        axios.get(`http://localhost:9000/api/get-employee-invoice/${1}`),
+        axios.get(`http://localhost:9000/api/employe-leads/${1}`),
       ]);
-    
 
-      // Combine all responses as needed
       const combinedData = {
-        quotation: quotationResponse.data.data,
-        invoice: invoiceResponse.data.data,
-        employee: employeeResponse.data,
+        quotation: quotationResponse.data,
+        invoice: invoiceResponse.data,
         leads: leadsResponse.data,
       };
+
+      console.log(combinedData);
 
       const updatedDataFields = {
         ...dataFields,
         quotation: {
           ...dataFields.quotation,
-          quotation: quotationResponse.data.data,
+          quotation: quotationResponse.data,
         },
         invoice: {
           ...dataFields.invoice,
-          invoice: invoiceResponse.data.data,
-        },
-        employee: {
-          ...dataFields.employee,
-          employee: employeeResponse.data,
+          invoice: invoiceResponse.data,
         },
         leads: {
           ...dataFields.leads,
@@ -251,7 +175,6 @@ const Reporting = () => {
       };
 
       setDataFields(updatedDataFields);
-      console.log(combinedData);
       setData(combinedData);
     } catch (error) {
       console.log(error);
@@ -265,11 +188,14 @@ const Reporting = () => {
   return (
     <>
       <MainHeader />
-      <Sider />
-      <div className=" container mt-16 flex flex-col min-h-screen p-4 lg:p-8">
+      <EmployeeSider />
+      <h1 className="text-2xl text-center mt-[5rem] ">Employee Report</h1>
+        <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
+
+      <div className="container flex flex-col min-h-screen p-4 lg:p-8">
         <div className="flex flex-col space-y-4 lg:space-y-0 lg:flex-row justify-between mb-8">
           <div className="flex flex-wrap justify-center max-sm:justify-start">
-            {["quotation", "invoice", "employee", "leads"].map((category) => (
+            {["quotation", "invoice", "leads"].map((category) => (
               <button
                 key={category}
                 onClick={() => handleCategoryClick(category)}
@@ -328,8 +254,8 @@ const Reporting = () => {
           <table className="min-w-full bg-white">
             <thead>
               <tr className="text-sm font-semibold text-left text-gray-600 uppercase bg-gray-200">
-                {dataFields?.[selectedCategory].heading.map((heading) => (
-                  <th className="px-4 py-3">{heading}</th>
+                {dataFields?.[selectedCategory].heading.map((head) => (
+                  <th className="px-4 py-3">{head}</th>
                 ))}
               </tr>
             </thead>
@@ -369,4 +295,4 @@ const Reporting = () => {
   );
 };
 
-export default Reporting;
+export default EmployeeReport;

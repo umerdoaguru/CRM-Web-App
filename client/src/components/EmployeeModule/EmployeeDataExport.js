@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import MainHeader from '../components/MainHeader'
-import Sider from '../components/Sider'
+
 
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -8,14 +7,18 @@ import { SiMoneygram } from "react-icons/si";
 import { MdOutlineNextWeek } from "react-icons/md";
 import { GiFiles, GiMoneyStack } from "react-icons/gi";
 import { useSelector } from "react-redux";
-import LeadData from '../components/DataExport/LeadData';
-import QuotationData from '../components/DataExport/QuotationData';
-import InvoiceData from '../components/DataExport/InvoiceData';  // Add your invoice component here if it exists
-import Employees from '../components/DataExport/Employees';
+import LeadData from './EmployeeDataExport/EmployeeLeadData';
+import QuotationData from './EmployeeDataExport/EmployeeQuotationData';
+import InvoiceData from './EmployeeDataExport/EmployeeInvoiceData';  // Add your invoice component here if it exists
+import MainHeader from '../MainHeader';
+import EmployeeSider from './EmployeeSider';
+
+// import Employees from '../components/DataExport/Employees';
+
 
 function DataExport() {
   const [leads, setLeads] = useState([]);
-  const [employee, setEmployee] = useState([]);
+  // const [employee, setEmployee] = useState([]);
   const [quotation, setQuotation] = useState([]);
   const [invoice, setInvoice] = useState([]);
   const [selectedComponent, setSelectedComponent] = useState('LeadData');  // Set 'LeadData' as default
@@ -24,32 +27,32 @@ function DataExport() {
 
   useEffect(() => {
     fetchLeads();
-    fetchEmployee();
+    // fetchEmployee();
     fetchQuotation();
     fetchInvoice();
   }, []);
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get('http://localhost:9000/api/leads');
+      const response = await axios.get(`http://localhost:9000/api/employe-leads/${1}`);
       setLeads(response.data);
     } catch (error) {
       console.error('Error fetching leads:', error);
     }
   };
 
-  const fetchEmployee = async () => {
-    try {
-      const response = await axios.get(`http://localhost:9000/api/employee`);
-      setEmployee(response.data);
-    } catch (error) {
-      console.error("Error fetching employee data:", error);
-    }
-  };
+  // const fetchEmployee = async () => {
+  //   try {
+  //     const response = await axios.get(`http://localhost:9000/api/employee`);
+  //     setEmployee(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching employee data:", error);
+  //   }
+  // };
 
   const fetchQuotation = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/quotation-data`);
+      const response = await axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${1}`);
       setQuotation(response.data);
     } catch (error) {
       console.error("Error fetching quotations:", error);
@@ -58,7 +61,7 @@ function DataExport() {
 
   const fetchInvoice = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/invoice-data`);
+      const response = await axios.get(`http://localhost:9000/api/get-employee-invoice/${1}`);
       setInvoice(response.data);
     } catch (error) {
       console.error("Error fetching invoices:", error);
@@ -66,16 +69,16 @@ function DataExport() {
   };
 
   const leadCount = leads.length;
-  const employeeCount = employee.length;
+  // const employeeCount = employee.length;
   const quotationCount = quotation.length;
   const invoiceCount = invoice.length;
 
   return (
     <>
       <MainHeader />
-      <Sider />
-      <div className="container  ">
-        <h1 className="text-2xl text-center mt-[5rem]">Data Export</h1>
+      <EmployeeSider />
+      <div className="container mt-[5rem]">
+        <h1 className="text-2xl text-center mt-[2rem]">Employee Data Export</h1>
         <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
 
         <div className="flex flex-wrap justify-around mt-5">
@@ -97,7 +100,7 @@ function DataExport() {
               </div>
             </div>
           </div>
-
+{/* 
           <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
             <div
               className={` shadow-lg rounded-lg overflow-hidden cursor-pointer ${
@@ -115,7 +118,7 @@ function DataExport() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="w-full sm:w-1/2 lg:w-1/4 xl:w-1/5 my-3 p-0 sm-mx-0 mx-3">
             <div
@@ -159,7 +162,7 @@ function DataExport() {
         {/* Conditionally render the selected component */}
         <div className="w-full h-[calc(100vh-10rem)] overflow-y-auto">
           {selectedComponent === 'LeadData' && <LeadData />}
-          {selectedComponent === 'EmployeeData' && <Employees />}
+          {/* {selectedComponent === 'EmployeeData' && <Employees />} */}
           {selectedComponent === 'QuotationData' && <QuotationData />}
           {selectedComponent === 'InvoiceData' && <InvoiceData />}
         </div>

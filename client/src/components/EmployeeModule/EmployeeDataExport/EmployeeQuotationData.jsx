@@ -7,18 +7,18 @@ import ReactPaginate from 'react-paginate';
 import * as XLSX from 'xlsx';
 import styled from "styled-components";
 
-const QuotationData = () => {
+const EmployeeQuotationData = () => {
   const [quotations, setQuotations] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(10); // Number of items per page
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-
+  const UserId = useSelector(state => state.auth.user.id);
 
   useEffect(() => {
     const fetchQuotations = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/quotation-data`);
+        const response = await axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${1}`);
         setQuotations(response.data);
       } catch (error) {
         console.error("Error fetching quotations:", error);
@@ -26,7 +26,7 @@ const QuotationData = () => {
     };
 
     fetchQuotations();
-  }, []);
+  }, [UserId]);
 
   // Filter Quotations based on Date Range
   const filteredQuotations = quotations.filter(quotation => {
@@ -55,8 +55,7 @@ const QuotationData = () => {
   return (
     <Wrapper>
       <div className="container px-2 mx-auto">
-      <h1 className="text-2xl text-center mt-[2rem]">Quotation Data</h1>
-      <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
+       
 
         <div className="w-full px-2 mt-4">
          
@@ -135,7 +134,7 @@ const QuotationData = () => {
   );
 };
 
-export default QuotationData;
+export default EmployeeQuotationData;
 const Wrapper = styled.div`
 .respo{
     @media screen and (max-width: 768px) {
@@ -144,4 +143,3 @@ const Wrapper = styled.div`
 }
 
 `;
-

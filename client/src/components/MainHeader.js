@@ -5,7 +5,7 @@ import UserLogin from "./UserLogin";
 function MainHeader() {
   return (
     <>
-    <div className="w-full ">
+    <div className="w-full fixed ">
     
         <nav className="bg-white border-gray-200 dark:bg-gray-800">
           <div className="flex p-1  items-center  justify-between bg-slate-100">

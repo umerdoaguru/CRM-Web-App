@@ -109,6 +109,8 @@ import axios from "axios";
 import moment from 'moment';
 import { useSelector } from "react-redux";
 import ReactPaginate from 'react-paginate';
+import MainHeader from "../MainHeader";
+import Sider from "../Sider";
 
 const Invoicelist = () => {
   const [invoices, setInvoices] = useState([]);
@@ -120,7 +122,7 @@ const Invoicelist = () => {
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/invoice-data/${UserId}`);
+        const response = await axios.get(`http://localhost:9000/api/invoice-data`);
         setInvoices(response.data);
         console.log(response);
       } catch (error) {
@@ -129,7 +131,7 @@ const Invoicelist = () => {
     };
 
     fetchInvoices();
-  }, [UserId]);
+  }, []);
 
   const handleDelete = async (id) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this invoice?");
@@ -174,7 +176,10 @@ const Invoicelist = () => {
 
   return (
     <>
-    <div className="container mx-auto px-4">
+    <MainHeader/>
+    <Sider/>
+
+    <div className="container mt-16  mx-auto px-4">
   <Link to="/quotation-section" className="text-white">
     <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2 flex items-center">
       <i className="bi bi-arrow-return-left mr-1"></i>Back

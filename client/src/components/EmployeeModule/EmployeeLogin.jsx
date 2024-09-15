@@ -3,7 +3,7 @@ import axios from 'axios';
 import cogoToast from 'cogo-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../store/UserSlice';
+import { loginUser } from '../../store/UserSlice';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 function EmployeeLogin() {
@@ -19,11 +19,11 @@ function EmployeeLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:9000/api/login", formData);
+      const res = await axios.post("http://localhost:9000/api/employee-login", formData);
       if (res.data.success) {
         dispatch(loginUser(res.data.user));
         cogoToast.success(res.data.message);
-        navigate("/dashboard");
+        navigate("/employees-dashboard");
       } else {
         cogoToast.error(res.data.message);
       }

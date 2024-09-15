@@ -48,7 +48,19 @@ import Reporting from './adiComponent/Reporting';
 import Single_Lead_Profile from './components/Leads/Single_Lead_Profile';
 import Landingpage from './pages/Landingpage';
 import AdminLogin from './components/AdminLogin';
-import EmployeeLogin from './components/EmployeeLogin';
+
+import ServicenameList from './pages/Quotation/ServicenameList';
+import CreateServicelist from './pages/Quotation/CreateServicelist';
+import DeleteServiceName from './pages/Quotation/DeleteServiceName';
+import UpdateServiceList from './pages/Quotation/UpdateServiceList';
+import AdminQuotationVIew from './pages/Quotation/AdminQuotationVIew';
+import EmployeeDashboard from './components/EmployeeModule/EmployeeDashboard';
+import EmployeeLogin from './components/EmployeeModule/EmployeeLogin';
+import EmployeeLead from './components/EmployeeModule/EmployeeLead';
+import EmployeeReport from './components/EmployeeModule/EmployeeReport';
+import EmployeeDataExport from './components/EmployeeModule/EmployeeDataExport';
+import EmployeeQuotationData from './components/EmployeeModule/EmployeeDataExport/EmployeeQuotationData';
+import EmployeeProfile from './components/EmployeeModule/EmployeeProfile';
 
 
 function App() {
@@ -79,7 +91,9 @@ function App() {
         <Route path="/data-export" element={  <DataExport /> } />
         <Route path="/final-quotation/:id" element={  <Final_quotation/>} />
         <Route path="/quotationlist" element={  <QuotationList />}/>
+
         <Route path="/print/:id" element={ <Print_Page />} />
+        <Route path="/admin-view-quotation/:id" element={ <AdminQuotationVIew />} />
         <Route path="/addservices/:id" element={  <Addservices />} />
         <Route path="/createnotes/:id" element={  <CreateNotes />}/>
         <Route path="/deletenotes/:id" element={  <DeleteNotes />} />
@@ -88,6 +102,13 @@ function App() {
         <Route path="/updatecompanydata" element={  <UpdateCompanyData />} />
         <Route path="/deletecompanydata" element={  <DeleteCompanydata />} />
         <Route path="/update-quotation-name/:id" element={  <UpdateQuotationName />} />
+
+        <Route path="/servicenamelist" element={ <ServicenameList/>} />       
+        <Route path="/create-servicelist" element={ <CreateServicelist />} />
+        <Route path="/delete-servicename" element={ <DeleteServiceName />} />
+        <Route path="/update-servicename" element={ <UpdateServiceList />} />
+
+
         <Route path="/create-invoice" element={  <CreateInvoice />} />
         <Route path="/final-invoice/:id" element={  <FinalInvoice/>} />
         <Route path="/invoicelist" element={  <Invoicelist />} />
@@ -125,6 +146,12 @@ function App() {
         <Route path='/reporting' element={<Reporting/>}/>
 
             {/* employees routes */}
+            <Route path="/employees-dashboard" element={<EmployeeDashboard />} />
+        <Route path="/employee-leads" element={  <EmployeeLead/>} />
+        <Route path="/employee-report" element={  <EmployeeReport/>} />
+        <Route path="/employee-data-export" element={  <EmployeeDataExport/>} />
+        <Route path="/employee-quotation-invoice" element={  <EmployeeQuotationData/>} />
+        <Route path="/employee-profile" element={  <EmployeeProfile/>} />
 
 
       </Routes>

@@ -7,17 +7,18 @@ import ReactPaginate from 'react-paginate';
 import * as XLSX from 'xlsx';
 import styled from "styled-components";
 
-const InvoiceData = () => {
+const EmployeeInvoiceData = () => {
   const [invoices, setInvoices] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(10);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  
+  const UserId = useSelector(state => state.auth.user.id);
+
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/invoice-data`);
+        const response = await axios.get(`http://localhost:9000/api/get-employee-invoice/${1}`);
         setInvoices(response.data);
       } catch (error) {
         console.error("Error fetching invoices:", error);
@@ -25,7 +26,7 @@ const InvoiceData = () => {
     };
 
     fetchInvoices();
-  }, []);
+  }, [UserId]);
 
   // Filter Invoices based on Date Range
   const filteredInvoices = invoices.filter(invoice => {
@@ -57,8 +58,7 @@ const InvoiceData = () => {
        
         <div className="container mx-auto mt-4">
         
-        <h1 className="text-2xl text-center mt-[2rem]">Invoice Data</h1>
-        <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
+
           {/* Filter Section */}
           <div className="flex space-x-1 mb-4 sm:flex-row flex-col">
             <input
@@ -138,7 +138,7 @@ const InvoiceData = () => {
   );
 };
 
-export default InvoiceData;
+export default EmployeeInvoiceData;
 const Wrapper = styled.div`
 .respo{
     @media screen and (max-width: 768px) {

@@ -52,7 +52,7 @@ function Employees() {
             <Header />
             <Sider />
             <div className="container">
-                <h1 className="text-2xl text-center mt-[2rem]">Employee Management</h1>
+                <h1 className="text-2xl text-center mt-[2rem]">Employee Data</h1>
                 <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
 
                 {/* Date Filter */}

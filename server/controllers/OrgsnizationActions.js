@@ -163,77 +163,26 @@ const addOrganization = async (req, res) => {
 
 
 
-// const addEmployee = async (req, res) => {
-//   try {
-//     const { name, email,password, position, phone, salary } = req.body;
-
-//     // Validations
-//     const requiredFields = [name, email];
-//     if (requiredFields.some((field) => !field)) {
-//       return res.status(400).json({ error: 'Name and email are required' });
-//     }
-
-//     // Insert employee into the database
-//     const insertEmployeeQuery = `
-//       INSERT INTO employee (name, email,pasword, position, phone, salary)
-//       VALUES (?, ?,?, ?, ?, ?)
-//     `;
-
-//     const insertEmployeeParams = [
-//       name,
-//       email,
-//       password,
-//       position || null,
-//       phone || null,
-//       salary || null,
-//     ];
-
-//     db.query(insertEmployeeQuery, insertEmployeeParams, (insertErr, insertResult) => {
-//       if (insertErr) {
-//         console.error('Error inserting employee:', insertErr);
-//         return res.status(500).json({ error: 'Internal server error' });
-//       } else {
-//         console.log('Employee added successfully');
-//         return res.status(201).json({
-//           success: true,
-//           message: 'Employee added successfully',
-//           employeeId: insertResult.insertId, // Returning the auto-generated ID
-//         });
-//       }
-//     });
-//   } catch (error) {
-//     console.error('Error in adding employee:', error);
-//     res.status(500).json({
-//       success: false,
-//       message: 'Error in adding employee',
-//       error: error.message,
-//     });
-//   }
-// };
 const addEmployee = async (req, res) => {
   try {
-    const { name, email, password, position, phone, salary } = req.body;
+    const { name, email,password, position, phone, salary } = req.body;
 
     // Validations
-    const requiredFields = [name, email, password];
+    const requiredFields = [name, email];
     if (requiredFields.some((field) => !field)) {
-      return res.status(400).json({ error: 'Name, email, and password are required' });
+      return res.status(400).json({ error: 'Name and email are required' });
     }
 
-    // Hash the password
-    const saltRounds = 10;
-    const hashedPassword = bcrypt.hashSync(password, saltRounds);
-
-    // Insert employee into the database with hashed password
+    // Insert employee into the database
     const insertEmployeeQuery = `
-      INSERT INTO employee (name, email, password, position, phone, salary)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO employee (name, email,password, position, phone, salary)
+      VALUES (?, ?,?, ?, ?, ?)
     `;
 
     const insertEmployeeParams = [
       name,
       email,
-      hashedPassword, // Use the hashed password
+      password,
       position || null,
       phone || null,
       salary || null,
@@ -261,69 +210,59 @@ const addEmployee = async (req, res) => {
     });
   }
 };
-const employeelogin = async (req, res) => {
-  try {
-     const {email, password} = req.body
 
-     //Validation 
-     if(!email || !password){
-      return res.status(404).send({
-        success: false,
-        message: "Invaild email or password ",
-      });
-     }
-     // check user in mysql 
-     const checkUserQuery = "SELECT * FROM employee WHERE email =?";
-     db.query(checkUserQuery,[email],async(err,results)=>{
-      if(err){
-        console.log("Error checking  user in mysql",err);
-      }
-      if(results.length===0){
-        return res.status(404).send({
-          success:false,
-          message:"email is not  registered"
-        })
-      
-      }
-      const user = results[0];
-    
+// const addEmployee = async (req, res) => {
+//   try {
+//     const { name, email, password, position, phone, salary } = req.body;
 
-      //compare  passwords
-      const match = await bcrypt.compare(password,user.password);
-      if(!match){
-        return  res.status(404).send({
-          success: false,
-          message: "Invaild password ",
-        });
-        
-        
-      }
-     
-     //generate  token 
-     const token = await JWT.sign({id: user.employeeId}, process.env.JWT_SECRET,{ expiresIn: "7d"});
+//     // Validations
+//     const requiredFields = [name, email, password];
+//     if (requiredFields.some((field) => !field)) {
+//       return res.status(400).json({ error: 'Name, email, and password are required' });
+//     }
 
-     res.status(200).send({
-      success: true,
-      message : "Login sucessfully",
-      user:{
-        id: user.employeeId,
-        name:user.name,
-        email:user.email,
-        position:user.position,
-        salary:user.salary,
-        
-       
-      },
-      token,
-     });
-    });
-    }
+//     // Hash the password
+//     const saltRounds = 10;
+//     const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
-  catch (error) {
-  console.log(error);
-  res.status(500).send({success:false , message:"error in login ", error})
-  }
-};
+//     // Insert employee into the database with hashed password
+//     const insertEmployeeQuery = `
+//       INSERT INTO employee (name, email, password, position, phone, salary)
+//       VALUES (?, ?, ?, ?, ?, ?)
+//     `;
+
+//     const insertEmployeeParams = [
+//       name,
+//       email,
+//       hashedPassword, // Use the hashed password
+//       position || null,
+//       phone || null,
+//       salary || null,
+//     ];
+
+//     db.query(insertEmployeeQuery, insertEmployeeParams, (insertErr, insertResult) => {
+//       if (insertErr) {
+//         console.error('Error inserting employee:', insertErr);
+//         return res.status(500).json({ error: 'Internal server error' });
+//       } else {
+//         console.log('Employee added successfully');
+//         return res.status(201).json({
+//           success: true,
+//           message: 'Employee added successfully',
+//           employeeId: insertResult.insertId, // Returning the auto-generated ID
+//         });
+//       }
+//     });
+//   } catch (error) {
+//     console.error('Error in adding employee:', error);
+//     res.status(500).json({
+//       success: false,
+//       message: 'Error in adding employee',
+//       error: error.message,
+//     });
+//   }
+// };
+
 
 
 
@@ -628,4 +567,4 @@ const deleteOrganization = async (req, res) => {
 
   
 
-module.exports = {getAllOrganizations, addOrganization,deleteOrganization,updateOrganization ,addEmployee,getAllEmployees,updateEmployee,deleteEmployee,getEmployeeById,updateSingleEmployee,getOrganizationById,employeelogin};
+module.exports = {getAllOrganizations, addOrganization,deleteOrganization,updateOrganization ,addEmployee,getAllEmployees,updateEmployee,deleteEmployee,getEmployeeById,updateSingleEmployee,getOrganizationById};

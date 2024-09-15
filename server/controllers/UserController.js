@@ -181,11 +181,11 @@ const JWT = require('jsonwebtoken');
   
     const GetQuotation = async (req, res) => {
       try {
-        const { UserId } = req.params; // Extracting UserId from req.params
-        const sql = "SELECT * FROM quotations_data WHERE user_id = ? ORDER BY quotation_id DESC";
+      
+        const sql = "SELECT * FROM quotations_data  ORDER BY quotation_id DESC";
   
         const quotations = await new Promise((resolve, reject) => {
-          db.query(sql, [UserId], (err, results) => {
+          db.query(sql,  (err, results) => {
             if (err) {
               reject(err);
             } else {
@@ -200,6 +200,29 @@ const JWT = require('jsonwebtoken');
         res.status(500).json({ error: "Internal Server Error" });
       }
     };
+
+    const getAllQuotation = async (req, res) => {
+      try {
+        const sql = "SELECT * FROM quotations_data";
+  
+        const allQuotations = await new Promise((resolve, reject) => {
+          db.query(sql,(err, results) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(results);
+            }
+          });
+        });
+  
+        res.status(200).json({message: "Successfull", data: allQuotations});
+      } catch (error) {
+        console.error("Error processing request:", error);
+        res.status(500).json({ message: "Internal Server Error", success: false, error });
+      }
+    }
+  
+  
   
   
    const  GetQuotationName = async (req, res) => {
@@ -1061,7 +1084,7 @@ const getAllUsers = async (req, res) => {
     deleteNote , UpdateQuotationName,CopyQuotationData ,GetQuotationName,updateNote,createLead,getleadbyid,
     getLeads,
     updateLead,
-    deleteLead,employeeData,editProfile,getAllUsers,deleteProfile};
+    deleteLead,employeeData,editProfile,getAllUsers,deleteProfile,getAllQuotation};
   
   
 

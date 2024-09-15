@@ -43,15 +43,15 @@ const { db } = require("../db");
 
 const createServiceList = async (req, res) => {
   try {
-    const { userId } = req.params;
+ 
     const { services } = req.body;
 
     const servicesValues = services.map((service) => [
       service.service_name,
-      userId,
+      
     ]);
 
-    const sql = "INSERT INTO services (service_name, user_id) VALUES ?";
+    const sql = "INSERT INTO services (service_name) VALUES ?";
 
     await new Promise((resolve, reject) => {
       db.query(sql, [servicesValues], (err, result) => {
@@ -73,11 +73,10 @@ const createServiceList = async (req, res) => {
 
 const getServicelist = async (req,res)=>{
 
- const {userId} = req.params
 
- const sql = `SELECT * FROM services WHERE user_id = ?`;
+ const sql = `SELECT * FROM services`;
 
- db.query(sql,[userId],(err,result)=>{
+ db.query(sql,(err,result)=>{
   if(err){
     console.error('Error feching services:',err);
     res.status(500).json({error:"Internal Server Error"})

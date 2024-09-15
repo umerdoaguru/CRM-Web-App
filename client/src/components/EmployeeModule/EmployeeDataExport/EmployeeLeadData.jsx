@@ -85,11 +85,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import * as XLSX from 'xlsx';
-import Sider from '../Sider';
-import Header from '../../pages/Quotation/Header';
+
+
 import styled from 'styled-components';
 
-function LeadData() {
+
+function EmployeeLeadData() {
     const [leads, setLeads] = useState([]);
     const [filteredLeads, setFilteredLeads] = useState([]);
     const [startDate, setStartDate] = useState('');
@@ -102,7 +103,7 @@ function LeadData() {
 
     const fetchLeads = async () => {
         try {
-            const response = await axios.get('http://localhost:9000/api/leads');
+            const response = await axios.get(`http://localhost:9000/api/employe-leads/${1}`);
             setLeads(response.data);
             setFilteredLeads(response.data); // Initial data set for filtering
         } catch (error) {
@@ -132,10 +133,9 @@ function LeadData() {
 
     return (
         <Wrapper>
-            <Header />
-            <Sider />
+          
             <div className="container">
-                <h1 className="text-2xl text-center mt-[2rem]">Leads Data</h1>
+                <h1 className="text-2xl text-center mt-[2rem]">Leads Management</h1>
                 <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
 
                 {/* Date Filter */}
@@ -201,7 +201,7 @@ function LeadData() {
     );
 }
 
-export default LeadData;
+export default EmployeeLeadData;
 
 const Wrapper = styled.div`
 .respo{
