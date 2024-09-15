@@ -44,6 +44,7 @@
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
+import styled from "styled-components";
 
 const LeadsGraph = () => {
   const [leadsData, setLeadsData] = useState([]);
@@ -111,7 +112,8 @@ const LeadsGraph = () => {
   }, []);
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 border rounded-lg shadow-md bg-white">
+    <Wrapper>
+    <div className="w-full max-w-4xl mx-auto p-4 border rounded-lg shadow-md bg-white lg:max-xl:w-[380px]">
       <h2 className="text-xl font-bold mb-2">Daily Leads Overview</h2>
       {error ? (
         <p className="text-red-500">{error}</p>
@@ -130,12 +132,28 @@ const LeadsGraph = () => {
         </>
       )}
     </div>
+
+</Wrapper>
   );
 };
 
 export default LeadsGraph;
 
-
+const Wrapper = styled.div`
+  #main {
+    // background-color: #55efc4;
+    width: 100%;
+    border-radius: 5px;
+    padding: 2rem;
+    box-shadow: 0px 2px 18px #bdbaba;
+    display: flex;
+    justify-content: center;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 20px;
+    font-size: small;
+  }
+`;
 
 
 

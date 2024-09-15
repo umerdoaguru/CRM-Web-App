@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment'; // Import moment for date formatting
+import styled from "styled-components";
 
 const LeadsReport = () => {
   const [leads, setLeads] = useState([]);
@@ -26,7 +27,7 @@ const LeadsReport = () => {
   }, []);
 
   return (
-
+    <Wrapper>
     <div className="p-4 mt-6 bg-white rounded-lg shadow-lg">
             <h3 className="mb-4 text-lg font-semibold">Todays Leads</h3>
     <div className="overflow-x-auto mt-4">
@@ -64,10 +65,27 @@ const LeadsReport = () => {
       </table>
     </div>
     </div>
+    </Wrapper>
   );
 };
 
 export default LeadsReport;
+
+const Wrapper = styled.div`
+  #main {
+    // background-color: #55efc4;
+    width: 100%;
+    border-radius: 5px;
+    padding: 2rem;
+    box-shadow: 0px 2px 18px #bdbaba;
+    display: flex;
+    justify-content: center;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 20px;
+    font-size: small;
+  }
+`;
 
 
         

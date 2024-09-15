@@ -51,6 +51,7 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
+import styled from "styled-components";
 
 const QuotationGraph = () => {
     const [quotationData, setQuotationData] = useState([]);
@@ -112,7 +113,8 @@ const QuotationGraph = () => {
     }, []);
 
     return (
-        <div className="w-full max-w-4xl mx-auto p-4 border rounded-lg shadow-md bg-white">
+        <Wrapper>
+        <div className="w-full max-w-4xl mx-auto p-4 border rounded-lg shadow-md bg-white lg:max-xl:w-[380px]">
             <h2 className="text-xl font-bold mb-2">Daily Quotation Overview</h2>
             <p className="text-sm text-gray-500 mb-4">Quotation for the past 28 days</p>
             <ResponsiveContainer width="100%" height={300}>
@@ -126,7 +128,25 @@ const QuotationGraph = () => {
                 </LineChart>
             </ResponsiveContainer>
         </div>
+        </Wrapper>
     );
 };
 
 export default QuotationGraph;
+
+const Wrapper = styled.div`
+  #main {
+    // background-color: #55efc4;
+    width: 100%;
+    border-radius: 5px;
+    padding: 2rem;
+    box-shadow: 0px 2px 18px #bdbaba;
+    display: flex;
+    justify-content: center;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 20px;
+    font-size: small;
+  }
+`;
+
