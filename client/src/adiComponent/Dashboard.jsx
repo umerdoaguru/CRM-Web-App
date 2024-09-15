@@ -52,7 +52,7 @@ const Dashboard = () => {
                 <div>
                     <Overview />
                 </div>
-                <div className="grid grid-cols-1 gap-4 mt-6 md:grid-cols-2 lg:grid-cols-2 custom-grid">
+                <div className="grid grid-cols-1 gap-4 mt-6 md:grid-cols-2 lg:grid-cols-3 ">
                 {/* <div className="max-md:grid max-xl:flex flex-wrap max-xl:gap-5 xl:grid grid-cols-1 gap-4 mt-6 md:grid-cols-2 lg:grid-cols-3"> */}
                     <Invoice />
                     <LeadsGraph />
