@@ -26,7 +26,8 @@ const QuotationData = () => {
     };
 
     fetchQuotations();
-  }, [UserId]);
+  }, []);
+  // }, [UserId]);
 
   // Filter Quotations based on Date Range
   const filteredQuotations = quotations.filter(quotation => {
