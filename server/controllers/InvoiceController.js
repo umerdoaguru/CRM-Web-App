@@ -97,7 +97,7 @@ const getInvoice = async (req, res) => {
   try {
     const { UserId } = req.params; // Extracting UserId from req.params
     const sql =
-      "SELECT * FROM invoice_data WHERE user_id = ? ORDER BY invoice_id DESC";
+      "SELECT * FROM invoice_data ORDER BY invoice_id DESC";
 
     const invoices = await new Promise((resolve, reject) => {
       db.query(sql, [UserId], (err, results) => {

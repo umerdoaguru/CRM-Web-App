@@ -156,7 +156,7 @@ const QuotationInvoice = () => {
   return (
     <>
   <Link
-  to={`/create-company-profile`}
+  to={`/quotation-section`}
   className="bg-green-500 text-white mt-3 mx-2 px-4 py-2 rounded flex items-center"
 >
   <i className="bi bi-arrow-return-left mr-2"></i> Back

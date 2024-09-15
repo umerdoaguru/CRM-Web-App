@@ -65,7 +65,7 @@ router.delete('/servicelist/:serviceId',deleteServicename);
 router.put('/servicelist',updateServiceList);
 
 router.post('/create-invoice',createInvoice);
-router.get("/invoice-data/:UserId", getInvoice);
+router.get("/invoice-data", getInvoice);
 router.get("/get-invoice-data", getAllInvoice);
 router.delete("/invoice/:id",deleteInvoice);
 router.put("/invoice-data/:invoiceId", UpdateInvoiceName);

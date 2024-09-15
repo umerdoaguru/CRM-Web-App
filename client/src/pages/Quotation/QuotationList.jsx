@@ -14,6 +14,7 @@ const QuotationList = () => {
   const [itemsPerPage] = useState(10); // Number of items per page
   const [filterText, setFilterText] = useState("");
   const [sortAsc, setSortAsc] = useState(true);
+  const [render, setRender] = useState(false);
   const UserId = useSelector(state => state.auth.user.id);
 
   useEffect(() => {
@@ -37,7 +38,8 @@ const QuotationList = () => {
         const response = await axios.delete(`http://localhost:9000/api/quotation/${id}`);
         if (response.status === 200) {
           console.log("Quotation deleted successfully");
-          window.location.reload();
+          // window.location.reload();
+          setRender(!render)
         }
       } catch (error) {
         console.error("Error deleting quotation:", error);
@@ -49,7 +51,8 @@ const QuotationList = () => {
     try {
       const response = await axios.post(`http://localhost:9000/api/copy-quotation/${quotationId}`);
       console.log(response.data.message);
-      window.location.reload();
+      // window.location.reload();
+      setRender(!render)
     } catch (error) {
       console.error("Error copying quotation:", error);
     }
@@ -74,6 +77,10 @@ const QuotationList = () => {
   const offset = currentPage * itemsPerPage;
   const currentQuotations = filteredQuotations.slice(offset, offset + itemsPerPage);
   const pageCount = Math.ceil(filteredQuotations.length / itemsPerPage);
+
+  useEffect(() => { 
+    setRender(!render);
+  }, [render]);
 
   return (
     <>

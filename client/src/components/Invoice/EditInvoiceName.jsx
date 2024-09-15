@@ -37,7 +37,7 @@ const EditInvoiceName = () => {
 
       if (response.status === 200) {
         setMessage(response.data.message);
-        navigate("/invoicelist");
+        navigate("/quotation-section");
       } else {
         setMessage(response.data.error || "Failed to update invoice");
       }
@@ -51,7 +51,7 @@ const EditInvoiceName = () => {
 
   const handleClose = () => {
     setShowModal(false);
-    navigate("/invoicelist");
+    navigate("/quotation-section");
   };
 
   return (

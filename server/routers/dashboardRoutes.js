@@ -6,7 +6,8 @@ const upload = require('../config/multerConfig');
 const {
     createContract, getAllContracts, getContractById, updateContract, deleteContract,
     createClient, getAllClients, getClientById, updateClient, deleteClient,
-    createInvoice, getAllInvoices, getInvoiceById, updateInvoice, deleteInvoice,
+    // createInvoice, getAllInvoices, 
+    getInvoiceById, updateInvoice, deleteInvoice,
     createPayment, getAllPayments, getPaymentById, updatePayment, deletePayment,
     createLead, getAllLeads, getLeadById, updateLead, deleteLead,
     getOverviewMetrics, getPaymentsData, getLeadsData, getToDoList,
@@ -34,9 +35,9 @@ router.route('/clients/:id')
     .delete(deleteClient);
 
 // Invoice Routes
-router.route('/invoices')
-    .post(createInvoice)
-    .get(getAllInvoices);
+// router.route('/invoices')
+//     .post(createInvoice)
+//     .get(getAllInvoices);
 
 router.route('/invoices/:id')
     .get(getInvoiceById)

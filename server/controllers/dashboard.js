@@ -485,17 +485,17 @@ const deleteContract = async (req, res) => {
     }
 };
 
-const createInvoice = async (req, res) => {
-    const { client_id, amount, status } = req.body;
-    const query = 'INSERT INTO invoices (client_id, amount, status) VALUES (?, ?, ?)';
-    try {
-        await db.query(query, [client_id, amount, status]);
-        res.status(201).json({ success: true, message: 'Invoice added successfully' });
-    } catch (error) {
-        console.error("Error adding invoice:", error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
+// const createInvoice = async (req, res) => {
+//     const { client_id, amount, status } = req.body;
+//     const query = 'INSERT INTO invoices (client_id, amount, status) VALUES (?, ?, ?)';
+//     try {
+//         await db.query(query, [client_id, amount, status]);
+//         res.status(201).json({ success: true, message: 'Invoice added successfully' });
+//     } catch (error) {
+//         console.error("Error adding invoice:", error);
+//         res.status(500).json({ error: 'Internal server error' });
+//     }
+// };
 
 
 // Get all invoices
@@ -751,4 +751,6 @@ const deleteLead = (req, res) => {
 
 
 
-    module.exports = { createContract, getAllContracts, getContractById, updateContract, deleteContract,createClient, getAllClients, getClientById, updateClient, deleteClient,createInvoice, getAllInvoices, getInvoiceById, updateInvoice, deleteInvoice,createPayment, getAllPayments, getPaymentById, updatePayment, deletePayment, createLead, getAllLeads, getLeadById, updateLead, deleteLead,getOverviewMetrics,getPaymentsData, getLeadsData,getToDoList,getDevicesData,addToDoItem,deleteToDoItem,updateToDoItem,getToDoById,addDeviceUsage };
+    module.exports = { createContract, getAllContracts, getContractById, updateContract, deleteContract,createClient, getAllClients, getClientById, updateClient, deleteClient,
+        // createInvoice, getAllInvoices, 
+        getInvoiceById, updateInvoice, deleteInvoice,createPayment, getAllPayments, getPaymentById, updatePayment, deletePayment, createLead, getAllLeads, getLeadById, updateLead, deleteLead,getOverviewMetrics,getPaymentsData, getLeadsData,getToDoList,getDevicesData,addToDoItem,deleteToDoItem,updateToDoItem,getToDoById,addDeviceUsage };

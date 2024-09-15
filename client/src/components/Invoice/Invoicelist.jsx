@@ -104,7 +104,7 @@
 
 // export default Invoicelist;
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import moment from 'moment';
 import { useSelector } from "react-redux";
@@ -116,11 +116,12 @@ const Invoicelist = () => {
   const [itemsPerPage] = useState(10); // Number of items per page
   const [filterText, setFilterText] = useState("");
   const UserId = useSelector(state => state.auth.user.id);
+  const location = useLocation(); 
 
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/invoice-data/${UserId}`);
+        const response = await axios.get(`http://localhost:9000/api/invoice-data`);
         setInvoices(response.data);
         console.log(response);
       } catch (error) {
@@ -175,11 +176,13 @@ const Invoicelist = () => {
   return (
     <>
     <div className="container mx-auto px-4">
-  {/* <Link to="/quotation-section" className="text-white">
-    <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2 flex items-center">
-      <i className="bi bi-arrow-return-left mr-1"></i>Back
-    </button>
-  </Link> */}
+    {location.pathname.endsWith("invoicelist") && (
+          <Link to="/quotation-section" className="text-white">
+            <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2 flex items-center">
+              <i className="bi bi-arrow-return-left mr-1"></i>Back
+            </button>
+          </Link>
+        )}
 
   <div className="container mx-auto mt-4">
     <h2 className="text-2xl font-bold mb-4">List of Invoices</h2>

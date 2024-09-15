@@ -329,7 +329,7 @@ const JWT = require('jsonwebtoken');
         service.offer_price,
         service.subscription_frequency,
       ]);
-      await queryAsync("INSERT INTO services_data (quotation_id, quotation_name, service_type, service_name, service_description, actual_price, offer_price, subscription_frequency) VALUES ?", [servicesValues]);
+       const newResult = await queryAsync("INSERT INTO services_data (quotation_id, quotation_name, service_type, service_name, service_description, actual_price, offer_price, subscription_frequency) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [servicesValues]);
   
       // Retrieve and copy notes
       const getNotes = await queryAsync("SELECT * FROM notes WHERE quotation_id = ?", [quotationId]);
@@ -438,7 +438,7 @@ const JWT = require('jsonwebtoken');
        service.subscription_frequency, 
       ]);
   
-      const sql = "INSERT INTO services_data (quotation_id, quotation_name, service_type, service_name, service_description, actual_price, offer_price, subscription_frequency) VALUES ?";
+      const sql = "INSERT INTO services_data (quotation_id, quotation_name, service_type, service_name, service_description, actual_price, offer_price, subscription_frequency) VALUES (?,?,?,?,?,?,?,?)";
   
       await new Promise((resolve, reject) => {
         db.query(sql, [servicesValues], (err, result) => {
