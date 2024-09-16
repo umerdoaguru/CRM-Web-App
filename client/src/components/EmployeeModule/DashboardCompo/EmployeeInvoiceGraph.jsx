@@ -15,7 +15,7 @@ import {
 import styled from "styled-components";
 
 
-const Invoice = () => {
+const EmployeeInvoiceGraph = () => {
   const [loading, setLoading] = useState(false);
   const [invoiceData, setInvoiceData] = useState([]); // Update to store structured data
 
@@ -23,7 +23,7 @@ const Invoice = () => {
     const getAppointList = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:9000/api/invoices`);
+        const response = await axios.get(`http://localhost:9000/api/get-employee-invoice/${1}`);
         const invoiceList = response.data;
     
         // Get the current date and the date 28 days ago
@@ -77,7 +77,7 @@ const Invoice = () => {
       
       
           <>
-          <div className="w-full max-w-4xl mx-auto p-4 border rounded-lg shadow-md bg-white ">
+          <div className="w-full max-w-4xl mx-auto p-4 border rounded-lg shadow-md bg-white">
       <h2 className="text-xl font-bold mb-2">Daily Invoice Overview</h2>
       <p className="text-sm text-gray-500 mb-4">Invoices for the past 28 days</p>
       <ResponsiveContainer width="100%" height={300}>
@@ -133,7 +133,7 @@ const Invoice = () => {
   );
 };
 
-export default Invoice;
+export default EmployeeInvoiceGraph;
 
 const Wrapper = styled.div`
   #main {

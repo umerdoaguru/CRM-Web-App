@@ -37,6 +37,7 @@ function CreateCompanyProfile() {
   const navigate = useNavigate();
   const UserId = useSelector((state) => state.auth.user.id);
   const [companydata, setcompanydata] = useState([]);
+  const [render, setRender] = useState(false);
   
  
   useEffect(() => {
@@ -51,7 +52,7 @@ function CreateCompanyProfile() {
     };
 
     fetchinvoice();
-  }, [UserId]);
+  }, [UserId, render]);
 
   const handleDeleteCompanyData = async (CompanyName) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this Company data?");
@@ -65,7 +66,8 @@ function CreateCompanyProfile() {
       if (response.status === 200) {
         console.log('Company Data deleted successfully');
         // Refresh CompanyDatas after deletion
-        window.location.reload();
+        // window.location.reload();
+        setRender(!render);
       }
     } catch (error) {
       console.error('Error deleting Company Data:', error);
@@ -142,7 +144,8 @@ function CreateCompanyProfile() {
      
         setCompanydigitalsign(null);
 
-        window.location.reload();
+        // window.location.reload();
+        setRender(!render);
         cogoToast.success(`${response.data.message}`);
       } else {
         console.error(
@@ -166,8 +169,8 @@ function CreateCompanyProfile() {
     <>
      <MainHeader/>
        <Wrapper>
-     
       <Sider/>
+     
       <div className=" container px-3 pt-5">
       <h1 className="text-2xl text-center mt-[2rem]">Quotation & Invoice Management</h1>
       <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
@@ -176,9 +179,9 @@ function CreateCompanyProfile() {
             <div className="mx-3 mt-3">
               <UserLogin />
             </div>
-            <div className="mt-1 mx-3">
+            {/* <div className="mt-1 mx-3">
               <Logout />
-            </div>
+            </div> */}
           </div>
           <div className="grid lg:grid-cols-3 gap-2 mt-2">
             {/* <div className="col-span-1">

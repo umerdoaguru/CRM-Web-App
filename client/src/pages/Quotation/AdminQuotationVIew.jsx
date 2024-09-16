@@ -11,6 +11,8 @@ import EditablePaymentTable from "./EditablePaymentWebTable";
 import { useSelector } from "react-redux";
 import UserLogin from "../../components/UserLogin";
 import Logout from "../../components/Logout";
+import MainHeader from "../../components/MainHeader";
+import Sider from "../../components/Sider";
 
 
 function AdminQuotationVIew() {
@@ -279,10 +281,14 @@ function AdminQuotationVIew() {
 
   return (
     <>
+      <MainHeader/>
+      <Sider/>
+      <div className="container mt-5 px-2 mx-auto p-4">
    <Wrapper>
     <div className="container">
    <Link
-        to={`/admin-view-quotation/${id}`}
+        // to={`/admin-view-quotation/${id}`}
+        to={`/quotationlist`}
         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mx-1 w-25 btn-print"
       >
         <i className="bi bi-arrow-return-left mx-1"></i> Back
@@ -342,6 +348,7 @@ function AdminQuotationVIew() {
   
 
 </Wrapper>
+  </div>
 
       {/* <Lastpage/> */}
     </>

@@ -4,6 +4,8 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import UpdateInvoiceServices from './UpdateInvoiceServices';
 import UserLogin from '../UserLogin';
 import Logout from '../Logout';
+import Sider from '../Sider';
+import MainHeader from '../MainHeader';
 
 function FinalInvoice() {
   const navigate = useNavigate();
@@ -102,7 +104,9 @@ function FinalInvoice() {
 
   return (
    <>
-  <div className="container mx-auto px-4">
+   <MainHeader/>
+   <Sider/>
+   <div className="container mt-5 px-2 mx-auto p-4">
   <div className="flex flex-wrap justify-between items-center mt-3">
     <div className="lg:w-1/3 mt-3">
       <div className="mx-4">
@@ -123,7 +127,7 @@ function FinalInvoice() {
     <div className="grid grid-cols-12 gap-2">
       <div className="col-span-12 lg:col-span-3">
         <Link
-          to="/"
+          to="/invoicelist"
           className="text-white bg-green-600 hover:bg-green-700 btn w-full"
         >
           <i className="bi bi-arrow-return-left mr-1"></i>Back

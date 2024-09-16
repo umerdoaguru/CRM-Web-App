@@ -9,7 +9,6 @@ import { MdOutlineEditNote } from "react-icons/md";
 import { ImLab } from "react-icons/im";
 import img from '../images/crmimage.avif'
 
-
 const Landingpage = () => {
   return (
     <>

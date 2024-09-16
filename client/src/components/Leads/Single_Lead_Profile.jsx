@@ -3,6 +3,8 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import img from '../../images/lead_profile.png'
+import MainHeader from '../MainHeader';
+import Sider from '../Sider';
 function Single_Lead_Profile() {
     
     const {id} = useParams()
@@ -24,7 +26,9 @@ function Single_Lead_Profile() {
 
   return (
     <>
-     <div className="container">
+    <MainHeader />
+    <Sider />
+    <div className="container mt-5 px-2 mx-auto p-4">
      <h1 className="text-2xl text-center mt-[2rem]">Leads Profile</h1>
      <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
     <div className="flex flex-wrap mb-4">

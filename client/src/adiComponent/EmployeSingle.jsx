@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { BsPencilSquare, BsTrash } from 'react-icons/bs';
 import Modal from '../adiComponent/Modal';
 import Sider from '../components/Sider';
+import MainHeader from '../components/MainHeader';
 
 const EmployeeSingle = () => {
   const { employeeId } = useParams();
@@ -213,11 +214,13 @@ const EmployeeSingle = () => {
     }
   };
 
-  return (
+  return ( <>
+    <MainHeader/>
     <div className="flex flex-col min-h-screen lg:flex-row">
       <div className="lg:w-64">
         <Sider />
       </div>
+      <div className="container mt-5 px-2 mx-auto p-4">
       <main className="flex-1 p-4 lg:p-8">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-bold text-gray-800">Employee Profile</h2>
@@ -364,6 +367,8 @@ const EmployeeSingle = () => {
         </Modal>
       </main>
     </div>
+    </div>
+    </>
   );
 };
 

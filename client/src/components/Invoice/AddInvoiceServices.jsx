@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import Sider from "../Sider";
+import MainHeader from "../MainHeader";
 
 const AddInvoiceServices = () => {
   const { id } = useParams();
@@ -146,9 +148,11 @@ const AddInvoiceServices = () => {
     setServices(newServices);
   };
 
-  return (
-
+  return ( <>
+<MainHeader/>
+<Sider/>
 <Wrapper>
+<div className="container mt-5 px-2 mx-auto p-4">
   <Link
     to={`/final-invoice/${id}`}
     className="btn bg-green-500 text-white mx-3 mt-4 mb-2"
@@ -324,8 +328,10 @@ const AddInvoiceServices = () => {
         </button>
       </form>
     </div>
+    </div>
   </div>
 </Wrapper>
+  </>
 
   
   );

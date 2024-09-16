@@ -12,6 +12,9 @@ import QuotationData from './EmployeeDataExport/EmployeeQuotationData';
 import InvoiceData from './EmployeeDataExport/EmployeeInvoiceData';  // Add your invoice component here if it exists
 import MainHeader from '../MainHeader';
 import EmployeeSider from './EmployeeSider';
+import EmployeeLeadData from './EmployeeDataExport/EmployeeLeadData';
+import EmployeeQuotationData from './EmployeeDataExport/EmployeeQuotationData';
+import EmployeeInvoiceData from './EmployeeDataExport/EmployeeInvoiceData';
 
 // import Employees from '../components/DataExport/Employees';
 
@@ -161,10 +164,9 @@ function DataExport() {
 
         {/* Conditionally render the selected component */}
         <div className="w-full h-[calc(100vh-10rem)] overflow-y-auto">
-          {selectedComponent === 'LeadData' && <LeadData />}
-          {/* {selectedComponent === 'EmployeeData' && <Employees />} */}
-          {selectedComponent === 'QuotationData' && <QuotationData />}
-          {selectedComponent === 'InvoiceData' && <InvoiceData />}
+          {selectedComponent === 'LeadData' && <EmployeeLeadData />}
+          {selectedComponent === 'QuotationData' && <EmployeeQuotationData />}
+          {selectedComponent === 'InvoiceData' && <EmployeeInvoiceData />}
         </div>
       </div>
     </>

@@ -48,7 +48,6 @@ import Reporting from './adiComponent/Reporting';
 import Single_Lead_Profile from './components/Leads/Single_Lead_Profile';
 import Landingpage from './pages/Landingpage';
 import AdminLogin from './components/AdminLogin';
-
 import ServicenameList from './pages/Quotation/ServicenameList';
 import CreateServicelist from './pages/Quotation/CreateServicelist';
 import DeleteServiceName from './pages/Quotation/DeleteServiceName';
@@ -146,7 +145,7 @@ function App() {
         <Route path='/reporting' element={<Reporting/>}/>
 
             {/* employees routes */}
-            <Route path="/employees-dashboard" element={<EmployeeDashboard />} />
+        <Route path="/employees-dashboard" element={<EmployeeDashboard />} />
         <Route path="/employee-leads" element={  <EmployeeLead/>} />
         <Route path="/employee-report" element={  <EmployeeReport/>} />
         <Route path="/employee-data-export" element={  <EmployeeDataExport/>} />

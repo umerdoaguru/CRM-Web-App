@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import ReactPaginate from 'react-paginate';
 import * as XLSX from 'xlsx';
 import styled from "styled-components";
+import MainHeader from "../../MainHeader";
+import EmployeeSider from "../EmployeeSider";
 
 const EmployeeQuotationData = () => {
   const [quotations, setQuotations] = useState([]);
@@ -53,8 +55,11 @@ const EmployeeQuotationData = () => {
   };
 
   return (
+    <>
+       {/* <MainHeader /> */}
+       <EmployeeSider />
     <Wrapper>
-      <div className="container px-2 mx-auto">
+      <div className="container px-2 mx-auto mt-16">
        
 
         <div className="w-full px-2 mt-4">
@@ -131,6 +136,7 @@ const EmployeeQuotationData = () => {
         </div>
       </div>
     </Wrapper>
+    </>
   );
 };
 

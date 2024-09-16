@@ -46,8 +46,8 @@ const EmployeeSider = () => {
 
         <div className="flex flex-col items-center pt-10">
           <ul className="flex flex-col items-center space-y-4 w-full">
-            <li className={`w-full ${getSidebarClass("/")}`}>
-              <Link to="/" className="flex flex-col items-center py-3">
+            <li className={`w-full ${getSidebarClass("/employees-dashboard")}`}>
+              <Link to="/employees-dashboard" className="flex flex-col items-center py-3">
                 <BsHouse className="text-white text-2xl lg:text-3xl" />
                 <h3 className="hidden lg:inline text-white text-sm lg:text-base">
                   Dashboard
