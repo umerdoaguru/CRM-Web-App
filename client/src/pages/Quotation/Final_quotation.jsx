@@ -199,7 +199,7 @@ function Final_quotation() {
       <div className="grid grid-cols-12 gap-2">
         <div className="col-span-12 lg:col-span-3">
           <Link
-            to="/quotation-form"
+            to="/employee-quotation-invoice"
             className="text-white bg-green-500 hover:bg-green-600 rounded py-2 px-4 w-full block text-center"
           >
             <i className="bi bi-arrow-return-left mx-1"></i>Back

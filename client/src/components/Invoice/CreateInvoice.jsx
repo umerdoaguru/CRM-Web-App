@@ -132,7 +132,7 @@ const CreateInvoice = () => {
           client_gst_per: invoiceClient_GST_per,
           client_pan_no: invoiceClient_Pan_no,
           services: servicesToSave,
-          user_id: userName,
+          employeeId: UserId,
           company_type: selectedCompany,
           invoice_date: invoiceDate,
           duration_start_date : invoice_Start_Date,
@@ -157,7 +157,7 @@ const CreateInvoice = () => {
   const getServicelist = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:9000/api/servicelist/${userId}`
+        `http://localhost:9000/api/servicelist`
       );
       
       setServiceslist(res.data);
@@ -169,7 +169,7 @@ const CreateInvoice = () => {
   useEffect(() => {
     const fetchinvoice = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/company-data/${UserId}`);
+        const response = await axios.get(`http://localhost:9000/api/company-data`);
         setCompany_data(response.data);
         
         console.log(response);
@@ -242,40 +242,19 @@ const CreateInvoice = () => {
 
   return (
     <Wrapper>
-      <div className="w-full mt-4">
-
-        <Link
-      to={`/quotation-section`}
-      className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 mt-3 mx-2 rounded"
-    >
-      <i className="bi bi-arrow-return-left"></i> Back
-    </Link>   
-      </div>
+     
  
     <div className="container mx-auto mt-5">
       <div className="grid grid-cols-1">
-        <form className="bg-white p-6 rounded shadow-md" onSubmit={handleSubmit}>
+        <form className="bg-white p-6 rounded shadow-2xl" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-4">
-            <div className="lg:col-span-3">
-              <UserLogin />
-            </div>
-  
-            <div className="lg:col-span-6 text-center lg:text-left">
+           
+            <div className="lg:col-span-12 text-center lg:text-left">
               <h5 className="text-xl font-semibold mb-4">Invoice Generation System :</h5>
             </div>
   
-            <div className="lg:col-span-2">
-              <Link
-                to="/invoicelist"
-                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded text-center block"
-              >
-                Invoice List
-              </Link>
-            </div>
-  
-            <div className="lg:col-span-1">
-              <Logout />
-            </div>
+          
+          
           </div>
   
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">

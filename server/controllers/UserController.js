@@ -10,19 +10,82 @@ const JWT = require('jsonwebtoken');
 
  
 
+  // const Quotation = async (req, res) => {
+  //   try {
+  //     const { quotation_name, services } = req.body;
+  //     const { user_id } = req.body; // Assuming user_id is retrieved from the authenticated user
+  
+  //     if (!quotation_name || !services || services.length === 0) {
+  //       return res.status(400).json({ error: "Quotation name and services are required" });
+  //     }
+  
+  //     // Insert quotation with user_id
+  //     const sqlQuotation = "INSERT INTO quotations_data (quotation_name, user_id) VALUES (?, ?)";
+  //     const resultQuotation = await new Promise((resolve, reject) => {
+  //       db.query(sqlQuotation, [quotation_name, user_id], (err, result) => {
+  //         if (err) {
+  //           reject(err);
+  //         } else {
+  //           resolve(result);
+  //         }
+  //       });
+  //     });
+  
+  //     // Get quotation ID and name
+  //     const quotationId = resultQuotation.insertId;
+  //     const quotationName = quotation_name;
+  
+  //     // Insert services with the associated quotation_id and quotation_name
+  //     const sqlServices = "INSERT INTO services_data (quotation_id, quotation_name, service_type, service_name, service_description, actual_price, offer_price, subscription_frequency) VALUES ?";
+  //     const servicesValues = services.map((service) => [
+  //       quotationId,
+  //       quotationName,
+  //       service.service_type,
+  //       service.service_name,
+  //       service.service_description,
+  //       service.actual_price,
+  //       service.offer_price,
+  //       service.subscription_frequency,
+  //     ]);
+  
+  //     await new Promise((resolve, reject) => {
+  //       db.query(sqlServices, [servicesValues], (err, result) => {
+  //         if (err) {
+  //           reject(err);
+  //         } else {
+  //           resolve(result);
+  //         }
+  //       });
+  //     });
+  
+  //     res.status(200).json({
+  //       success: true,
+  //       message: "Quotation and services added successfully",
+  //       quotation: {
+  //         id: quotationId,
+  //         quotation_name: quotationName,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.error("Error processing request:", error);
+  //     res.status(500).json({ error: "Internal Server Error" });
+  //   }
+  // };
+  
+
   const Quotation = async (req, res) => {
     try {
       const { quotation_name, services } = req.body;
-      const { user_id } = req.body; // Assuming user_id is retrieved from the authenticated user
+      const { employeeId } = req.body; // Assuming employeeId is retrieved from the authenticated user
   
       if (!quotation_name || !services || services.length === 0) {
         return res.status(400).json({ error: "Quotation name and services are required" });
       }
   
-      // Insert quotation with user_id
-      const sqlQuotation = "INSERT INTO quotations_data (quotation_name, user_id) VALUES (?, ?)";
+      // Insert quotation with employeeId
+      const sqlQuotation = "INSERT INTO quotations_data (quotation_name, employeeId) VALUES (?, ?)";
       const resultQuotation = await new Promise((resolve, reject) => {
-        db.query(sqlQuotation, [quotation_name, user_id], (err, result) => {
+        db.query(sqlQuotation, [quotation_name, employeeId], (err, result) => {
           if (err) {
             reject(err);
           } else {
@@ -71,6 +134,9 @@ const JWT = require('jsonwebtoken');
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
+  
+  
+  
   
   
   

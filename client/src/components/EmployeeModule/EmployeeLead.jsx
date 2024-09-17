@@ -89,6 +89,7 @@ function EmployeeLead() {
     });
     const [showPopup, setShowPopup] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const [render, setRender] = useState(false);
     
     // Fetch leads from the API
     useEffect(() => {
@@ -143,7 +144,8 @@ function EmployeeLead() {
       
           if (response.status === 200) {
             console.log('Updated successfully:', response.data);
-            cogoToast.success({ general: 'Lead status updated successfully.' });
+            cogoToast.success("Lead status updated successfully");
+            setRender(!render);
             closePopup();  // Close the popup on success
           } else {
             console.error('Error updating:', response.data);
@@ -158,6 +160,10 @@ function EmployeeLead() {
     const closePopup = () => {
         setShowPopup(false);
     };
+
+    useEffect(() => {
+      fetchLeads();
+    }, [render])
 
     return (
         <>

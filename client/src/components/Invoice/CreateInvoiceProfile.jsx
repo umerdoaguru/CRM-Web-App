@@ -47,7 +47,7 @@ function CreateInvoiceProfile() {
       formData.append('logo', headerImage);
 
      
-      formData.append('user_id', UserId);
+      formData.append('employeeId', UserId);
       formData.append('company_name', companyNameBranch);
       formData.append('company_name_account_name',accountName);
       formData.append('company_name_account_ifsc',accountIFSC);

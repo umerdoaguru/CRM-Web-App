@@ -11,7 +11,8 @@ function MainHeader() {
           <div className="flex p-1  items-center  justify-between bg-slate-100">
             <a href="#" className="flex items-center mx-2">
               <img
-                src="https://flowbite.com/docs/images/logo.svg"
+                // src="https://flowbite.com/docs/images/logo.svg"
+                src="https://t3.ftcdn.net/jpg/05/38/30/98/360_F_538309859_lrY7wR1QGZbc4Ka4LQE7t2wl623jcPG7.jpg"
                 className="mr-3 h-6 sm:h-9"
                 alt="Flowbite Logo"
               />

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import Sider from '../../components/Sider';
+import MainHeader from '../../components/MainHeader';
 
 const CreateServicelist = () => {
   const navigate = useNavigate();
@@ -44,6 +46,9 @@ const CreateServicelist = () => {
 
   return (
     <>
+     <MainHeader/>
+     <Sider/>
+     <div className="container mt-5 px-2 mx-auto p-4">
       <Link
         to={`/servicenamelist`}
         className="bg-green-500 hover:bg-green-600 text-white mt-3 mx-2 py-2 px-4 rounded"
@@ -88,6 +93,7 @@ const CreateServicelist = () => {
             Create Services
           </button>
         </form>
+      </div>
       </div>
     </>
   );
