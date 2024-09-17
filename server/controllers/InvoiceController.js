@@ -121,7 +121,10 @@ const getInvoice = async (req, res) => {
 
 const getAllInvoice = async (req, res) => {
   try {
-    const sql = "SELECT * FROM  invoice_data";
+    const sql =  `SELECT * FROM  
+    invoice_data 
+    JOIN  invoice_services_data ON invoice_data.invoice_id = invoice_services_data.invoice_id `;
+
 
     const allQuotations = await new Promise((resolve, reject) => {
       db.query(sql,(err, results) => {

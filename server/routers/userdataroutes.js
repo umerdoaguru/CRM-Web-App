@@ -65,6 +65,7 @@ router.put('/servicelist',updateServiceList);
 
 router.post('/create-invoice',createInvoice);
 router.get("/invoice-data", getInvoice);
+router.get("/invoice-data-dash", getAllInvoice);
 router.delete("/invoice/:id",deleteInvoice);
 router.put("/invoice-data/:invoiceId", UpdateInvoiceName);
 
