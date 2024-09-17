@@ -70,7 +70,7 @@ function App() {
 
     <>
    
-    <div  style={{overflow:"hidden"}} >
+    <div  style={{overflow:"hidden"}} className='pb-5'>
     <Routes>
 
       {/* Admin routes */}
