@@ -9,29 +9,29 @@ import Pagination from "./comp/pagination";
 const Reporting = () => {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState("All");
-  const [selectedCategory, setSelectedCategory] = useState("employee");
+  const [selectedCategory, setSelectedCategory] = useState("quotation");
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredData, setFilteredData] = useState(data);
   const [rowPerPage, setRowPerPage] = useState(5);
   const [dataFields, setDataFields] = useState({
     quotation: {
-      heading: ["Id", "Company", "Name", "Date"],
-      columns: ["quotation_id", "user_id", "quotation_name", "created_date"],
+      heading: ["Id", "Quotation Name", "Employee Name", "Date"],  
+      columns: ["quotation_id", "quotation_name", "employee_name", "created_date"],
       quotation: [],
     },
     invoice: {
-      heading: ["id ", "Company", "Payment Mode", "Date"],
-      columns: ["invoice_id", "user_id", "payment_mode", "created_date"],
+      heading: ["id ", "Quotation Name", "Employee Name", "Amount", "Payment Mode", "Date"],
+      columns: ["invoice_id", "quotation_name", "employee_name", "offer_price", "payment_mode", "created_date"],
       invoice: [],
     },
     employee: {
-      heading: ["Id", "Name", "Email", "Designation", "date"],
-      columns: ["employeeId", "name", "email", "designation", "createdTime"],
+      heading: ["Id", "Name", "Email", "Position", "date"],
+      columns: ["employeeId", "name", "email", "position", "createdTime"],
       employee: [],
     },
     leads: {
-      heading: ["Id", "Assign", "Date", "Source"],
-      columns: ["id", "assignedTo", "createdTime", "leadSource"],
+      heading: ["Lead No.", "Assigned To", "Lead Name", "Phone Number", "Date", "Lead Source", "Quotation Status", "Invoice Status", "Deal Status", "Lead Working Status", "FollowUp Status"],
+      columns: ["lead_no", "assignedTo", "name",  "phone", "createdTime", "leadSource", "quotation_status", "invoice_status", "deal_status", "lead_working_status", "follow_up_status"],
       leads: [],
     },
   });
@@ -183,7 +183,7 @@ const Reporting = () => {
 
   const handleDownload = () => {
     // Items per page (5 in this case, or any other number you are using)
-    const itemsPerPage = 5;
+    const itemsPerPage = rowPerPage;
 
     // Calculate the start and end index for the current page
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -207,6 +207,25 @@ const Reporting = () => {
     );
   };
 
+  const formatDate = (isoDate) => {
+    const date = new Date(isoDate);
+    return date.toISOString().split('T')[0]; // Returns date in YYYY-MM-DD format
+  };
+  
+  // Function to update date fields in a data array
+  const updateDateFields = (data) => {
+    return data.map(item => {
+      if (item.created_date) {
+        item.created_date = formatDate(item.created_date);
+      }
+      if (item.createdTime) {
+        item.createdTime = formatDate(item.createdTime);
+      }
+      return item;
+    });
+  };
+
+
   const getQuotationData = async () => {
     try {
       const [
@@ -224,11 +243,12 @@ const Reporting = () => {
 
       // Combine all responses as needed
       const combinedData = {
-        quotation: quotationResponse.data.data,
-        invoice: invoiceResponse.data.data,
-        employee: employeeResponse.data,
-        leads: leadsResponse.data,
+        quotation: updateDateFields(quotationResponse.data.data),
+        invoice: updateDateFields(invoiceResponse.data.data),
+        employee: updateDateFields(employeeResponse.data),
+        leads: updateDateFields(leadsResponse.data),
       };
+      
 
       const updatedDataFields = {
         ...dataFields,
@@ -250,6 +270,8 @@ const Reporting = () => {
         },
       };
 
+
+
       setDataFields(updatedDataFields);
       console.log(combinedData);
       setData(combinedData);
@@ -266,6 +288,10 @@ const Reporting = () => {
     <>
       <MainHeader />
       <Sider />
+      <div className=" container px-3 pt-5">
+      <h1 className="text-2xl text-center mt-[2rem] font-medium">Reports</h1>
+      <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
+      </div>
       <div className=" container mt-16 flex flex-col min-h-screen p-4 lg:p-8">
         <div className="flex flex-col space-y-4 lg:space-y-0 lg:flex-row justify-between mb-8">
           <div className="flex flex-wrap justify-center max-sm:justify-start">
@@ -273,7 +299,7 @@ const Reporting = () => {
               <button
                 key={category}
                 onClick={() => handleCategoryClick(category)}
-                className={`mb-2 mr-2 px-4 py-2 rounded-lg ${
+                className={`mb-2 mr-2 px-4 py-2 font-medium rounded-lg ${
                   selectedCategory === category
                     ? "bg-blue-500 text-white"
                     : "bg-gray-200"
@@ -317,7 +343,7 @@ const Reporting = () => {
 
             <button
               onClick={handleDownload}
-              className="flex items-center px-4 py-2 text-white mr-2 mb-2 bg-green-500 rounded-lg hover:bg-green-600 mt-0"
+              className="flex items-center  font-medium px-4 py-2 text-white mr-2 mb-2 bg-blue-500 rounded-lg hover:bg-blue-600 mt-0"
             >
               <BsDownload className="mr-2" /> Download
             </button>
@@ -327,7 +353,7 @@ const Reporting = () => {
         <div className="overflow-x-auto rounded-lg shadow-md">
           <table className="min-w-full bg-white">
             <thead>
-              <tr className="text-sm font-semibold text-left text-gray-600 uppercase bg-gray-200">
+              <tr className="text-sm font-semibold text-left text-gray-600 uppercase bg-gray-200">  
                 {dataFields?.[selectedCategory].heading.map((heading) => (
                   <th className="px-4 py-3">{heading}</th>
                 ))}

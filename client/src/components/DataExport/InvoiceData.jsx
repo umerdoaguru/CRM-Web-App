@@ -57,7 +57,7 @@ const InvoiceData = () => {
        
         <div className="container mx-auto mt-4">
         
-        <h1 className="text-2xl text-center mt-[2rem]">Invoice Data</h1>
+        <h1 className="text-2xl text-center mt-[2rem] font-medium">Invoice Data</h1>
         <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
           {/* Filter Section */}
           <div className="flex space-x-1 mb-4 sm:flex-row flex-col">
@@ -79,7 +79,7 @@ const InvoiceData = () => {
              <div className="respo mx-2 ">
             <button
               onClick={downloadExcel}
-              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+              className="bg-blue-500 text-white font-medium px-4 py-2 rounded hover:bg-blue-700"
             >
               Download Excel
             </button>

@@ -387,6 +387,7 @@ import Header from '../components/MainHeader';
 import Sider from '../components/Sider';
 import moment from 'moment';
 import { Link, useNavigate } from 'react-router-dom';
+import { BsPencilSquare, BsTrash,} from 'react-icons/bs';
 
 function Leads() {
     const navigate  = useNavigate();
@@ -558,13 +559,13 @@ function Leads() {
             <Header />
             <Sider />
             <div className="container">
-                <h1 className="text-2xl text-center mt-[5rem]">Leads Management</h1>
+                <h1 className="text-2xl text-center mt-[5rem] font-medium">Leads Management</h1>
                 <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
 
                 {/* Button to create a new lead */}
                 <div className="mb-4">
                     <button
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium"
                         onClick={handleCreateClick}
                     >
                         Add Lead
@@ -602,18 +603,24 @@ function Leads() {
                                     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.lead_status}</td>
                                     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{moment(lead.createdTime).format('YYYY-MM-DD')}</td>
                                     <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
-                                        <button
+                                       
+
+<div className="flex space-x-2 sm:space-x-4">
+                           <button
                                            className="text-blue-500 hover:text-blue-700"
                                             onClick={() => handleEditClick(lead)}
                                         >
-                                            Edit /
+                                         
+                                             <BsPencilSquare size={20} />
                                         </button>
                                         <button
                                             className="text-red-500 hover:text-red-700"
                                             onClick={() => handleDeleteClick(lead.lead_id)}
                                         >
-                                            Delete
+                                          
+                                              <BsTrash size={20} />
                                         </button>
+                        </div>
                                     </td>
                                 </tr>
                             ))}
@@ -629,7 +636,7 @@ function Leads() {
                             <div className="mb-4">
                                 <label className="block text-gray-700">Lead Number</label>
                                 <input
-                                    type="text"
+                                    type="Number"
                                     name="lead_no"
                                     value={currentLead.lead_no}
                                     onChange={handleInputChange}
@@ -690,7 +697,7 @@ function Leads() {
                             <div className="mb-4">
                                 <label className="block text-gray-700">Phone</label>
                                 <input
-                                    type="text"
+                                    type="number"
                                     name="phone"
                                     value={currentLead.phone}
                                     onChange={handleInputChange}
@@ -730,9 +737,9 @@ function Leads() {
                                     name="subject"
                                     value={currentLead.subject}
                                     onChange={handleInputChange}
-                                    className={`w-full px-3 py-2 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded`}
+                                    className={`w-full px-3 py-2 border ${errors.subject ? 'border-red-500' : 'border-gray-300'} rounded`}
                                 />
-                                {errors.phone && <span className="text-red-500">{errors.phone}</span>}
+                                {errors.subject && <span className="text-red-500">{errors.subject}</span>}
                             </div>
 
                             <div className="flex justify-end">

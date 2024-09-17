@@ -75,7 +75,7 @@ function DataExport() {
       <MainHeader />
       <Sider />
       <div className="container  ">
-        <h1 className="text-2xl text-center mt-[5rem]">Data Export</h1>
+        <h1 className="text-2xl text-center mt-[5rem] font-medium">Data Export</h1>
         <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
 
         <div className="flex flex-wrap justify-around mt-5">
@@ -157,7 +157,7 @@ function DataExport() {
         </div>
 
         {/* Conditionally render the selected component */}
-        <div className="w-full h-[calc(100vh-10rem)] overflow-y-auto">
+        <div className="w-full h-[calc(100vh-10rem)] overflow-y-auto ">
           {selectedComponent === 'LeadData' && <LeadData />}
           {selectedComponent === 'EmployeeData' && <Employees />}
           {selectedComponent === 'QuotationData' && <QuotationData />}

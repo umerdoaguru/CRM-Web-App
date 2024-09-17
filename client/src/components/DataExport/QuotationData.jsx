@@ -55,7 +55,7 @@ const QuotationData = () => {
   return (
     <Wrapper>
       <div className="container px-2 mx-auto">
-      <h1 className="text-2xl text-center mt-[2rem]">Quotation Data</h1>
+      <h1 className="text-2xl text-center mt-[2rem] font-medium">Quotation Data</h1>
       <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
 
         <div className="w-full px-2 mt-4">
@@ -81,7 +81,7 @@ const QuotationData = () => {
             <div className="respo mx-2 ">
             <button
               onClick={downloadExcel}
-              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+              className="bg-blue-500 text-white font-medium px-4 py-2 rounded hover:bg-blue-700"
             >
               Download Excel
             </button></div>

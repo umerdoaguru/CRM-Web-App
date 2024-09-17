@@ -52,7 +52,7 @@ function Employees() {
             <Header />
             <Sider />
             <div className="container">
-                <h1 className="text-2xl text-center mt-[2rem]">Employee Data</h1>
+                <h1 className="text-2xl text-center mt-[2rem] font-medium">Employee Data</h1>
                 <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
 
                 {/* Date Filter */}
@@ -75,7 +75,7 @@ function Employees() {
                         <div className="respo mx-2 ">
                     <button
                         onClick={downloadExcel}
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+                        className="bg-blue-500 text-white font-medium px-4 py-2 rounded hover:bg-blue-700"
                     >
                         Download Excel
                     </button>

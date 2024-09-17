@@ -158,21 +158,27 @@ const EmployeeManagement = () => {
     <>
      <MainHeader/>
      <Sider/>
+
+     <div className=" container px-3 pt-5">
+      <h1 className="text-2xl text-center mt-[2rem] font-medium">Employee Management</h1>
+      <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
+      </div>
+
      <div className=" container  mt-12 flex flex-col min-h-screen lg:flex-row">
       
       <main className="flex-1 p-4 lg:p-8">
         <div className="flex flex-col-reverse items-start justify-between mb-8 lg:flex-row lg:items-center">
-          <h2 className="mb-4 text-2xl font-bold text-gray-800 lg:mb-0">Employee Management</h2>
+          {/* <h2 className="mb-4 text-2xl font-bold text-gray-800 lg:mb-0">Employee Management</h2> */}
           <button
             onClick={() => { setShowForm(true); setEditingIndex(null); }}
-            className="flex items-center px-4 py-2 text-white transition duration-200 bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600"
+            className="flex items-center px-4 py-2 text-white transition duration-200 font-medium bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600"
           >
-            <BsPlusCircle className="mr-2" /> Add Employee
+            <BsPlusCircle className="mr-2 font-medium" /> Add Employee
           </button>
         </div>
 
         <div className="overflow-x-auto rounded-lg shadow-md">
-          <table className="min-w-full bg-white">
+          <table className="min-w-full bg-white">   
             <thead>
               <tr className="text-sm font-semibold text-left text-gray-600 uppercase bg-gray-200">
                 <th className="px-4 py-3 sm:px-6">Name</th>
@@ -181,7 +187,7 @@ const EmployeeManagement = () => {
                 <th className="px-4 py-3 sm:px-6">Phone</th>
                 <th className="px-4 py-3 sm:px-6">Salary</th> {/* Added Salary Column */}
                 <th className="px-4 py-3 sm:px-6">Actions</th>
-              </tr>
+              </tr>l
             </thead>
             <tbody>
               {employees.length > 0 ? (
@@ -228,6 +234,9 @@ const EmployeeManagement = () => {
         <Modal isOpen={showForm} onClose={() => setShowForm(false)}>
           <h3 className="mb-4 text-lg font-bold">{editingIndex !== null ? "Edit Employee" : "Add Employee"}</h3>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <label htmlFor="name">
+
+</label>
             <input
               type="text"
               name="name"
