@@ -13,12 +13,12 @@ const EmployeeInvoiceData = () => {
   const [itemsPerPage] = useState(10);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const UserId = useSelector(state => state.auth.user.id);
+  const EmpId = useSelector(state => state.auth.user.id);
 
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/get-employee-invoice/${1}`);
+        const response = await axios.get(`http://localhost:9000/api/get-employee-invoice/${EmpId}`);
         setInvoices(response.data);
       } catch (error) {
         console.error("Error fetching invoices:", error);
@@ -26,7 +26,7 @@ const EmployeeInvoiceData = () => {
     };
 
     fetchInvoices();
-  }, [UserId]);
+  }, [EmpId]);
 
   // Filter Invoices based on Date Range
   const filteredInvoices = invoices.filter(invoice => {

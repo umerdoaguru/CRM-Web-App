@@ -1,15 +1,16 @@
 import axios from "axios";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const EmployeeLeadsReport = () => {
   const [leads, setLeads] = useState([]);
-
+  const EmpId = useSelector(state => state.auth.user.id);
   useEffect(() => {
     const fetchLeads = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:9000/api/employe-leads/${1}`
+          `http://localhost:9000/api/employe-leads/${EmpId}`
         );
         const data = response.data;
         const today = new Date();

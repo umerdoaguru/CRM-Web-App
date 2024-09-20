@@ -123,6 +123,7 @@ const register = async (req, res) => {
           id: user.user_id,
           name:user.user_name,
           email:user.email,
+          roles:user.roles,
          
         },
         token,
@@ -192,6 +193,7 @@ const register = async (req, res) => {
             email: user.email,
             position: user.position,
             salary: user.salary,
+            roles:user.roles,
           },
           token,
         });

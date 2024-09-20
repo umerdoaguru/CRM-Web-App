@@ -14,6 +14,7 @@ import Logout from "../../components/Logout";
 import Sider from "../../components/Sider";
 
 import MainHeader from "../../components/MainHeader";
+import { BsPencilSquare, BsTrash } from "react-icons/bs";
 
 function CreateCompanyProfile() {
   const { id } = useParams();
@@ -482,13 +483,13 @@ to="/servicenamelist"
                                             className="text-blue-500 hover:text-blue-700"
                                             onClick={() => handleEditCompany(company.company_name)}
                                         >
-                                            Edit /
+                                                                       <BsPencilSquare size={20} />
                                         </button>
                     <button
                      onClick={() => handleDeleteCompanyData(company.company_name)}
                       className=" text-[red] px-2 py-2 rounded"
                     >
-                      Delete
+                       <BsTrash size={20} />
                     </button>
                   </td>
                 </tr>

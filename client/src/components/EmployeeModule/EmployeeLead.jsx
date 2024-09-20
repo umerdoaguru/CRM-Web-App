@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import MainHeader from '../MainHeader';
 import EmployeeSider from './EmployeeSider';
 import UpdateLeadField from './updateLeadField';
+import { useSelector } from 'react-redux';
 const fieldConfig = [
     {
       name: 'lead_status',
@@ -95,11 +96,12 @@ function EmployeeLead() {
     useEffect(() => {
         fetchLeads();
     }, []);
+    const EmpId = useSelector(state => state.auth.user.id);
 
     const fetchLeads = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:9000/api/employe-leads/${1}`);
+            `http://localhost:9000/api/employe-leads/${EmpId}`);
           const data = response.data;
           setLeads(data);
         } catch (error) {

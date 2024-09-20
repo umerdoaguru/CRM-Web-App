@@ -76,16 +76,16 @@ const JWT = require('jsonwebtoken');
   const Quotation = async (req, res) => {
     try {
       const { quotation_name, services } = req.body;
-      const { employeeId } = req.body; // Assuming employeeId is retrieved from the authenticated user
+      const { employeeId, employee_name } = req.body; // Assuming employeeId is retrieved from the authenticated user
   
       if (!quotation_name || !services || services.length === 0) {
         return res.status(400).json({ error: "Quotation name and services are required" });
       }
   
       // Insert quotation with employeeId
-      const sqlQuotation = "INSERT INTO quotations_data (quotation_name, employeeId) VALUES (?, ?)";
+      const sqlQuotation = "INSERT INTO quotations_data (quotation_name, employeeId, employee_name) VALUES (?, ?,?)";
       const resultQuotation = await new Promise((resolve, reject) => {
-        db.query(sqlQuotation, [quotation_name, employeeId], (err, result) => {
+        db.query(sqlQuotation, [quotation_name, employeeId, employee_name], (err, result) => {
           if (err) {
             reject(err);
           } else {

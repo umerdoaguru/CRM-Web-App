@@ -119,7 +119,7 @@ const QuotationList = () => {
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={handlePageClick}
-        containerClassName={'flex justify-center space-x-2 mt-4'}
+        containerClassName={'flex justify-center space-x-2 mt-4'}    
         pageClassName={'bg-white border border-gray-300 rounded-md'}
         pageLinkClassName={'py-2 px-4 text-sm text-gray-700 hover:bg-gray-200'}
         previousClassName={'bg-white border border-gray-300 rounded-md'}

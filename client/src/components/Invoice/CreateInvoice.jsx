@@ -11,7 +11,7 @@ import Logout from "../Logout";
 
 
 const CreateInvoice = () => {
-  const userId = useSelector((state) => state.auth.user.id);
+  const EmpId = useSelector(state => state.auth.user.id);
   const navigate = useNavigate();
   const [invoiceName, setInvoiceName] = useState("");
   const [invoiceAddress, setInvoiceAddress] = useState("");
@@ -28,7 +28,7 @@ const CreateInvoice = () => {
   const [serviceslist, setServiceslist] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState("");
   const [company_data, setCompany_data] = useState([]);
-  const UserId = useSelector(state => state.auth.user.id);
+
   const [services, setServices] = useState([
     {
       service_type: "",
@@ -132,7 +132,7 @@ const CreateInvoice = () => {
           client_gst_per: invoiceClient_GST_per,
           client_pan_no: invoiceClient_Pan_no,
           services: servicesToSave,
-          employeeId: UserId,
+          employeeId: EmpId,
           company_type: selectedCompany,
           invoice_date: invoiceDate,
           duration_start_date : invoice_Start_Date,
@@ -179,7 +179,7 @@ const CreateInvoice = () => {
     };
 
     fetchinvoice();
-  }, [UserId]);
+  }, []);
 
   useEffect(() => {
     // Fetch existing data from the API

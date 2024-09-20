@@ -61,11 +61,14 @@ import EmployeeDataExport from './components/EmployeeModule/EmployeeDataExport';
 import EmployeeQuotationData from './components/EmployeeModule/EmployeeDataExport/EmployeeQuotationData';
 import EmployeeProfile from './components/EmployeeModule/EmployeeProfile';
 import MainQuotation from './components/EmployeeModule/QuotationEmployee&Invoice/MainQuotationPage';
+import AdminRoutes from './routes/AdminRoutes';
+import EmployeeRoutes from './routes/EmployeeRoutes';
 
 
 function App() {
   const user = useSelector(state => state.auth.user);
   console.log(user);
+  
   
   return (
 
@@ -74,12 +77,26 @@ function App() {
     <div  style={{overflow:"hidden"}} >
     <Routes>
 
-      {/* Admin routes */}
+      {/* main page routes */}
+      <Route path="/main_page_crm" element={<Landingpage/>} />
 
 
-        <Route path="/" element={user? <Dashboard/> :<Landingpage/>} />
+  {/* Common routes */}
+ 
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/employee-login" element={<EmployeeLogin/>} />
 
-        <Route path="/admin-login" element={<AdminLogin/>} />
+        {/* Conditionally render Admin or Employee routes based on user's role */}
+        {user?.roles === 'Admin' ? (<Route path="/*" element={<AdminRoutes />} />) : user?.roles === 'Employee' ? (<Route path="/*" element={<EmployeeRoutes />} />) :
+         ( <Route path="/" element={<Navigate to="/main_page_crm" />} /> )}
+
+        {/* Catch-all route to redirect unauthorized users */}
+        <Route path="*" element={<Navigate to="/" />} />
+
+
+
+
+        {/* <Route path="/admin-login" element={<AdminLogin/>} />
 
         <Route path="/employee-login" element={<EmployeeLogin/>} />
        
@@ -132,26 +149,26 @@ function App() {
         <Route path="/lead-data" element={  <LeadData/>} />
         <Route path="/lead-single-data/:id" element={  <Single_Lead_Profile/>} />
         <Route path="/quotation-data" element={  <QuotationData/>} />
-        <Route path="/invoice-data" element={  <InvoiceData/>} />
+        <Route path="/invoice-data" element={  <InvoiceData/>} /> */} 
 
    {/* aditya routes */}
 
-   <Route path="/dashboard" element={<Dashboard />} />
+   {/* <Route path="/dashboard" element={<Dashboard />} />
         <Route path='/overview' element={<Overview/>}/>
      
         <Route path='/edit-profile' element={<UserProfile/>}/>
         <Route path='/employee-management' element={<EmployeeManagement/>}/>
         <Route path='/employee-single/:employeeId' element={<EmployeeSingle/>}/>
         <Route path='/singleOrganization/:id' element={<SingleOrganization/>}/>
-        <Route path='/reporting' element={<Reporting/>}/>
+        <Route path='/reporting' element={<Reporting/>}/> */}
 
             {/* employees routes */}
-        <Route path="/employees-dashboard" element={<EmployeeDashboard />} />
+        {/* <Route path="/employees-dashboard" element={<EmployeeDashboard />} />
         <Route path="/employee-leads" element={  <EmployeeLead/>} />
         <Route path="/employee-report" element={  <EmployeeReport/>} />
         <Route path="/employee-data-export" element={  <EmployeeDataExport/>} />
         <Route path="/employee-quotation-invoice" element={  <MainQuotation/>} />
-        <Route path="/employee-profile" element={  <EmployeeProfile/>} />
+        <Route path="/employee-profile" element={  <EmployeeProfile/>} /> */}
 
 
       </Routes>

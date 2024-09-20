@@ -320,7 +320,7 @@ function AdminQuotationVIew() {
 
 
 
-  <Header companyName={selectedCompany} quotationName={quotationName} />
+  {/* <Header companyName={selectedCompany} quotationName={quotationName} /> */}
 
   <div className="container mt-5">
     <h2 className="text-2xl font-bold">Plan & Quotation for {quotationName}</h2>

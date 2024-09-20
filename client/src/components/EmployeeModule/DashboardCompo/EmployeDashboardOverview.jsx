@@ -17,7 +17,7 @@ const EmployeeOverview = () => {
     const [invoice, setInvoice] = useState([]);
     const [selectedComponent, setSelectedComponent] = useState('LeadData');  // Set 'LeadData' as default
   
-    const UserId = useSelector(state => state.auth.user.id);
+    const EmpId = useSelector(state => state.auth.user.id);
   
     useEffect(() => {
       fetchLeads();
@@ -28,7 +28,7 @@ const EmployeeOverview = () => {
 
     const fetchLeads = async () => {
         try {
-          const response = await axios.get(`http://localhost:9000/api/employe-leads/${1}`);
+          const response = await axios.get(`http://localhost:9000/api/employe-leads/${EmpId}`);
           setLeads(response.data);
         } catch (error) {
           console.error('Error fetching leads:', error);
@@ -46,7 +46,7 @@ const EmployeeOverview = () => {
     
       const fetchQuotation = async () => {
         try {
-          const response = await axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${1}`);
+          const response = await axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${EmpId}`);
           console.log(response.data);
           setQuotation(response.data);
         } catch (error) {
@@ -56,7 +56,7 @@ const EmployeeOverview = () => {
     
       const fetchInvoice = async () => {
         try {
-          const response = await axios.get(`http://localhost:9000/api/get-employee-invoice/${1}`);
+          const response = await axios.get(`http://localhost:9000/api/get-employee-invoice/${EmpId}`);
           setInvoice(response.data);
         } catch (error) {
           console.error("Error fetching invoices:", error);

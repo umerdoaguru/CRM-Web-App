@@ -7,6 +7,7 @@ import axios from "axios";
 import Pagination from './../../adiComponent/comp/pagination';
 import MainHeader from "../MainHeader";
 import EmployeeSider from "./EmployeeSider";
+import { useSelector } from "react-redux";
 
 const d_fileds = {
   quotation: {
@@ -33,7 +34,7 @@ const EmployeeReport = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowPerPage, setRowPerPage] = useState(5);
   const [dataFields, setDataFields] = useState(d_fileds);
-
+  const EmpId = useSelector(state => state.auth.user.id); 
   useEffect(() => {
     filterData();
   }, [selectedCategory, filter]);
@@ -145,9 +146,9 @@ const EmployeeReport = () => {
         invoiceResponse,
         leadsResponse,
       ] = await Promise.all([
-        axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${1}`),
-        axios.get(`http://localhost:9000/api/get-employee-invoice/${1}`),
-        axios.get(`http://localhost:9000/api/employe-leads/${1}`),
+        axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${EmpId}`),
+        axios.get(`http://localhost:9000/api/get-employee-invoice/${EmpId}`),
+        axios.get(`http://localhost:9000/api/employe-leads/${EmpId}`),
       ]);
 
       const combinedData = {

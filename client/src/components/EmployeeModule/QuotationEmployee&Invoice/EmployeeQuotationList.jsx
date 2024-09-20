@@ -15,12 +15,12 @@ const EmployeeQuotationList = () => {
   const [filterText, setFilterText] = useState("");
   const [sortAsc, setSortAsc] = useState(true);
   const [render, setRender] = useState(false);
-  const UserId = useSelector(state => state.auth.user.id);
+  const EmpId = useSelector(state => state.auth.user.id);
 
   useEffect(() => {
     const fetchQuotations = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${1}`);
+        const response = await axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${EmpId}`);
         setQuotations(response.data);
         console.log(response);
       } catch (error) {
@@ -29,7 +29,7 @@ const EmployeeQuotationList = () => {
     };
 
     fetchQuotations();
-  }, [UserId]);
+  }, [EmpId]);
 
   const handleDelete = async (id) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this quotation?");

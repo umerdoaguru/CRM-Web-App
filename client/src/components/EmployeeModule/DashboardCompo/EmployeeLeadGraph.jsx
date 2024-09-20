@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const EmployeeLeadsGraph = () => {
   const [leadsData, setLeadsData] = useState([]);
   const [error, setError] = useState(null);
-
+  const EmpId = useSelector(state => state.auth.user.id);
   useEffect(() => {
     const fetchLeadsData = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/employe-leads/${1}`);
+        const response = await axios.get(`http://localhost:9000/api/employe-leads/${EmpId}`);
         const allLeads = response.data;
 
         // Get today's date and the date 28 days ago (to include today and 27 previous days)

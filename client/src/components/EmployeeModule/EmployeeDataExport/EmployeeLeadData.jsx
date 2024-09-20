@@ -88,6 +88,7 @@ import * as XLSX from 'xlsx';
 
 
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 
 function EmployeeLeadData() {
@@ -95,7 +96,7 @@ function EmployeeLeadData() {
     const [filteredLeads, setFilteredLeads] = useState([]);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-
+    const EmpId = useSelector(state => state.auth.user.id);
     // Fetch leads from the API
     useEffect(() => {
         fetchLeads();
@@ -103,7 +104,7 @@ function EmployeeLeadData() {
 
     const fetchLeads = async () => {
         try {
-            const response = await axios.get(`http://localhost:9000/api/employe-leads/${1}`);
+            const response = await axios.get(`http://localhost:9000/api/employe-leads/${EmpId}`);
             setLeads(response.data);
             setFilteredLeads(response.data); // Initial data set for filtering
         } catch (error) {

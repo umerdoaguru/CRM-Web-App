@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const EmployeeQuotationGraph = () => {
     const [quotationData, setQuotationData] = useState([]);
-
+    const EmpId = useSelector(state => state.auth.user.id);
     // Function to format the date to "DD MMM" format
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -45,7 +46,7 @@ const EmployeeQuotationGraph = () => {
     // Fetch data from the API
     const fetchData = async () => {
         try {
-            const response = await axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${1}`); // Adjust the API route as necessary
+            const response = await axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${EmpId}`); // Adjust the API route as necessary
             const data = response.data;
 
             const formattedData = generateStaticData(data);

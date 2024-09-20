@@ -26,7 +26,7 @@ function DataExport() {
   const [invoice, setInvoice] = useState([]);
   const [selectedComponent, setSelectedComponent] = useState('LeadData');  // Set 'LeadData' as default
 
-  const UserId = useSelector(state => state.auth.user.id);
+  const EmpId = useSelector(state => state.auth.user.id);
 
   useEffect(() => {
     fetchLeads();
@@ -37,7 +37,7 @@ function DataExport() {
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/employe-leads/${1}`);
+      const response = await axios.get(`http://localhost:9000/api/employe-leads/${EmpId}`);
       setLeads(response.data);
     } catch (error) {
       console.error('Error fetching leads:', error);
@@ -55,7 +55,7 @@ function DataExport() {
 
   const fetchQuotation = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${1}`);
+      const response = await axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${EmpId}`);
       setQuotation(response.data);
     } catch (error) {
       console.error("Error fetching quotations:", error);
@@ -64,7 +64,7 @@ function DataExport() {
 
   const fetchInvoice = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/get-employee-invoice/${1}`);
+      const response = await axios.get(`http://localhost:9000/api/get-employee-invoice/${EmpId}`);
       setInvoice(response.data);
     } catch (error) {
       console.error("Error fetching invoices:", error);

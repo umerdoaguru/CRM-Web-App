@@ -70,7 +70,7 @@ function Print_Page() {
     const fetchCompanyNames = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:9000/api/header-footer-images/company-names/${UserId}`
+          `http://localhost:9000/api/header-footer-images/company-names`
         );
         if (response.status === 200) {
           setCompanyNames(response.data); // Assuming response.data is an array of company names

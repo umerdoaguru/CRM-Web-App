@@ -224,28 +224,12 @@ const Invoicelist = () => {
                 {moment(invoice.created_date).format("DD/MM/YYYY")}
               </td>
               <td className="border border-gray-200 px-4 py-2 flex flex-wrap space-x-2">
-                <Link to={`/final-invoice/${invoice.invoice_id}`}>
+                <Link to={`/admin-view-invoice/${invoice.invoice_id}`}>
                   <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 rounded m-1">
                     View
                   </button>
                 </Link>
-                <Link to={`/update-invoice-name/${invoice.invoice_id}`}>
-                  <button className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded m-1">
-                    Edit
-                  </button>
-                </Link>
-                <button
-                  className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-2 rounded m-1"
-                  onClick={() => handleDelete(invoice.invoice_id)}
-                >
-                  Delete
-                </button>
-                <button
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1"
-                  onClick={() => handleCopyInvoice(invoice.invoice_id)}
-                >
-                  Copy
-                </button>
+              
               </td>
             </tr>
           ))}

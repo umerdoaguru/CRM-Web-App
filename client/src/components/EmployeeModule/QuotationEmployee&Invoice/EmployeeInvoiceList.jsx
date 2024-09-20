@@ -10,13 +10,13 @@ const EmployeeInvoiceList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(10); // Number of items per page
   const [filterText, setFilterText] = useState("");
-  const UserId = useSelector(state => state.auth.user.id);
+  const EmpId = useSelector(state => state.auth.user.id);
   const location = useLocation(); 
 
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/get-employee-invoice/${1}`);
+        const response = await axios.get(`http://localhost:9000/api/get-employee-invoice/${EmpId}`);
         setInvoices(response.data);
         console.log(response);
       } catch (error) {
@@ -25,7 +25,7 @@ const EmployeeInvoiceList = () => {
     };
 
     fetchInvoices();
-  }, [UserId]);
+  }, [EmpId]);
 
   const handleDelete = async (id) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this invoice?");

@@ -1,6 +1,7 @@
 
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 // import { useDispatch, useSelector } from "react-redux";
 import {
   BarChart,
@@ -18,12 +19,12 @@ import styled from "styled-components";
 const EmployeeInvoiceGraph = () => {
   const [loading, setLoading] = useState(false);
   const [invoiceData, setInvoiceData] = useState([]); // Update to store structured data
-
+  const EmpId = useSelector(state => state.auth.user.id);
   useEffect(() => {
     const getAppointList = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:9000/api/get-employee-invoice/${1}`);
+        const response = await axios.get(`http://localhost:9000/api/get-employee-invoice/${EmpId}`);
         const invoiceList = response.data;
     
         // Get the current date and the date 28 days ago

@@ -594,8 +594,8 @@ const Sider = () => {
 
         <div className="flex flex-col items-center pt-10 max-h-screen overflow-auto	">
           <ul className="flex flex-col items-center space-y-4 w-full pb-16">
-            <li className={`w-full ${getSidebarClass("/")}`}>
-              <Link to="/" className="flex flex-col items-center py-3">
+            <li className={`w-full ${getSidebarClass("/admin-dashboard")}`}>
+              <Link to="/admin-dashboard" className="flex flex-col items-center py-3">
                 <BsHouse className="text-white text-2xl md:text-3xl" />
                 <h3 className="text-xs max-md:pt-3 lg:inline text-white md:text-base">
                   Dashboard

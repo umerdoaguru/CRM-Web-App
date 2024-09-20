@@ -387,6 +387,7 @@ import Header from '../components/MainHeader';
 import Sider from '../components/Sider';
 import moment from 'moment';
 import { Link, useNavigate } from 'react-router-dom';
+import { BsPencilSquare, BsTrash } from 'react-icons/bs';
 
 function Leads() {
     const navigate  = useNavigate();
@@ -606,13 +607,13 @@ function Leads() {
                                            className="text-blue-500 hover:text-blue-700"
                                             onClick={() => handleEditClick(lead)}
                                         >
-                                            Edit /
+                                                                       <BsPencilSquare size={20} />
                                         </button>
                                         <button
-                                            className="text-red-500 hover:text-red-700"
+                                            className="text-red-500 hover:text-red-700 mx-2"
                                             onClick={() => handleDeleteClick(lead.lead_id)}
                                         >
-                                            Delete
+                                             <BsTrash size={20} />
                                         </button>
                                     </td>
                                 </tr>

@@ -151,7 +151,7 @@ const company_name_header_footer = async (req, res) => {
 const fetchcompanyname = async (req, res) => {
   try {
     const UserId = req.params.UserId;
-    const query = "SELECT * FROM company_profile WHERE user_id = ? "; // Query to retrieve unique company names
+    const query = "SELECT * FROM company_profile "; // Query to retrieve unique company names
 
     db.query(query, [UserId], (err, results) => {
       if (err) {

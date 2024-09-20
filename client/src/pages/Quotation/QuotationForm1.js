@@ -8,7 +8,8 @@ import UserLogin from "../../components/UserLogin";
 import Logout from "../../components/Logout";
 
 const QuotationForm1 = () => {
-  const userId = useSelector(state => state.auth.user.id);
+  const EmpId = useSelector(state => state.auth.user.id);
+  const EmpName = useSelector(state => state.auth.user.name);
   const navigate = useNavigate();
   const [quotationName, setQuotationName] = useState("");
   const [serviceslist, setServiceslist] = useState([]);
@@ -117,7 +118,8 @@ const QuotationForm1 = () => {
         quotation_name: quotationName,
         services: servicesToSave,
         // employeeId: userId,
-        employeeId: 1,
+        employeeId: EmpId,
+        employee_name: EmpName,
       });
 
       console.log("Quotation added successfully:", response.data);

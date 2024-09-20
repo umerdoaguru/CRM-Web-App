@@ -15,12 +15,12 @@ const EmployeeQuotationData = () => {
   const [itemsPerPage] = useState(10); // Number of items per page
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const UserId = useSelector(state => state.auth.user.id);
+  const EmpId = useSelector(state => state.auth.user.id);
 
   useEffect(() => {
     const fetchQuotations = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${1}`);
+        const response = await axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${EmpId}`);
         setQuotations(response.data);
       } catch (error) {
         console.error("Error fetching quotations:", error);
@@ -28,7 +28,7 @@ const EmployeeQuotationData = () => {
     };
 
     fetchQuotations();
-  }, [UserId]);
+  }, [EmpId]);
 
   // Filter Quotations based on Date Range
   const filteredQuotations = quotations.filter(quotation => {
