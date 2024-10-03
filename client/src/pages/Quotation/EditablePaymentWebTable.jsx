@@ -22,11 +22,11 @@ function EditablePaymentTable() {
     const handleAddRow = () => {
         setInstallments([...installments, { percentage: '', description: '' }]);
     };
-
+    // style={{ maxHeight: "700px", overflowY: "auto" }}
     return (
         <Wrapper>
-            <div className="" style={{ maxHeight: "700px", overflowY: "auto" }}>
-            <table className='table table-bordered mt-2' style={{ maxHeight: "700px", overflowY: "auto" }}>
+            <div className="" >
+            <table className='table table-bordered mt-2'>
                 <thead>
                     <tr>
                         <th colSpan="2">Payment Installment</th>
@@ -40,7 +40,7 @@ function EditablePaymentTable() {
                             <td>
                                 <input
                                     type="text"
-                                    className='bordernone'
+                                    className='bordernone '
                                     value={installment.percentage}
                                     onChange={(e) => handleEdit(index, 'percentage', e.target.value)}
                                 />
@@ -79,8 +79,8 @@ const Wrapper = styled.div`
           border: none;
       }
     }
-    input{
+    /* input{
         width: 100%;
-    }
+    } */
 
 `

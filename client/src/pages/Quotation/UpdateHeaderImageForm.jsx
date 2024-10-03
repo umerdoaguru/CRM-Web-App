@@ -32,7 +32,7 @@ const UpdateHeaderImageForm = ({ quotationId }) => {
 
       
       const response = await axios.put(
-        `http://localhost:9000/api/header/${quotationId}`,
+        `https://crmdemo.vimubds5.a2hosted.com/api/header/${quotationId}`,
         formData,
 {
           headers: {

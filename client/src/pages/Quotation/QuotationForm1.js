@@ -114,7 +114,7 @@ const QuotationForm1 = () => {
           subscription_frequency: service.subscription_frequency,
         };
       });
-      const response = await axios.post("http://localhost:9000/api/quotation", {
+      const response = await axios.post("https://crmdemo.vimubds5.a2hosted.com/api/quotation", {
         quotation_name: quotationName,
         services: servicesToSave,
         // employeeId: userId,
@@ -135,7 +135,7 @@ const QuotationForm1 = () => {
 
   const getServicelist = async () => {
     try {
-      const res = await axios.get(`http://localhost:9000/api/servicelist`);
+      const res = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/servicelist`);
       console.log(res.data);
       setServiceslist(res.data);
     } catch (error) {
@@ -393,7 +393,7 @@ const QuotationForm1 = () => {
                   Add Service
                 </button>
     
-                <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
+                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">
                   Submit
                 </button>
               </div>

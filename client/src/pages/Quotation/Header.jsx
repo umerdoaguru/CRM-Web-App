@@ -11,7 +11,7 @@
 //   useEffect(() => {
 //     const fetchImages = async () => {
 //       try {
-//         const response = await axios.post(`http://localhost:9000/api/company-header-footer`);
+//         const response = await axios.post(`https://crmdemo.vimubds5.a2hosted.com/api/company-header-footer`);
 
 //         if (response.status === 200) {
 //           const { header_img} = response.data;
@@ -69,7 +69,7 @@
 //   useEffect(() => {
 //     const fetchImages = async () => {
 //       try {
-//         const response = await axios.post('http://localhost:9000/api/company-header-footer', {
+//         const response = await axios.post('https://crmdemo.vimubds5.a2hosted.com/api/company-header-footer', {
 //           company_name_branch: companyName // Send the company name in the request body
 //         });
 
@@ -121,7 +121,7 @@ function Header({ companyName , quotationName  }) {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.post('http://localhost:9000/api/company-header-footer', {
+        const response = await axios.post('https://crmdemo.vimubds5.a2hosted.com/api/company-header-footer', {
           company_name: companyName
         });
         
@@ -148,11 +148,15 @@ function Header({ companyName , quotationName  }) {
       </div> */}
        {headerImage && (
           <div>
-             <img src={headerImage} alt="Header" style={{width:"-webkit-fill-available"}} />
+             <img  src={headerImage}
+  className="h-40 w-40 object-cover print:w-[100%] print:h-auto px-3"
+  alt="Header"
+    />
              {/* <div className="bottomleft text-white">
                 <h1>Plans & Quotation for</h1>
                 <h1 className="hdd">{quotationName}</h1>
               </div> */}
+              {/* style={{width:"-webkit-fill-available"}} */}
           </div>
         )}
        
@@ -163,9 +167,9 @@ function Header({ companyName , quotationName  }) {
 export default Header;
 
 const Wrapper = styled.div`
-  img {
+  /* img {
     width: -webkit-fill-available;
-  }
+  } */
   .container-fluid {
     position: relative;
   }

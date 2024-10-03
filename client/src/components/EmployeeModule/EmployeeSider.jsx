@@ -132,7 +132,7 @@ import { BsFileEarmarkPerson, BsHouse } from "react-icons/bs";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 
-const Sider = () => {
+const EmployeeeSider = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -243,4 +243,4 @@ const Sider = () => {
   );
 };
 
-export default Sider;
+export default EmployeeeSider;

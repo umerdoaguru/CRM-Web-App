@@ -5,6 +5,7 @@ import MainHeader from "../components/MainHeader";
 import Sider from "../components/Sider";
 import axios from "axios";
 import Pagination from "./comp/pagination";
+import moment from "moment";
 
 const Reporting = () => {
   const [data, setData] = useState([]);
@@ -15,93 +16,27 @@ const Reporting = () => {
   const [rowPerPage, setRowPerPage] = useState(5);
   const [dataFields, setDataFields] = useState({
     quotation: {
-      heading: ["Id", "Company", "Name", "Date"],
-      columns: ["quotation_id", "user_id", "quotation_name", "created_date"],
+      heading: ["Id", "Quotation Name", "Employee Name", "Date"],  
+      columns: ["quotation_id", "quotation_name", "employee_name", "created_date"],
       quotation: [],
     },
     invoice: {
-      heading: ["id ", "Company", "Payment Mode", "Date"],
-      columns: ["invoice_id", "user_id", "payment_mode", "created_date"],
+      heading: ["id ", "Invoice Name", "Employee Name", "Amount", "Payment Mode", "Date"],
+      columns: ["invoice_id", "invoice_name", "employee_name", "offer_price", "payment_mode", "created_date"],
       invoice: [],
     },
     employee: {
-      heading: ["Id", "Name", "Email", "Designation", "date"],
-      columns: ["employeeId", "name", "email", "designation", "createdTime"],
+      heading: ["Id", "Name", "Email", "Position", "date"],
+      columns: ["employeeId", "name", "email", "position", "createdTime"],
       employee: [],
     },
     leads: {
-      heading: ["Id", "Assign", "Date", "Source"],
-      columns: ["id", "assignedTo", "createdTime", "leadSource"],
+      heading: ["Lead No.", "Assigned To", "Lead Name", "Phone Number", "Date", "Lead Source", "Quotation Status", "Invoice Status", "Deal Status",  "FollowUp Status"],
+      columns: ["lead_no", "assignedTo", "name",  "phone", "createdTime", "leadSource", "quotation_status", "invoice_status", "deal_status",  "follow_up_status"],
       leads: [],
     },
   });
 
-  const staticData = {
-    quotation: [
-      {
-        id: 1,
-        name: "Quotation 1",
-        date: "2024-08-12",
-        amount: "$500",
-        details: "Details of Quotation 1",
-      },
-      {
-        id: 2,
-        name: "Quotation 2",
-        date: "2024-08-15",
-        amount: "$300",
-        details: "Details of Quotation 2",
-      },
-    ],
-    invoice: [
-      {
-        id: 1,
-        name: "Invoice 1",
-        date: "2024-08-10",
-        amount: "$1000",
-        details: "Details of Invoice 1",
-      },
-      {
-        id: 2,
-        name: "Invoice 2",
-        date: "2024-08-20",
-        amount: "$2000",
-        details: "Details of Invoice 2",
-      },
-    ],
-    employee: [
-      {
-        id: 1,
-        name: "Employee 1",
-        date: "2024-08-11",
-        amount: "$1200",
-        details: "Details of Employee 1",
-      },
-      {
-        id: 2,
-        name: "Employee 2",
-        date: "2024-08-21",
-        amount: "$1300",
-        details: "Details of Employee 2",
-      },
-    ],
-    user: [
-      {
-        id: 1,
-        name: "User 1",
-        date: "2024-08-14",
-        amount: "$400",
-        details: "Details of User 1",
-      },
-      {
-        id: 2,
-        name: "User 2",
-        date: "2024-08-19",
-        amount: "$600",
-        details: "Details of User 2",
-      },
-    ],
-  };
 
   useEffect(() => {
     filterData();
@@ -207,56 +142,104 @@ const Reporting = () => {
     );
   };
 
+  const quotationAxios = axios.create({
+    baseURL: "https://crmdemo.vimubds5.a2hosted.com/api",
+  });
+  
+  const invoiceAxios = axios.create({
+    baseURL: "https://crmdemo.vimubds5.a2hosted.com/api",
+  });
+  
+  const employeeAxios = axios.create({
+    baseURL: "https://crmdemo.vimubds5.a2hosted.com/api",
+  });
+  
+  const leadsAxios = axios.create({
+    baseURL: "https://crmdemo.vimubds5.a2hosted.com/api",
+  });
+
+  const formatData = (data) => {
+    return data.map((item) => ({
+      ...item,
+      created_date: moment(item.created_date).format('DD/MM/YYYY'),
+      createdTime: moment(item.createdTime).format('DD/MM/YYYY'),
+    }));
+  };
+  
   const getQuotationData = async () => {
     try {
-      const [
-        quotationResponse,
-        invoiceResponse,
-        employeeResponse,
-        leadsResponse,
-      ] = await Promise.all([
-        axios.get("http://localhost:9000/api/get-quotation-data"),
-        axios.get("http://localhost:9000/api/get-invoice-data"),
-        axios.get("http://localhost:9000/api/employee"),
-        axios.get("http://localhost:9000/api/leads"),
+      const results = await Promise.allSettled([
+        quotationAxios.get("/get-quotation-data"),
+        invoiceAxios.get("/get-invoice-data"),
+        employeeAxios.get("/employee"),
+        leadsAxios.get("/leads"),
       ]);
-    
-
-      // Combine all responses as needed
+  
+      // Initialize empty response objects
+      let quotationData = [];
+      let invoiceData = [];
+      let employeeData = [];
+      let leadsData = [];
+  
+      // Handle each result
+      results.forEach((result, index) => {
+        if (result.status === 'fulfilled') {
+          switch (index) {
+            case 0:
+              quotationData = formatData(result.value.data.data);
+              break;
+            case 1:
+              invoiceData = formatData(result.value.data.data);
+              break;
+            case 2:
+              employeeData = formatData(result.value.data);
+              break;
+            case 3:
+              leadsData = formatData(result.value.data);
+              break;
+            default:
+              break;
+          }
+        } else {
+          console.error(`Error fetching data for index ${index}:`, result.reason);
+        }
+      });
+  
       const combinedData = {
-        quotation: quotationResponse.data.data,
-        invoice: invoiceResponse.data.data,
-        employee: employeeResponse.data,
-        leads: leadsResponse.data,
+        quotation: quotationData,
+        invoice: invoiceData,
+        employee: employeeData,
+        leads: leadsData,
       };
-
+  
       const updatedDataFields = {
         ...dataFields,
         quotation: {
           ...dataFields.quotation,
-          quotation: quotationResponse.data.data,
+          quotation: combinedData.quotation,
         },
         invoice: {
           ...dataFields.invoice,
-          invoice: invoiceResponse.data.data,
+          invoice: combinedData.invoice,
         },
         employee: {
           ...dataFields.employee,
-          employee: employeeResponse.data,
+          employee: combinedData.employee,
         },
         leads: {
           ...dataFields.leads,
-          leads: leadsResponse.data,
+          leads: combinedData.leads,
         },
       };
-
+  
       setDataFields(updatedDataFields);
       console.log(combinedData);
       setData(combinedData);
     } catch (error) {
-      console.log(error);
+      console.log("Unexpected error:", error);
     }
   };
+  
 
   useEffect(() => {
     getQuotationData();
@@ -266,6 +249,10 @@ const Reporting = () => {
     <>
       <MainHeader />
       <Sider />
+      <div className=" container px-3 pt-5">
+      <h1 className="text-2xl text-center mt-[2rem] font-medium">Reports</h1>
+      <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
+      </div>
       <div className=" container mt-16 flex flex-col min-h-screen p-4 lg:p-8">
         <div className="flex flex-col space-y-4 lg:space-y-0 lg:flex-row justify-between mb-8">
           <div className="flex flex-wrap justify-center max-sm:justify-start">
@@ -273,7 +260,7 @@ const Reporting = () => {
               <button
                 key={category}
                 onClick={() => handleCategoryClick(category)}
-                className={`mb-2 mr-2 px-4 py-2 rounded-lg ${
+                className={`mb-2 mr-2 px-4 py-2 rounded-lg  font-medium ${
                   selectedCategory === category
                     ? "bg-blue-500 text-white"
                     : "bg-gray-200"
@@ -317,9 +304,9 @@ const Reporting = () => {
 
             <button
               onClick={handleDownload}
-              className="flex items-center px-4 py-2 text-white mr-2 mb-2 bg-green-500 rounded-lg hover:bg-green-600 mt-0"
+              className="flex items-center  font-medium  px-4 py-2 text-white mr-2 mb-2 bg-blue-500 rounded-lg hover:bg-blue-600 mt-0"
             >
-              <BsDownload className="mr-2" /> Download
+              <BsDownload className="mr-2 " /> Download
             </button>
           </div>
         </div>

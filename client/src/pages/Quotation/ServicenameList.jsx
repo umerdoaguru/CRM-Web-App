@@ -10,7 +10,7 @@ function ServicenameList() {
 
   const fetchServicelist = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/servicelist`);
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/servicelist`);
       if (response.status === 200) {
         SetServiceList(response.data);
       }
@@ -30,7 +30,7 @@ function ServicenameList() {
          <div className="container mt-5 px-2 mx-auto p-4">
       <Link
         to="/quotation-section"
-        className="btn bg-green-500 hover:bg-green-600 text-white mt-16 mx-16 py-2 px-4 rounded"
+        className="btn bg-blue-500 hover:bg-blue-700 text-white mt-3 mx-2 py-2 px-4 rounded"
       >
          <button >
       <i className="bi bi-arrow-return-left mx-1"></i>Back

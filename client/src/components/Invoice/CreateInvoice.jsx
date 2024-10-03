@@ -122,7 +122,7 @@ const CreateInvoice = () => {
       });
 
       const response = await axios.post(
-        "http://localhost:9000/api/create-invoice",
+        "https://crmdemo.vimubds5.a2hosted.com/api/create-invoice",
         {
           invoice_name: invoiceName,
           invoice_no: invoice_no,
@@ -157,7 +157,7 @@ const CreateInvoice = () => {
   const getServicelist = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:9000/api/servicelist`
+        `https://crmdemo.vimubds5.a2hosted.com/api/servicelist`
       );
       
       setServiceslist(res.data);
@@ -169,7 +169,7 @@ const CreateInvoice = () => {
   useEffect(() => {
     const fetchinvoice = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/company-data`);
+        const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/company-data`);
         setCompany_data(response.data);
         
         console.log(response);
@@ -185,7 +185,7 @@ const CreateInvoice = () => {
     // Fetch existing data from the API
     const fetchCompanyData = async () => {
       try {
-        const response = await axios.post('http://localhost:9000/api/company-header-footer', {
+        const response = await axios.post('https://crmdemo.vimubds5.a2hosted.com/api/company-header-footer', {
           company_name: selectedCompany
         });
         
@@ -410,7 +410,7 @@ const CreateInvoice = () => {
               </label>
             </div>
   
-            <div className="lg:col-span-3 mb-3">
+            {/* <div className="lg:col-span-3 mb-3">
               <label className="block font-semibold">
                 Invoice Duration Start Date:
                 <input
@@ -440,7 +440,7 @@ const CreateInvoice = () => {
                   required
                 />
               </label>
-            </div>
+            </div> */}
           </div>
           {services.map((service, index) => (
                 <div key={index} className="mb-6">
@@ -588,7 +588,7 @@ const CreateInvoice = () => {
                 </div>
               ))}
   
-          <div className="flex justify-between items-center">
+          <div className="flex space-x-3">
             <button
               type="button"
               onClick={addService}

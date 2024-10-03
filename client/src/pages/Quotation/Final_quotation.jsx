@@ -26,7 +26,7 @@ function Final_quotation() {
   const fetchQuotations = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/quotation/${id}`
+        `https://crmdemo.vimubds5.a2hosted.com/api/quotation/${id}`
       );
 
       if (response.status === 200) {
@@ -52,7 +52,7 @@ function Final_quotation() {
 
   const fetchNotes = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/notes/${id}`);
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/notes/${id}`);
 
       if (response.status === 200) {
         setNotes(response.data);
@@ -100,7 +100,7 @@ function Final_quotation() {
       try {
         // Make an API call to delete the service
         const response = await axios.delete(
-          `http://localhost:9000/api/services/${serviceId}`
+          `https://crmdemo.vimubds5.a2hosted.com/api/services/${serviceId}`
         );
 
         if (response.status === 200) {
@@ -196,16 +196,16 @@ function Final_quotation() {
   </div> */}
 
 <div className="w-full px-2 mt-4">
-      <div className="grid grid-cols-12 gap-2">
-        <div className="col-span-12 lg:col-span-3">
+      <div className="flex justify-between">
+        <div className="">
           <Link
             to="/employee-quotation-invoice"
-            className="text-white bg-green-500 hover:bg-green-600 rounded py-2 px-4 w-full block text-center"
+            className="text-white bg-green-500 hover:bg-green-600 rounded py-2 px-4 w-auto block text-center"
           >
             <i className="bi bi-arrow-return-left mx-1"></i>Back
           </Link>
         </div>
-        <div className="col-span-12 lg:col-span-3">
+        <div className="flex space-x-3"><div className="">
           <button
             className="bg-green-500 hover:bg-green-600 text-white rounded py-2 px-4 w-full"
             onClick={() => setIsUpdateMode(true)}
@@ -213,7 +213,7 @@ function Final_quotation() {
             Update Services
           </button>
         </div>
-        <div className="col-span-12 lg:col-span-3">
+        <div className="">
           <button
             className="bg-green-500 hover:bg-green-600 text-white rounded py-2 px-4 w-full"
             onClick={handleAddServices}
@@ -221,14 +221,15 @@ function Final_quotation() {
             Add Services
           </button>
         </div>
-        <div className="col-span-12 lg:col-span-3">
+        <div className="">
           <Link
-            to="/quotationlist"
+            to="/employee-quotation-invoice"
             className="text-white bg-green-500 hover:bg-green-600 rounded py-2 px-4 w-full block text-center"
           >
             Quotation List
           </Link>
-        </div>
+        </div></div>
+        
       </div>
 
          {isUpdateMode && (
@@ -342,7 +343,7 @@ function Final_quotation() {
   </div>
 
   <div className="w-full px-2 mt-4">
-    <div className="flex flex-wrap gap-4">
+    <div className="flex space-x-3 items-center">
       <button
         className="bg-blue-500 hover:bg-blue-600 text-white rounded py-2 px-4"
         onClick={handleAddNotes}
@@ -368,7 +369,7 @@ function Final_quotation() {
         Review Quotation Data
       </button>
       <button
-        className="bg-green-500 hover:bg-green-600 text-white rounded py-3 w-full lg:w-3/4 mb-2"
+        className="bg-green-700 hover:bg-green-600 text-white rounded p-2 mt-1"
         onClick={handlePrintPage}
       >
         Print Page

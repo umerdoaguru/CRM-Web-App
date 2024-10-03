@@ -50,7 +50,7 @@ function AdminInvoiceView() {
     const fetchInvoiceAddress = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:9000/api/invoice-address/${id}`
+          `https://crmdemo.vimubds5.a2hosted.com/api/invoice-address/${id}`
         );
         console.log(response.data);
         if (response.status === 200) {
@@ -80,7 +80,7 @@ function AdminInvoiceView() {
   const fetchInvoice = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/invoice/${id}`
+        `https://crmdemo.vimubds5.a2hosted.com/api/invoice/${id}`
       );
       if (response.status === 200) {
         setInvoiceName(response.data[0].invoice_name);
@@ -307,7 +307,7 @@ function AdminInvoiceView() {
     try {
       // Make a POST request to fetch data for the selected company
       const response = await axios.post(
-        "http://localhost:9000/api/company-name-data",
+        "https://crmdemo.vimubds5.a2hosted.com/api/company-name-data",
         {
           company_name: companyType,
         }
@@ -374,7 +374,7 @@ function AdminInvoiceView() {
   const fetchNotes = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/invoice-get-notes/${id}`
+        `https://crmdemo.vimubds5.a2hosted.com/api/invoice-get-notes/${id}`
       );
 
       if (response.status === 200) {
@@ -427,29 +427,29 @@ function AdminInvoiceView() {
 
   return (
     <Wrapper>
-     <div>
+     <div className="px-4">
   <Link
     to={`/invoicelist`}
-    className="bg-green-500 text-white mx-1 mt-3 mb-2 w-1/4 text-center py-2 rounded"
+    className="bg-green-500 text-white mx-1 mt-3 mb-2 w-1/4 text-center py-2 rounded print:hidden"
   >
     <i className="bi bi-arrow-return-left mx-1"></i> Back
   </Link>
 
   <Link
     to="/invoicelist"
-    className="bg-green-500 text-white mt-2 float-right w-1/4 text-center py-2 rounded"
+    className="bg-green-500 text-white mt-2 float-right w-1/4 text-center py-2 rounded print:hidden"
   >
     Invoice List
   </Link>
 
-  <div>
+  {/* <div>
     <button
       className="bg-green-500 text-white mb-3 mt-2 w-full p-3 rounded"
       onClick={handlePrintPage}
     >
       Print Page
     </button>
-  </div>
+  </div> */}
 
   <div>
     <div className="flex">
@@ -595,19 +595,19 @@ function AdminInvoiceView() {
     </div>
     <div className="mt-3">
       <button
-        className="bg-blue-500 text-white py-2 px-4 rounded mr-2"
+        className="bg-blue-500 text-white py-2 px-4 rounded mr-2 print:hidden"
         onClick={handleAddNotes}
       >
         Add Notes
       </button>
       <button
-        className="bg-red-500 text-white py-2 px-4 rounded mr-2"
+        className="bg-red-500 text-white py-2 px-4 rounded mr-2 print:hidden"
         onClick={handleDeleteNotes}
       >
         Delete Notes
       </button>
       <button
-        className="bg-teal-500 text-white py-2 px-4 rounded"
+        className="bg-teal-500 text-white py-2 px-4 rounded print:hidden"
         onClick={handleUpdateNotes}
       >
         Edit Notes
@@ -646,9 +646,9 @@ function AdminInvoiceView() {
       }}
     ></div>
 
-    <div className="mt-6">
+    <div className="mt-6 print:hiddenn flex justify-center">
       <button
-        className="bg-green-500 text-white mb-3 mt-2 w-full p-3 rounded"
+        className="bg-green-500 text-white mb-3 mt-2 w-auto p-3 rounded print:hidden"
         onClick={handlePrintPage}
       >
         Print Page

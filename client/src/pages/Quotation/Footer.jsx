@@ -12,7 +12,7 @@ function Footer({companyName }) {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.post('http://localhost:9000/api/company-header-footer', {
+        const response = await axios.post('https://crmdemo.vimubds5.a2hosted.com/api/company-header-footer', {
           company_name: companyName
         });
 
@@ -36,7 +36,7 @@ function Footer({companyName }) {
   
       <div>
       
-        <img src={footerImage} alt="Footer" />
+        <img src={footerImage} className="h-40 w-40 object-cover print:w-[100%] print:h-auto px-3" alt="Footer" />
       </div>
     </Wrapper>
   );
@@ -44,9 +44,9 @@ function Footer({companyName }) {
 
 export default Footer;
 const Wrapper =  styled.div`
-img{
+/* img{
   width: -webkit-fill-available;
 
 
-}
+} */
 `

@@ -11,7 +11,7 @@
 //   useEffect(() => {
 //     const fetchinvoice = async () => {
 //       try {
-//         const response = await axios.get(`http://localhost:9000/api/invoice-data/${UserId}`);
+//         const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/invoice-data/${UserId}`);
 //         setInvoice(response.data);
 //         console.log(response);
 //       } catch (error) {
@@ -32,7 +32,7 @@
 //     if (isConfirmed) {
 //       try {
 //         const response = await axios.delete(
-//           `http://localhost:9000/api/invoice/${id}`
+//           `https://crmdemo.vimubds5.a2hosted.com/api/invoice/${id}`
 //         );
 
 //         if (response.status === 200) {
@@ -47,7 +47,7 @@
 
 //   const handleCopyInvoice = async (invoiceId) => {
 //     try {
-//       const response = await axios.post(`http://localhost:9000/api/copy-invoice/${invoiceId}`);
+//       const response = await axios.post(`https://crmdemo.vimubds5.a2hosted.com/api/copy-invoice/${invoiceId}`);
 //       console.log(response.data.message);
 //       window.location.reload();
 //     } catch (error) {
@@ -122,7 +122,7 @@ const Invoicelist = () => {
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/invoice-data`);
+        const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/invoice-data`);
         setInvoices(response.data);
         console.log(response);
       } catch (error) {
@@ -137,7 +137,7 @@ const Invoicelist = () => {
     const isConfirmed = window.confirm("Are you sure you want to delete this invoice?");
     if (isConfirmed) {
       try {
-        const response = await axios.delete(`http://localhost:9000/api/invoice/${id}`);
+        const response = await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/invoice/${id}`);
         if (response.status === 200) {
           console.log("Invoice deleted successfully");
           window.location.reload();
@@ -150,7 +150,7 @@ const Invoicelist = () => {
 
   const handleCopyInvoice = async (invoiceId) => {
     try {
-      const response = await axios.post(`http://localhost:9000/api/copy-invoice/${invoiceId}`);
+      const response = await axios.post(`https://crmdemo.vimubds5.a2hosted.com/api/copy-invoice/${invoiceId}`);
       console.log(response.data.message);
       window.location.reload();
     } catch (error) {
@@ -181,7 +181,7 @@ const Invoicelist = () => {
 
     <div className="container mt-16  mx-auto px-4">
   <Link to="/quotation-section" className="text-white">
-    <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2 flex items-center">
+    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 flex items-center">
       <i className="bi bi-arrow-return-left mr-1"></i>Back
     </button>
   </Link>
@@ -225,7 +225,7 @@ const Invoicelist = () => {
               </td>
               <td className="border border-gray-200 px-4 py-2 flex flex-wrap space-x-2">
                 <Link to={`/admin-view-invoice/${invoice.invoice_id}`}>
-                  <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 rounded m-1">
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded m-1">
                     View
                   </button>
                 </Link>
@@ -245,14 +245,14 @@ const Invoicelist = () => {
         onPageChange={handlePageClick}
         containerClassName={"pagination flex justify-center mt-4"}
         pageClassName={"page-item"}
-        pageLinkClassName={"page-link bg-white border border-gray-300 rounded-md shadow-sm px-4 py-2 mx-1 hover:bg-gray-200"}
+        pageLinkClassName={"page-link bg-blue-500 border border-gray-300 rounded-md shadow-sm px-4 py-2 mx-1 hover:bg-gray-200"}
         previousClassName={"page-item"}
         previousLinkClassName={"page-link bg-white border border-gray-300 rounded-md shadow-sm px-4 py-2 mx-1 hover:bg-gray-200"}
         nextClassName={"page-item"}
         nextLinkClassName={"page-link bg-white border border-gray-300 rounded-md shadow-sm px-4 py-2 mx-1 hover:bg-gray-200"}
         breakClassName={"page-item"}
         breakLinkClassName={"page-link bg-white border border-gray-300 rounded-md shadow-sm px-4 py-2 mx-1 hover:bg-gray-200"}
-        activeClassName={"active bg-green-500 text-white"}
+        activeClassName={"active  hover:bg-blue-700"}
       />
     </div>
   </div>

@@ -67,7 +67,7 @@ const JWT = require('jsonwebtoken');
   //       },
   //     });
   //   } catch (error) {
-  //     console.error("Error processing request:", error);
+  //     
   //     res.status(500).json({ error: "Internal Server Error" });
   //   }
   // };
@@ -130,7 +130,7 @@ const JWT = require('jsonwebtoken');
         },
       });
     } catch (error) {
-      console.error("Error processing request:", error);
+      
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
@@ -215,7 +215,7 @@ const JWT = require('jsonwebtoken');
         message: "Quotation, associated notes, and services deleted successfully",
       });
     } catch (error) {
-      console.error("Error processing request:", error);
+      
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
@@ -240,7 +240,7 @@ const JWT = require('jsonwebtoken');
   
   //     res.status(200).json(quotations);
   //   } catch (error) {
-  //     console.error("Error processing request:", error);
+  //     
   //     res.status(500).json({ error: "Internal Server Error" });
   //   }
   // };
@@ -262,7 +262,7 @@ const JWT = require('jsonwebtoken');
   
         res.status(200).json(quotations);
       } catch (error) {
-        console.error("Error processing request:", error);
+        
         res.status(500).json({ error: "Internal Server Error" });
       }
     };
@@ -283,7 +283,7 @@ const JWT = require('jsonwebtoken');
   
         res.status(200).json({message: "Successfull", data: allQuotations});
       } catch (error) {
-        console.error("Error processing request:", error);
+        
         res.status(500).json({ message: "Internal Server Error", success: false, error });
       }
     }
@@ -308,7 +308,7 @@ const JWT = require('jsonwebtoken');
   
       res.status(200).json(quotations);
     } catch (error) {
-      console.error("Error processing request:", error);
+      
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
@@ -347,7 +347,7 @@ const JWT = require('jsonwebtoken');
   
           res.status(200).json({ message: "Quotation name updated successfully" });
       } catch (error) {
-          console.error("Error updating quotation name:", error);
+          
           res.status(500).json({ error: "Internal Server Error" });
       }
   };
@@ -434,7 +434,7 @@ const JWT = require('jsonwebtoken');
       await new Promise((resolve, reject) => {
         db.query(sqlServices, [servicesValues], (err, result) => {
           if (err) {
-            console.error("Error copying services data:", err); // Log the error
+             // Log the error
             reject(err);
           } else {
             resolve(result);
@@ -459,7 +459,7 @@ const JWT = require('jsonwebtoken');
   
   // Check if notes data is retrieved successfully
   if (!Array.isArray(getNotes)) {
-    console.error('Error fetching notes data:', getNotes);
+    
     // Handle the error appropriately, such as returning an error response
   } else {
     // Prepare notes data for insertion
@@ -471,10 +471,10 @@ const JWT = require('jsonwebtoken');
     // Execute the insertion query
     db.query(insertNotesQuery, [notesValues], (err, result) => {
       if (err) {
-        console.error('Error inserting notes data:', err);
+        
         // Handle the error appropriately, such as returning an error response
       } else {
-        console.log('Notes data inserted successfully:', result);
+        
         // Handle the successful insertion, such as returning a success response
       }
     });
@@ -485,7 +485,7 @@ const JWT = require('jsonwebtoken');
       
       res.status(200).json({ message: "Quotation and services data copied successfully" });
     } catch (error) {
-      console.error("Error copying quotation and services data:", error);
+      
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
@@ -509,14 +509,14 @@ const JWT = require('jsonwebtoken');
   
       db.query(getQuery, quotation_id, (error, result) => {
         if (error) {
-          console.log("Quotation not found", error);
+          
           res.status(500).json({ error: "Internal Server Error" });
         } else {
           res.status(200).json(result);
         }
       });
     } catch (error) {
-      console.log("error", error);
+      
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
@@ -557,7 +557,7 @@ const JWT = require('jsonwebtoken');
   
   //     res.status(201).json({ success: true, message: 'Services added successfully' });
   //   } catch (error) {
-  //     console.error('Error adding services:', error);
+  //     
   //     res.status(500).json({ error: 'Internal Server Error' });
   //   }
   // };
@@ -596,7 +596,7 @@ const JWT = require('jsonwebtoken');
   
       res.status(201).json({ success: true, message: 'Services added successfully' });
     } catch (error) {
-      console.error('Error adding services:', error);
+      
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };
@@ -626,7 +626,7 @@ const JWT = require('jsonwebtoken');
         res.status(404).json({ error: 'Service not found' });
       }
     } catch (error) {
-      console.error('Error deleting service:', error);
+      
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };
@@ -641,7 +641,7 @@ const JWT = require('jsonwebtoken');
   
       db.query(getquery, (error, result) => {
         if (error) {
-          console.log("services not found", error);
+          
           res.status(500).json({ error: "Internal Server Error" });
         } else {
           const user = result;
@@ -653,7 +653,7 @@ const JWT = require('jsonwebtoken');
         }
       });
     } catch (error) {
-      console.log("error", error);
+      
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
@@ -689,7 +689,7 @@ const JWT = require('jsonwebtoken');
   
   //     res.status(200).json({ success: true, message: 'Services updated successfully' });
   //   } catch (error) {
-  //     console.error('Error updating services:', error);
+  //     
   //     res.status(500).json({ error: 'Internal Server Error' });
   //   }
   // };
@@ -730,7 +730,7 @@ const JWT = require('jsonwebtoken');
   
       res.status(200).json({ success: true, message: 'Services updated successfully' });
     } catch (error) {
-      console.error('Error updating services:', error);
+      
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };
@@ -746,7 +746,7 @@ const JWT = require('jsonwebtoken');
   
     db.query(sql, [values], (err, result) => {
       if (err) {
-        console.error('Error inserting notes:', err);
+        
         res.status(500).json({ error: 'Internal Server Error' });
       } else {
         res.status(201).json({ ids: result.insertId });
@@ -763,7 +763,7 @@ const JWT = require('jsonwebtoken');
   
     db.query(sql, [quotationId], (err, result) => {
       if (err) {
-        console.error('Error fetching notes:', err);
+        
         res.status(500).json({ error: 'Internal Server Error' });
       } else {
         res.status(200).json(result);
@@ -778,7 +778,7 @@ const JWT = require('jsonwebtoken');
   
     db.query(sql, [noteId], (err, result) => {
       if (err) {
-        console.error('Error deleting note:', err);
+        
         res.status(500).json({ error: 'Internal Server Error' });
       } else {
         res.status(200).json({ message: 'Note deleted successfully' });
@@ -798,7 +798,7 @@ const JWT = require('jsonwebtoken');
       // Send a success response
       res.status(200).json({ success: true, message: 'Notes updated successfully' });
     } catch (error) {
-      console.error('Error updating notes:', error);
+      
       // Send an error response
       res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
@@ -810,7 +810,7 @@ const JWT = require('jsonwebtoken');
   
     db.query(sql, (err, result) => {
       if (err) {
-        console.error('Error fetching notes:', err);
+        
         res.status(500).json({ error: 'Internal Server Error' });
       } else {
         const notes = result.map((row) => row.notes_text);
@@ -820,9 +820,9 @@ const JWT = require('jsonwebtoken');
   };
 
   const createLead = (req, res) => {
-    const { lead_no, name, phone, assignedTo, leadSource, employeeId,subject } = req.body;
-    const sql = `INSERT INTO leads (lead_no, name, phone, assignedTo, leadSource, employeeId,subject) VALUES (?,?, ?, ?, ?, ?,?)`;
-    db.query(sql, [lead_no, name, phone, assignedTo, leadSource, employeeId,subject], (err, results) => {
+    const { lead_no, name, phone, assignedTo, leadSource, employeeId,subject,createdTime } = req.body;
+    const sql = `INSERT INTO leads (lead_no, name, phone, assignedTo, leadSource, employeeId,subject,createdTime) VALUES (?,?,?, ?, ?, ?, ?,?)`;
+    db.query(sql, [lead_no, name, phone, assignedTo, leadSource, employeeId,subject,createdTime], (err, results) => {
         if (err) {
             res.status(500).json({ error: "Error inserting data" });
         } else {
@@ -830,6 +830,17 @@ const JWT = require('jsonwebtoken');
         }
     });
 };
+//   const socialmediaLead = (req, res) => {
+//     const { lead_no, name, phone, assignedTo, leadSource, employeeId,subject ,createdTime} = req.body;
+//     const sql = `INSERT INTO leads (lead_no, name, phone, assignedTo, leadSource, employeeId,subject) VALUES (?,?,?, ?, ?, ?, ?,?)`;
+//     db.query(sql, [lead_no, name, phone, assignedTo, leadSource, employeeId,subject,createdTime,], (err, results) => {
+//         if (err) {
+//             res.status(500).json({ error: "Error inserting data" });
+//         } else {
+//             res.status(201).json({ success: true, message: "Lead data successfully submitted" });
+//         }
+//     });
+// };
 
 const getleadbyid = (req, res) => {
   try {
@@ -839,14 +850,14 @@ const getleadbyid = (req, res) => {
 
     db.query(getQuery, [id], (error, result) => {
       if (error) {
-        console.log("Lead not found", error);
+        
         res.status(500).json({ error: "Internal Server Error" });
       } else {
         res.status(200).json(result);
       }
     });
   } catch (error) {
-    console.log("error", error);
+    
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -902,7 +913,7 @@ const getLeads = (req, res) => {
 
 //     res.status(200).json({ message: "Invoice number updated successfully" });
 //   } catch (error) {
-//     console.error("Error updating Invoice number:", error);
+//     
 //     res.status(500).json({ error: "Internal Server Error" });
 //   }
 // };
@@ -931,7 +942,7 @@ const updateLead = async (req, res) => {
 
     res.status(200).json({ message: "Lead updated successfully" });
   } catch (error) {
-    console.error("Error updating lead:", error);
+    
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -953,7 +964,7 @@ const  deleteLead = (req, res) => {
     // Execute the delete query
     db.query(sql, [leadId], (err, results) => {
         if (err) {
-            console.error("Error deleting lead:", err);
+            
             return res.status(500).json({ error: "Error deleting data" });
         }
 
@@ -990,8 +1001,8 @@ const editProfile = async (req, res) => {
     const { user_name, email, phone, mobile, address, interested_in, bio } = req.body;
     const profile_picture = req.file ? req.file.buffer : null;
 
-    console.log('Request Body:', req.body);
-    console.log('File:', req.file);
+    
+    
 
     // Validate required fields
     if (!user_name || !email) {
@@ -1002,7 +1013,7 @@ const editProfile = async (req, res) => {
     const checkUserQuery = "SELECT * FROM user_data WHERE email = ?";
     db.query(checkUserQuery, [email], (err, result) => {
       if (err) {
-        console.error("Error checking if user exists in MySQL:", err);
+        
         return res.status(500).json({ error: "Internal server error" });
       }
 
@@ -1026,10 +1037,10 @@ const editProfile = async (req, res) => {
 
         db.query(insertUserQuery, insertParams, (insertErr) => {
           if (insertErr) {
-            console.error("Error inserting new user profile:", insertErr);
+            
             return res.status(500).json({ error: "Internal server error" });
           } else {
-            console.log("New user profile created successfully");
+            
             return res.status(201).json({
               success: true,
               message: "New user profile created successfully"
@@ -1057,10 +1068,10 @@ const editProfile = async (req, res) => {
 
         db.query(updateUserQuery, updateParams, (updateErr) => {
           if (updateErr) {
-            console.error("Error updating user profile:", updateErr);
+            
             return res.status(500).json({ error: "Internal server error" });
           } else {
-            console.log("User profile updated successfully");
+            
             return res.status(200).json({
               success: true,
               message: "User profile updated successfully"
@@ -1070,7 +1081,7 @@ const editProfile = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error("Error in editing profile:", error);
+    
     res.status(500).json({
       success: false,
       message: "Error in editing profile",
@@ -1092,7 +1103,7 @@ const deleteProfile = async (req, res) => {
     const deleteUserQuery = "DELETE FROM user_data WHERE email = ?";
     db.query(deleteUserQuery, [email], (err, result) => {
       if (err) {
-        console.error("Error deleting user profile from MySQL:", err);
+        
         return res.status(500).json({ error: 'Internal server error' });
       }
 
@@ -1105,7 +1116,7 @@ const deleteProfile = async (req, res) => {
       return res.status(200).json({ success: true, message: 'Profile deleted successfully' });
     });
   } catch (error) {
-    console.error("Error in deleting profile:", error);
+    
     res.status(500).json({ error: 'Internal server error', details: error.message });
   }
 };
@@ -1118,7 +1129,7 @@ const getAllUsers = async (req, res) => {
     // Execute the query
     db.query(getAllUsersQuery, (err, result) => {
       if (err) {
-        console.error("Error fetching users from MySQL:", err);
+        
         return res.status(500).json({ error: "Internal server error" });
       }
 
@@ -1130,7 +1141,7 @@ const getAllUsers = async (req, res) => {
       });
     });
   } catch (error) {
-    console.error("Error in retrieving users:", error);
+    
     res.status(500).json({
       success: false,
       message: "Error in retrieving users",

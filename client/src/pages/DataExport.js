@@ -31,7 +31,7 @@ function DataExport() {
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get('http://localhost:9000/api/leads');
+      const response = await axios.get('https://crmdemo.vimubds5.a2hosted.com/api/leads');
       setLeads(response.data);
     } catch (error) {
       console.error('Error fetching leads:', error);
@@ -40,7 +40,7 @@ function DataExport() {
 
   const fetchEmployee = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/employee`);
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/employee`);
       setEmployee(response.data);
     } catch (error) {
       console.error("Error fetching employee data:", error);
@@ -49,7 +49,7 @@ function DataExport() {
 
   const fetchQuotation = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/quotation-data`);
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/quotation-data`);
       setQuotation(response.data);
     } catch (error) {
       console.error("Error fetching quotations:", error);
@@ -58,7 +58,7 @@ function DataExport() {
 
   const fetchInvoice = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/invoice-data`);
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/invoice-data`);
       setInvoice(response.data);
     } catch (error) {
       console.error("Error fetching invoices:", error);
@@ -75,7 +75,7 @@ function DataExport() {
       <MainHeader />
       <Sider />
       <div className="container  ">
-        <h1 className="text-2xl text-center mt-[5rem]">Data Export</h1>
+      <h1 className="text-2xl text-center mt-[5rem] font-medium">Data Export</h1>
         <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
 
         <div className="flex flex-wrap justify-around mt-5">

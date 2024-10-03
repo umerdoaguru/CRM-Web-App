@@ -50,6 +50,12 @@ import EmployeeDataExport from '../components/EmployeeModule/EmployeeDataExport'
 import EmployeeQuotationData from '../components/EmployeeModule/EmployeeDataExport/EmployeeQuotationData';
 import EmployeeProfile from '../components/EmployeeModule/EmployeeProfile';
 import MainQuotation from '../components/EmployeeModule/QuotationEmployee&Invoice/MainQuotationPage';
+import TotalEmpLead from '../components/EmployeeModule/EmployeeDashboardCards/AdminDashBoardCards/TotalEmpLead';
+import TotalEmployee from '../components/AdminDashBoardCards/TotalEmployee';
+import TotalEmpInvoice from '../components/EmployeeModule/EmployeeDashboardCards/AdminDashBoardCards/TotalEmpInvoice';
+import TotalEmpQuotation from '../components/EmployeeModule/EmployeeDashboardCards/AdminDashBoardCards/TotalEmpQuotation';
+import Leads from '../pages/Leads';
+import Employee_Single_Lead_Profile from '../components/Leads/Employee_Single_Lead_Profile';
 
 
 function EmployeeRoutes() {
@@ -66,12 +72,27 @@ function EmployeeRoutes() {
    
 
     
-    
+      {/* <Route path="/leads" element={  <Leads/>} /> */}
    
 
 
       <Route path="/" element={<EmployeeDashboard/>} />
 <Route path="/employees-dashboard" element={<EmployeeDashboard />} />
+
+<Route path="/employees-total-leads" element={<TotalEmpLead />} />
+<Route path="/employees-total-quotations" element={<TotalEmpQuotation
+
+
+
+
+
+
+/>} />
+<Route path="/employees-total-invoices" element={<TotalEmpInvoice />} />
+
+
+
+
 
 
 
@@ -114,9 +135,7 @@ function EmployeeRoutes() {
 
 <Route path="/quotation-invoice/:id" element={  <QuotationInvoice/>} />
 
-
-{/* aditya routes */}
-
+<Route path="/employee-lead-single-data/:id" element={  <Employee_Single_Lead_Profile/>} />
 
 <Route path='/overview' element={<Overview/>}/>
 

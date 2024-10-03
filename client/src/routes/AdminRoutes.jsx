@@ -37,6 +37,11 @@ import UpdateServiceList from '../pages/Quotation/UpdateServiceList';
 import QuotationList from '../pages/Quotation/QuotationList';
 import AdminQuotationVIew from '../pages/Quotation/AdminQuotationVIew';
 import AdminInvoiceView from '../components/Invoice/AdminInvoiceView';
+import TotalLead from '../components/AdminDashBoardCards/TotalLead';
+import TotalEmployee from '../components/AdminDashBoardCards/TotalEmployee';
+import TotalQuotation from '../components/AdminDashBoardCards/TotalQuotation';
+import TotalInvoice from '../components/AdminDashBoardCards/TotalInvoice';
+import MainSocialLeads from '../components/SocialMediaLeads/MainSocialLeads';
 
 function AdminRoutes() {
     const user = useSelector(state => state.auth.user);
@@ -56,11 +61,16 @@ function AdminRoutes() {
     
 
 <Route path="/admin-dashboard" element={<Dashboard />} />
+<Route path="/total-leads" element={<TotalLead />} />
+<Route path="/total-employees" element={<TotalEmployee/>} />
+<Route path="/total-quotations" element={<TotalQuotation/>} />
+<Route path="/total-invoices" element={<TotalInvoice/>} />
 
 
 
 
 <Route path="/leads" element={  <Leads/>} />
+<Route path="/social-media-leads" element={  <MainSocialLeads/>} />
 <Route path="/quotation-form" element={  <QuotationForm1 /> } />
 <Route path="/quotation-section" element={  <CreateCompanyProfile /> } />
 <Route path="/data-export" element={  <DataExport /> } />

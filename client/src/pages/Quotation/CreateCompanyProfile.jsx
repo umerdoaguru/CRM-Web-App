@@ -44,7 +44,7 @@ function CreateCompanyProfile() {
   useEffect(() => {
     const fetchinvoice = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/company-data`);
+        const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/company-data`);
         setcompanydata(response.data);
         console.log(response);
       } catch (error) {
@@ -58,7 +58,7 @@ function CreateCompanyProfile() {
   const handleDeleteCompanyData = async (CompanyName) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this Company data?");
    if(isConfirmed){ try {
-       const response = await axios.post('http://localhost:9000/api/companydata', {
+       const response = await axios.post('https://crmdemo.vimubds5.a2hosted.com/api/companydata', {
         company_name: CompanyName
       });
        
@@ -116,7 +116,7 @@ function CreateCompanyProfile() {
       formData.append("digital_sign", companydigitalsign);
 
       const response = await axios.post(
-        "http://localhost:9000/api/upload-company-profile",
+        "https://crmdemo.vimubds5.a2hosted.com/api/upload-company-profile",
         formData,
         {
           headers: {
@@ -173,11 +173,11 @@ function CreateCompanyProfile() {
       <Sider/>
      
       <div className=" container px-3 pt-5">
-      <h1 className="text-2xl text-center mt-[2rem]">Quotation & Invoice Management</h1>
+      <h1 className="text-2xl text-center mt-[2rem] font-medium">Quotation & Invoice Management</h1>
       <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
         <form className="p-4 bg-white rounded shadow-lg mt-5" onSubmit={handleUpload}>
           <div className="flex justify-between">
-            <div className="mx-3 mt-3">
+          <div className="mx-3 mt-3 font-medium text-xl">
               <UserLogin />
             </div>
             {/* <div className="mt-1 mx-3">
@@ -204,7 +204,7 @@ function CreateCompanyProfile() {
             <div className="col-span-1">
               <Link
                 to="/quotationlist"
-                className="bg-green-600 text-white px-4 py-2 rounded block text-center"
+                      className="bg-blue-500 text-white px-4 py-2 rounded block text-center font-medium"
               >
                 Quotation List
               </Link>
@@ -212,7 +212,7 @@ function CreateCompanyProfile() {
             <div className="col-span-1">
               <Link
                 to="/invoicelist"
-                className="bg-green-600 text-white px-4 py-2 rounded block text-center"
+               className="bg-blue-500 text-white px-4 py-2 rounded block text-center font-medium"
               >
                 Invoice List
               </Link>
@@ -220,7 +220,7 @@ function CreateCompanyProfile() {
             <div className="col-span-1">
               <Link
 to="/servicenamelist"
-                className="bg-green-600 text-white px-4 py-2 rounded block text-center"
+                  className="bg-blue-500 text-white px-4 py-2 rounded block text-center font-medium"
               >
                  Service Name List
               </Link>
@@ -233,11 +233,11 @@ to="/servicenamelist"
   
           <div className="grid lg:grid-cols-5 md:grid-cols-4 gap-2 mt-4">
             <div className="">
-              <label className="block">
-                Company Name:
+            <label className="block font-medium">
+                Company Name<span className="text-red-600">*</span>
                 <input
                   type="text"
-                  className="w-full p-2 border rounded"
+                   className="w-full p-2 border rounded font-normal"
                   value={companyNameBranch}
                   onChange={(e) => setCompanyNameBranch(e.target.value)}
                   placeholder="Enter the Company Name"
@@ -246,11 +246,11 @@ to="/servicenamelist"
               </label>
             </div>
             <div className="">
-              <label className="block">
-                Company Address:
+            <label className="block font-medium">
+                Company Address<span className="text-red-600">*</span>
                 <input
                   type="text"
-                  className="w-full p-2 border rounded"
+                   className="w-full p-2 border rounded font-normal"
                   value={companyAddress}
                   onChange={(e) => setCompanyAddress(e.target.value)}
                   placeholder="Enter the Company Address"
@@ -259,11 +259,11 @@ to="/servicenamelist"
               </label>
             </div>
             <div className="">
-              <label className="block">
-                 Mobile Number:
+            <label className="block font-medium">
+                 Mobile Number<span className="text-red-600">*</span>
                 <input
                   type="text"
-                  className="w-full p-2 border rounded"
+                   className="w-full p-2 border rounded font-normal"
                   value={companyMoblie_no}
                   onChange={(e) => setCompanyMoblie_no(e.target.value)}
                   placeholder="Enter the Mobile Number"
@@ -272,11 +272,11 @@ to="/servicenamelist"
               </label>
             </div>
             <div className="">
-              <label className="block">
-                Company Email Id:
+              <label className="block font-medium">
+                Company Email Id<span className="text-red-600">*</span>
                 <input
                   type="email"
-                  className="w-full p-2 border rounded"
+                 className="w-full p-2 border rounded font-normal"
                   value={companyEmail_id}
                   onChange={(e) => setCompanyEmail_id(e.target.value)}
                   placeholder="Enter the Email Id"
@@ -285,10 +285,10 @@ to="/servicenamelist"
               </label>
             </div>
             <div className="">
-              <label className="block">
-                Select Company Details:
+              <label className="block font-medium">
+                Select Company Details<span className="text-red-600">*</span>
                 <select
-                  className="w-full p-2 border rounded"
+                 className="w-full p-2 border rounded font-normal"
                   id="companyList"
                   name="company_list"
                   onChange={handleChangeCompany}
@@ -306,11 +306,11 @@ to="/servicenamelist"
             </div>
             {selectedCompany === "GST" && (
               <div className="col-span-2">
-                <label className="block">
-                  GST Number:
+                <label className="block font-medium">
+                  GST Number
                   <input
                     type="text"
-                    className="w-full p-2 border rounded"
+                   className="w-full p-2 border rounded font-normal"
                     value={companyGST_no}
                     onChange={(e) => setCompanyGST_no(e.target.value)}
                     placeholder="Enter the Company GST No."
@@ -321,11 +321,11 @@ to="/servicenamelist"
             )}
             {selectedCompany === "Pan Card" && (
               <div className="col-span-2">
-                <label className="block">
+                <label className="block font-medium">
                   Pan Number:
                   <input
                     type="text"
-                    className="w-full p-2 border rounded"
+                   className="w-full p-2 border rounded font-normal"
                     value={companyPan_no}
                     onChange={(e) => setCompanyPan_no(e.target.value)}
                     placeholder="Enter the Company Pan No."
@@ -337,14 +337,14 @@ to="/servicenamelist"
           </div>
   
           <div className="mt-4">
-            <h6 className="text-center mb-4">Company Name Payment Detail:</h6>
+            <h6 className="text-center mb-4">Company Payment Detail:</h6>
             <div className="grid lg:grid-cols-5 md:grid-cols-4 gap-2">
               <div className=" ">
-                <label className="block">
-                  Account Name:
+                <label className="block font-medium">
+                  Account Name<span className="text-red-600">*</span>
                   <input
                     type="text"
-                    className="w-full p-2 border rounded"
+                   className="w-full p-2 border rounded font-normal"
                     value={accountName}
                     onChange={(e) => setAccountName(e.target.value)}
                     placeholder="Enter the Account No."
@@ -353,11 +353,11 @@ to="/servicenamelist"
                 </label>
               </div>
               <div className=" ">
-                <label className="block">
-                  IFSC Code:
+                <label className="block font-medium">
+                  IFSC Code<span className="text-red-600">*</span>
                   <input
                     type="text"
-                    className="w-full p-2 border rounded"
+                   className="w-full p-2 border rounded font-normal"
                     value={accountIFSC}
                     onChange={(e) => setAccountIFSC(e.target.value)}
                     placeholder="Enter the IFSC Number"
@@ -366,11 +366,11 @@ to="/servicenamelist"
                 </label>
               </div>
               <div className=" ">
-                <label className="block">
-                  Account Number:
+                <label className="block font-medium">
+                  Account Number<span className="text-red-600">*</span>
                   <input
                     type="text"
-                    className="w-full p-2 border rounded"
+                   className="w-full p-2 border rounded font-normal"
                     value={accountNumber}
                     onChange={(e) => setAccountNumber(e.target.value)}
                     placeholder="Enter the Account Number"
@@ -379,11 +379,11 @@ to="/servicenamelist"
                 </label>
               </div>
               <div className=" ">
-                <label className="block">
-                  Bank Name:
+                <label className="block font-medium">
+                  Bank Name<span className="text-red-600">*</span>
                   <input
                     type="text"
-                    className="w-full p-2 border rounded"
+                   className="w-full p-2 border rounded font-normal"
                     value={accountBank_Name}
                     onChange={(e) => setAccountBank_Name(e.target.value)}
                     placeholder="Enter the Bank Name"
@@ -392,11 +392,11 @@ to="/servicenamelist"
                 </label>
               </div>
               <div className=" ">
-                <label className="block">
-                  Header Image:
+                <label className="block font-medium">
+                  Header Image<span className="text-red-600">*</span>
                   <input
                     type="file"
-                    className="w-full p-2 border rounded"
+                   className="w-full p-2 border rounded font-normal"
                     accept="image/*"
                     onChange={handleHeaderImageChange}
                     required
@@ -407,11 +407,11 @@ to="/servicenamelist"
                 </label>
               </div>
               <div className=" ">
-                <label className="block">
-                  Footer Image:
+                <label className="block font-medium">
+                  Footer Image<span className="text-red-600">*</span>
                   <input
                     type="file"
-                    className="w-full p-2 border rounded"
+                   className="w-full p-2 border rounded font-normal"
                     accept="image/*"
                     onChange={handleFooterImageChange}
                     required
@@ -422,11 +422,11 @@ to="/servicenamelist"
                 </label>
               </div>
               <div className=" ">
-                <label className="block">
-                  Logo Image:
+                <label className="block font-medium">
+                  Logo Image<span className="text-red-600">*</span>
                   <input
                     type="file"
-                    className="w-full p-2 border rounded"
+                   className="w-full p-2 border rounded font-normal"
                     accept="image/*"
                     onChange={handleLogoImageChange}
                     required
@@ -434,11 +434,11 @@ to="/servicenamelist"
                 </label>
               </div>
               <div className=" ">
-                <label className="block">
-                  Digital Signature :
+                <label className="block font-medium">
+                  Digital Signature<span className="text-red-600">*</span>
                   <input
                     type="file"
-                    className="w-full p-2 border rounded"
+                   className="w-full p-2 border rounded font-normal"
                     accept="image/*"
                     onChange={handledigitalSignImageChange}
                     required
@@ -448,16 +448,16 @@ to="/servicenamelist"
             </div>
             <button
               type="submit"
-              className="bg-green-700 text-white px-4 py-2 rounded mt-4"
+                className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded mt-4 font-medium"
             >
-              Upload Company Profile
+            Add Organization
             </button>
-          </div>
+          </div>           
         </form>
       </div>
   
       <div className="container mt-4 ">
-        <h2 className="text-center text-xl ">List of Company Profile Created Data</h2>
+      <h2 className="text-center text-xl font-medium">List of Company Profile Created Data</h2>
        
         <div className="mx-auto h-[2px] w-16 bg-[#34495E] my-3"></div>
         <div className="overflow-y-auto mb-4" style={{ maxHeight: "700px" }}>

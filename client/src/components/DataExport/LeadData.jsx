@@ -16,7 +16,7 @@
 
 //     const fetchLeads = async () => {
 //         try {
-//             const response = await axios.get('http://localhost:9000/api/leads');
+//             const response = await axios.get('https://crmdemo.vimubds5.a2hosted.com/api/leads');
 //             setLeads(response.data);
 //         } catch (error) {
 //             console.error('Error fetching leads:', error);
@@ -102,7 +102,7 @@ function LeadData() {
 
     const fetchLeads = async () => {
         try {
-            const response = await axios.get('http://localhost:9000/api/leads');
+            const response = await axios.get('https://crmdemo.vimubds5.a2hosted.com/api/leads');
             setLeads(response.data);
             setFilteredLeads(response.data); // Initial data set for filtering
         } catch (error) {
@@ -135,7 +135,7 @@ function LeadData() {
             <Header />
             <Sider />
             <div className="container">
-                <h1 className="text-2xl text-center mt-[2rem]">Leads Data</h1>
+            <h1 className="text-2xl text-center mt-[2rem] font-medium">Leads Data</h1>
                 <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
 
                 {/* Date Filter */}
@@ -158,7 +158,7 @@ function LeadData() {
                       <div className="respo mx-2 ">
                     <button
                         onClick={downloadExcel}
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+                          className="bg-blue-500 text-white font-medium px-4 py-2 rounded hover:bg-blue-700"
                     >
                         Download Excel
                     </button>

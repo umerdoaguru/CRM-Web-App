@@ -41,7 +41,7 @@ function AdminQuotationVIew() {
   const fetchQuotations = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/quotation/${id}`
+        `https://crmdemo.vimubds5.a2hosted.com/api/quotation/${id}`
       );
 
       if (response.status === 200) {
@@ -56,7 +56,7 @@ function AdminQuotationVIew() {
   };
   const fetchNotes = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/notes/${id}`);
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/notes/${id}`);
 
       if (response.status === 200) {
         setNotes(response.data);
@@ -72,7 +72,7 @@ function AdminQuotationVIew() {
     const fetchCompanyNames = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:9000/api/header-footer-images/company-names/${UserId}`
+          `https://crmdemo.vimubds5.a2hosted.com/api/header-footer-images/company-names/${UserId}`
         );
         if (response.status === 200) {
           setCompanyNames(response.data); // Assuming response.data is an array of company names
@@ -235,7 +235,7 @@ function AdminQuotationVIew() {
     const fetchImages = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:9000/api/company-header-footer",
+          "https://crmdemo.vimubds5.a2hosted.com/api/company-header-footer",
           {
             company_name: selectedCompany,
           }
@@ -289,25 +289,12 @@ function AdminQuotationVIew() {
    <Link
         // to={`/admin-view-quotation/${id}`}
         to={`/quotationlist`}
-        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mx-1 w-25 btn-print"
+        className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded mx-1 w-25 btn-print"
       >
         <i className="bi bi-arrow-return-left mx-1"></i> Back
       </Link></div>
-  <div className="container flex justify-between mt-3">
 
-    <div className="mx-3 btn-print">
-      <UserLogin />
-    </div>
-    <div className="mx-3 btn-print">
-      <Logout />
-    </div>
-  </div>
-  <Link
-        to="/quotationlist"
-        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mx-5 w-75 btn-print"
-      >
-        Quotation List
-      </Link>
+  
   <div className="w-full flex flex-wrap mt-3">
     <div className="w-full lg:w-9/12 mb-2 lg:mb-0 mx-3">
      

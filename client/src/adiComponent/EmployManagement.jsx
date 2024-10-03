@@ -27,7 +27,7 @@ const EmployeeManagement = () => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get('http://localhost:9000/api/getAllEmployees');
+      const response = await axios.get('https://crmdemo.vimubds5.a2hosted.com/api/getAllEmployees');
       const { employees } = response.data;
       setEmployees(employees || []); // Ensure employees is always an array
     } catch (error) {
@@ -86,7 +86,7 @@ const EmployeeManagement = () => {
 
   const isEmailTaken = async (email) => {
     try {
-      const response = await axios.get('http://localhost:9000/api/checkEmail', {
+      const response = await axios.get('https://crmdemo.vimubds5.a2hosted.com/api/checkEmail', {
         params: { email },
       });
       return response.data.exists;
@@ -103,10 +103,10 @@ const EmployeeManagement = () => {
       if (editingIndex !== null) {
         // Update existing employee
         const employeeToUpdate = employees[editingIndex];
-        await axios.put(`http://localhost:9000/api/updateEmployee/${employeeToUpdate.employeeId}`, newEmployee);
+        await axios.put(`https://crmdemo.vimubds5.a2hosted.com/api/updateEmployee/${employeeToUpdate.employeeId}`, newEmployee);
       } else {
         // Add new employee
-        await axios.post('http://localhost:9000/api/addEmployee', newEmployee);
+        await axios.post('https://crmdemo.vimubds5.a2hosted.com/api/addEmployee', newEmployee);
       }
       setNewEmployee({
         name: '',
@@ -141,7 +141,7 @@ const EmployeeManagement = () => {
     const isConfirmed = window.confirm('Are you sure you want to delete this employee?');
     if (isConfirmed) {
       try {
-        await axios.delete(`http://localhost:9000/api/deleteEmployee/${employeeId}`);
+        await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/deleteEmployee/${employeeId}`);
         fetchEmployees(); // Fetch employees to update the list
       } catch (error) {
         console.error('Error deleting employee:', error);
@@ -158,16 +158,21 @@ const EmployeeManagement = () => {
     <>
      <MainHeader/>
      <Sider/>
+     <div className=" container px-3 pt-5">
+      <h1 className="text-2xl text-center mt-[2rem] font-medium">Employee Management</h1>
+      <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
+      </div>
+
      <div className=" container  mt-12 flex flex-col min-h-screen lg:flex-row">
       
       <main className="flex-1 p-4 lg:p-8">
         <div className="flex flex-col-reverse items-start justify-between mb-8 lg:flex-row lg:items-center">
-          <h2 className="mb-4 text-2xl font-bold text-gray-800 lg:mb-0">Employee Management</h2>
+       
           <button
             onClick={() => { setShowForm(true); setEditingIndex(null); }}
-            className="flex items-center px-4 py-2 text-white transition duration-200 bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600"
+            className="flex items-center px-4 py-2 font-medium text-white transition duration-200 bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600"
           >
-            <BsPlusCircle className="mr-2" /> Add Employee
+            <BsPlusCircle className="mr-2 font-medium" /> Add Employee
           </button>
         </div>
 

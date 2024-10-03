@@ -16,7 +16,7 @@
 
 //     const fetchLeads = async () => {
 //         try {
-//             const response = await axios.get('http://localhost:9000/api/leads');
+//             const response = await axios.get('https://crmdemo.vimubds5.a2hosted.com/api/leads');
 //             setLeads(response.data);
 //         } catch (error) {
 //             console.error('Error fetching leads:', error);
@@ -104,7 +104,7 @@ function EmployeeLeadData() {
 
     const fetchLeads = async () => {
         try {
-            const response = await axios.get(`http://localhost:9000/api/employe-leads/${EmpId}`);
+            const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/employe-leads/${EmpId}`);
             setLeads(response.data);
             setFilteredLeads(response.data); // Initial data set for filtering
         } catch (error) {
@@ -159,7 +159,7 @@ function EmployeeLeadData() {
                       <div className="respo mx-2 ">
                     <button
                         onClick={downloadExcel}
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+                        className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded "
                     >
                         Download Excel
                     </button>

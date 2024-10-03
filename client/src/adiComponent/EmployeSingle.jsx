@@ -1,13 +1,17 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { BsPencilSquare, BsTrash } from 'react-icons/bs';
 import Modal from '../adiComponent/Modal';
 import Sider from '../components/Sider';
 import MainHeader from '../components/MainHeader';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
 
 const EmployeeSingle = () => {
   const { employeeId } = useParams();
+  const [leads, setLeads] = useState([]);
+
   const navigate = useNavigate();
   const [employee, setEmployee] = useState(null);
   const [newEmployee, setNewEmployee] = useState({
@@ -27,7 +31,7 @@ const EmployeeSingle = () => {
   // Fetch employee data
   const fetchEmployee = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/getEmployeeById/${employeeId}`);
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/getEmployeeById/${employeeId}`);
       if (response.data.success) {
         setEmployee(response.data.employee);
         setNewEmployee({
@@ -87,7 +91,7 @@ const EmployeeSingle = () => {
 
   const isEmailTaken = async (email) => {
     try {
-      const response = await axios.get('http://localhost:9000/api/checkEmail', {
+      const response = await axios.get('https://crmdemo.vimubds5.a2hosted.com/api/checkEmail', {
         params: { email },
       });
       return response.data.exists;
@@ -99,7 +103,7 @@ const EmployeeSingle = () => {
 
   const isPhoneNumberTaken = async (phone) => {
     try {
-      const response = await axios.get('http://localhost:9000/api/checkPhoneNumber', {
+      const response = await axios.get('https://crmdemo.vimubds5.a2hosted.com/api/checkPhoneNumber', {
         params: { phone },
       });
       return response.data.exists;
@@ -152,11 +156,11 @@ const EmployeeSingle = () => {
 
       let response;
       if (editingIndex !== null) {
-        response = await axios.put(`http://localhost:9000/api/updateSingleEmployee/${employee.employeeId}`, formData, {
+        response = await axios.put(`https://crmdemo.vimubds5.a2hosted.com/api/updateSingleEmployee/${employee.employeeId}`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
       } else {
-        response = await axios.post('http://localhost:9000/api/addEmployee', formData, {
+        response = await axios.post('https://crmdemo.vimubds5.a2hosted.com/api/addEmployee', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
       }
@@ -204,7 +208,7 @@ const EmployeeSingle = () => {
       const isConfirmed = window.confirm("Are you sure you want to delete this employee?");
       if (isConfirmed) {
         try {
-          await axios.delete(`http://localhost:9000/api/deleteEmployee/${employee.employeeId}`);
+          await axios.delete(`https://crmdemo.vimubds5.a2hosted.com/api/deleteEmployee/${employee.employeeId}`);
           navigate('/employee-management');
         } catch (error) {
           setError('Error deleting employee');
@@ -214,13 +218,40 @@ const EmployeeSingle = () => {
     }
   };
 
+  useEffect(() => {
+    fetchLeads();
+}, []);
+
+
+const fetchLeads = async () => {
+    try {
+      const response = await axios.get(
+        `https://crmdemo.vimubds5.a2hosted.com/api/employe-leads/${employeeId}`);
+      const data = response.data;
+      setLeads(data);
+    } catch (error) {
+      console.error("Error fetching leads:", error);
+    }
+  };
+  const handleBackClick = () => {
+    navigate(-1); // -1 navigates to the previous page in history
+  };
+
+
   return ( <>
     <MainHeader/>
+
     <div className="flex flex-col min-h-screen lg:flex-row">
       <div className="lg:w-64">
         <Sider />
       </div>
       <div className="container mt-5 px-2 mx-auto p-4">
+      <button
+      onClick={handleBackClick}
+      className="bg-blue-500 text-white px-4 py-2 rounded"
+    >
+      Go Back
+    </button>
       <main className="flex-1 p-4 lg:p-8">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-bold text-gray-800">Employee Profile</h2>
@@ -239,7 +270,7 @@ const EmployeeSingle = () => {
             <div className="flex items-center mb-6">
               {employee.photo ? (
                 <img
-                  src={`http://localhost:9000${employee.photo}`}
+                  src={`https://crmdemo.vimubds5.a2hosted.com${employee.photo}`}
                   alt="Profile"
                   className="w-24 h-24 border-2 border-gray-300 rounded-full"
                 />
@@ -259,7 +290,7 @@ const EmployeeSingle = () => {
               <div className="mb-6">
                 <h4 className="text-lg font-semibold text-gray-800">Signature</h4>
                 <img
-                  src={`http://localhost:9000${employee.signature}`}
+                  src={`https://crmdemo.vimubds5.a2hosted.com${employee.signature}`}
                   alt="Signature"
                   className="w-32 h-16 border-t border-gray-300"
                 />
@@ -275,6 +306,40 @@ const EmployeeSingle = () => {
                 <BsTrash className="mr-2" /> Delete
               </button>
             </div>
+            <div className="overflow-x-auto mt-4">
+                    <table className="min-w-full bg-white border">
+                        <thead>
+                            <tr>
+                                <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-600 tracking-wider">S.no</th>
+                                <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-600 tracking-wider">Lead Number</th>
+                                <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-600 tracking-wider">Assigned To</th>
+                                <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-600 tracking-wider">Created Time</th>
+                                <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-600 tracking-wider">Name</th>
+                                <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-600 tracking-wider">Phone</th>
+                                <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-600 tracking-wider">Lead Source</th>
+                          
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {leads.map((lead, index) => (
+                                <tr key={lead.id} className={index % 2 === 0 ? "bg-gray-100" : ""}>
+                                    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{index + 1}</td>
+                                    <Link to={`/lead-single-data/${lead.lead_id}`}>
+                                    <td className="px-6 py-4 border-b border-gray-200  underline text-[blue]">{lead.lead_no}</td>
+                                    </Link>
+                                    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.assignedTo}</td>
+                                    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{moment(lead.createdTime).format('DD/MM/YYYY')}</td>
+                                    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.name}</td>
+                                    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.phone}</td>
+                                    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">{lead.leadSource}</td>
+                                    
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+
           </div>
         ) : (
           <p className="text-gray-600">No employee data available.</p>

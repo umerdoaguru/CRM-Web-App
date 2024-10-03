@@ -22,7 +22,7 @@ const Dashboard = () => {
     };
     const getInvoiceData = () => {
         try {
-            const response = axios.get("http://localhost:9000/api/invoiceData")
+            const response = axios.get("https://crmdemo.vimubds5.a2hosted.com/api/invoiceData")
         }catch (err) {
 
         }
@@ -34,7 +34,7 @@ const Dashboard = () => {
         <>
         <MainHeader/>
         <Sider/>
-        <h1 className="text-2xl text-center mt-[5rem]">Admin Dashboard</h1>
+        <h1 className="text-2xl text-center mt-[5rem] font-medium">Admin Dashboard</h1>
         <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
          <div className="flex min-h-screen overflow-hidden ">
           

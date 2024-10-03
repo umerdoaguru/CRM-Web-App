@@ -39,7 +39,7 @@ function Print_Page() {
   const fetchQuotations = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:9000/api/quotation/${id}`
+        `https://crmdemo.vimubds5.a2hosted.com/api/quotation/${id}`
       );
 
       if (response.status === 200) {
@@ -54,7 +54,7 @@ function Print_Page() {
   };
   const fetchNotes = async () => {
     try {
-      const response = await axios.get(`http://localhost:9000/api/notes/${id}`);
+      const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/notes/${id}`);
 
       if (response.status === 200) {
         setNotes(response.data);
@@ -70,7 +70,7 @@ function Print_Page() {
     const fetchCompanyNames = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:9000/api/header-footer-images/company-names`
+          `https://crmdemo.vimubds5.a2hosted.com/api/header-footer-images/company-names`
         );
         if (response.status === 200) {
           setCompanyNames(response.data); // Assuming response.data is an array of company names
@@ -354,7 +354,7 @@ function Print_Page() {
     const fetchImages = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:9000/api/company-header-footer",
+          "https://crmdemo.vimubds5.a2hosted.com/api/company-header-footer",
           {
             company_name: selectedCompany,
           }
@@ -407,17 +407,17 @@ function Print_Page() {
   return (
     <>
    <Wrapper>
-  <div className="flex justify-between mt-3">
-    <div className="mx-3 btn-print">
+  <div className="flex justify-between px-4">
+    <div className="mx-3 btn-print mt-2">
       <UserLogin />
     </div>
-    <div className="mx-3 btn-print">
+    <div className="mx-3 btn-print mt-2">
       <Logout />
     </div>
   </div>
 
-  <div className="flex flex-wrap mt-3">
-    <div className="w-full lg:w-9/12 mb-2 lg:mb-0">
+  <div className="flex justify-between items-center px-4 mt-3 mb-2">
+    <div className="">
       <Link
         to={`/final-quotation/${id}`}
         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mx-1 w-25 btn-print"
@@ -425,7 +425,7 @@ function Print_Page() {
         <i className="bi bi-arrow-return-left mx-1"></i> Back
       </Link>
     </div>
-    <div className="w-full lg:w-3/12">
+    <div className="">
       <Link
         to="/quotationlist"
         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mx-5 w-75 btn-print"
@@ -435,26 +435,26 @@ function Print_Page() {
     </div>
   </div>
 
-  <div className="container">
+  {/* <div className="container px-4">
     <button
       className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-3 mt-2 w-full btn-print"
       onClick={handlePrintPage}
     >
       Print Page
     </button>
-  </div>
+  </div> */}
 
-  <div className="container-fluid">
+  <div className="w-full px-4 mt-2">
     <h1 className="text-xl font-bold btn-print">Select Company Data</h1>
     <select
-      className="form-select mt-2 mb-3 px-3 py-2 border rounded btn-print"
+      className="form-select w-64 mt-2 mb-3 px-2 py-2 border rounded btn-print"
       value={selectedCompany}
       onChange={handleCompanyNameChange}
       required
     >
       <option value="">Select Company</option>
       {companyNames.map((company, index) => (
-        <option key={index} value={company}>
+        <option className="px-4" key={index} value={company}>
           {company}
         </option>
       ))}
@@ -463,7 +463,7 @@ function Print_Page() {
 
   <Header companyName={selectedCompany} quotationName={quotationName} />
 
-  <div className="mt-5">
+  <div className="mt-5 px-4">
     <h2 className="text-2xl font-bold">Plan & Quotation for {quotationName}</h2>
     {renderPaidServices()}
     {renderComplimentaryServices()}
@@ -501,13 +501,13 @@ function Print_Page() {
     </div>
   </div>
 
-  <div className="mt-3 mb-2">
+  <div className="mt-3 mb-2 px-4">
     <h6 className="text-lg">Address: {companyAddress}</h6>
   </div>
 
-  <div className="container">
+  <div className="container flex justify-center">
     <button
-      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-3 mt-2 w-full btn-print"
+      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-3 mt-2 w-auto btn-print print:hidden"
       onClick={handlePrintPage}
     >
       Print Page

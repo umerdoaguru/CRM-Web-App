@@ -3,7 +3,7 @@ const multer = require('multer');
 const router = express.Router();
 
 // const {Register,Allregister, Login,} = require('../controllers/UserController');
-const {Quotation, GetQuotation, Quotationviaid, GetServices,  deleteQuotation, updateServices, Notes, getNotes, deleteNote, addServices, deleteService, getnotes_text, UpdateQuotationName, CopyQuotationData, GetQuotationName, updateNote, leads_data, createLead, getLeads, updateLead, deleteLead, employeeData,editProfile, getAllUsers ,deleteProfile, getleadbyid, getAllQuotation} = require('../controllers/UserController');
+const {Quotation, GetQuotation, Quotationviaid, GetServices,  deleteQuotation, updateServices, Notes, getNotes, deleteNote, addServices, deleteService, getnotes_text, UpdateQuotationName, CopyQuotationData, GetQuotationName, updateNote, leads_data, createLead, getLeads, updateLead, deleteLead, employeeData,editProfile, getAllUsers ,deleteProfile, getleadbyid, getAllQuotation, socialmediaLead} = require('../controllers/UserController');
 const upload = require("../controllers/fileUploadController");
 const upload1 = require('../config/multerConfig'); // Import multer configuration
 
@@ -101,6 +101,7 @@ router.put('/invoice-update-notes', InvoiceupdateNote);
 
 
 router.post('/leads',  createLead);
+// router.post('/facebook-leads',  socialmediaLead);
 router.get('/leads/:id',  getleadbyid);
 router.get('/leads',  getLeads);
 router.put('/leads/:leadId', updateLead);

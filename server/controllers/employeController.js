@@ -48,12 +48,40 @@ const getEmployeeLeads = async (req, res) => {
         res.status(500).json({ message: "Internal Server Erro, error: errr"});
     } 
 }
+const updateOnlyLeadStatus = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { lead_status } = req.body;
+
+      console.log(lead_status,  id);
+  
+      const sql = `UPDATE leads SET 
+                    lead_status = ?
+                    
+                    WHERE lead_id = ?`;
+  
+      await new Promise((resolve, reject) => {
+        db.query(sql, [lead_status, id], (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
+        });
+      });
+  
+      res.status(200).json({ message: "Lead updated successfully" });
+    } catch (error) {
+      console.error('Database update error:', error);
+      res.status(500).json({ message: "Internal Server Error", error: err });
+    }
+  };
 const updateLeadStatus = async (req, res) => {
     try {
       const { id } = req.params;
-      const { lead_status, quotation_status, invoice_status, deal_status, reason, lead_working_status, follow_up_status } = req.body;
+      const { lead_status, quotation_status, invoice_status, deal_status, reason,  follow_up_status } = req.body;
 
-      console.log(lead_status, quotation_status, invoice_status, deal_status, reason, lead_working_status, follow_up_status, id);
+      console.log(lead_status, quotation_status, invoice_status, deal_status, reason,  follow_up_status, id);
   
       const sql = `UPDATE leads SET 
                     lead_status = ?, 
@@ -61,12 +89,12 @@ const updateLeadStatus = async (req, res) => {
                     invoice_status = ?, 
                     deal_status = ?, 
                     reason = ?, 
-                    lead_working_status = ?, 
+                  
                     follow_up_status = ? 
                     WHERE lead_id = ?`;
   
       await new Promise((resolve, reject) => {
-        db.query(sql, [lead_status, quotation_status, invoice_status, deal_status, reason, lead_working_status, follow_up_status, id], (err, result) => {
+        db.query(sql, [lead_status, quotation_status, invoice_status, deal_status, reason,  follow_up_status, id], (err, result) => {
           if (err) {
             reject(err);
           } else {
@@ -108,7 +136,7 @@ const updateLeadStatus = async (req, res) => {
 const employeeProfile = async (req, res) => {
     try {
         const { id } = req.params;
-        const sql = "SELECT * FROM employee WHERE employeeId = ?";
+        const sql = "SELECT employeeId, name, email, phone,photo,salary, position, createdTime FROM employee WHERE employeeId = ?";
     
         const result = await new Promise((resolve, reject) => {
             db.query(sql, [id], (err, results) => {
@@ -126,7 +154,8 @@ const employeeProfile = async (req, res) => {
         console.error('Database query error:', err); // Log the error for debugging
         res.status(500).json({ message: "Internal Server Error", error: err });
     } 
-}
+};
+
  
 module.exports = {
     getEmployeeInvoice,
@@ -134,5 +163,6 @@ module.exports = {
     updateLeadStatus,
     getEmployeeQuotation,
     employeeProfile,
+    updateOnlyLeadStatus
 };
   

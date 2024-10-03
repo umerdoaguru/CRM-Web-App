@@ -35,7 +35,7 @@ function UpdateCompanyData() {
   useEffect(() => {
     const fetchCompanyData = async () => {
       try {
-        const response = await axios.post('http://localhost:9000/api/company-header-footer', {
+        const response = await axios.post('https://crmdemo.vimubds5.a2hosted.com/api/company-header-footer', {
           company_name: company
         });
         
@@ -87,10 +87,10 @@ function UpdateCompanyData() {
 
   const handleUpload = async () => {
     try {
-      if (!selectedFileHeader || !selectedFileFooter || !selectedFileLogo || !selectedFileSign) {
-        alert('All image files must be selected');
-        return;
-      }
+      // if (!selectedFileHeader || !selectedFileFooter || !selectedFileLogo || !selectedFileSign) {
+      //   alert('All image files must be selected');
+      //   return;
+      // }
       const formData = new FormData();
       formData.append('header_img', headerImage);
       formData.append('footer_img', footerImage);
@@ -109,7 +109,7 @@ function UpdateCompanyData() {
       formData.append("logo", logoImage);
       formData.append('digital_sign', companydigitalsign);
 
-      const response = await axios.put(`http://localhost:9000/api/companydata/${idcompany}`, formData, {
+      const response = await axios.put(`https://crmdemo.vimubds5.a2hosted.com/api/companydata/${idcompany}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -117,7 +117,7 @@ function UpdateCompanyData() {
 
       if (response.status === 200) {
         console.log('Header and footer images updated successfully');
-        navigate('/');
+        navigate('/quotation-section');
       } else {
         console.error('Error updating header and footer images:', response.statusText);
       }
@@ -137,7 +137,7 @@ function UpdateCompanyData() {
   <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50 ">
     <div className="bg-white rounded-lg shadow-lg w-auto max-h-[100vh] overflow-auto mx-3 mt-3 mb-3  p-4 ">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg sm:text-xl font-bold">Update Invoice Name</h2>
+        <h2 className="text-lg sm:text-xl font-bold">Update Company Details</h2>
         <button className="text-gray-500 hover:text-gray-700" onClick={handleClose}>
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>

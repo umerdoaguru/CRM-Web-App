@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import img from '../../images/lead_profile.png'; // Assuming this will be the employee's image as well
 import MainHeader from '../MainHeader';
 import EmployeeSider from './EmployeeSider';
+import { useSelector } from 'react-redux';
 
 const mockEmployeeData = {
     employeeId: 1,
@@ -19,13 +20,13 @@ const mockEmployeeData = {
   };
 
 function EmployeeProfile() {
-  const [user, setUser] = useState(mockEmployeeData); // Initialize state for employee data
-
+  const [user, setUser] = useState([]); // Initialize state for employee data
+  const EmpId = useSelector(state => state.auth.user.id);
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/employees/${1}`); // Fetch employee data
-        setUser(response.data); // Set employee data to state
+        const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api//employeeProfile/${EmpId}`); // Fetch employee data
+        setUser(response.data[0]); // Set employee data to state
         console.log(response.data); // Debug: log employee data
       } catch (error) {
         console.error("Error fetching employee data:", error);
@@ -33,7 +34,7 @@ function EmployeeProfile() {
     };
 
     fetchEmployee();
-  }, []);
+  }, [EmpId]);
 
   // Mock data for testing (remove once API is working)
 
@@ -99,12 +100,6 @@ function EmployeeProfile() {
                 </div>
               </div>
 
-              <div>
-                <label className="text-info">Designation</label>
-                <div className="p-2 bg-gray-100 rounded">
-                  <p className="m-0">{user.designation}</p>
-                </div>
-              </div>
 
               <div>
                 <label className="text-info">Created Date</label>

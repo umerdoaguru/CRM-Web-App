@@ -22,7 +22,7 @@ const QuotationList = () => {
   useEffect(() => {
     const fetchQuotations = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/api/quotation-data`);
+        const response = await axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/quotation-data`);
         setQuotations(response.data);
         console.log(response);
       } catch (error) {
@@ -63,7 +63,7 @@ const QuotationList = () => {
     <Sider/>
     <div className="container mt-5 px-2 mx-auto p-4">
   <Link to="/quotation-section" className="text-white">
-    <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mt-2">
+    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">
       <i className="bi bi-arrow-return-left mx-1"></i>Back
     </button>
   </Link>
@@ -103,7 +103,7 @@ const QuotationList = () => {
               <td className="px-6 py-4 whitespace-nowrap">{moment(quotation.created_date).format('DD/MM/YYYY')}</td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <Link to={`/admin-view-quotation/${quotation.quotation_id}`}>
-                  <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded m-1">View</button>
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded m-1">View</button>
                 </Link>
                 
               </td>

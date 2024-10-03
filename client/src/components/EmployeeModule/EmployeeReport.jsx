@@ -8,25 +8,27 @@ import Pagination from './../../adiComponent/comp/pagination';
 import MainHeader from "../MainHeader";
 import EmployeeSider from "./EmployeeSider";
 import { useSelector } from "react-redux";
+import moment from "moment";
 
 const d_fileds = {
   quotation: {
-    heading: ["Id", "employee ID", "Name", "Date"],
-    columns: ["quotation_id", "employeeId", "quotation_name", "created_date"],
+    heading: ["Id", "Quotation Name", "Employee Name", "Date"],  
+    columns: ["quotation_id", "quotation_name", "employee_name", "created_date"],
     quotation: [],
   },
   invoice: {
-    heading: ["id ", "Company", "Payment Mode", "Date"],
-    columns: ["invoice_id", "user_id", "payment_mode", "created_date"],
+    heading: ["id ", "Invoice Name", "Employee Name", "Amount", "Payment Mode", "Date"],
+    columns: ["invoice_id", "invoice_name", "employee_name", "offer_price", "payment_mode", "created_date"],
     invoice: [],
   },
+ 
   leads: {
-    heading: ["Id", "Assign", "Date", "Source"],
-    columns: ["lead_no", "assignedTo", "createdTime", "leadSource"],
+    heading: ["Lead No.", "Assigned To", "Lead Name", "Phone Number", "Date", "Lead Source", "Quotation Status", "Invoice Status", "Deal Status",  "FollowUp Status"],
+    columns: ["lead_no", "assignedTo", "name",  "phone", "createdTime", "leadSource", "quotation_status", "invoice_status", "deal_status", "follow_up_status"],
     leads: [],
   },
 }
-
+ 
 const EmployeeReport = () => {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState("All");
@@ -139,49 +141,136 @@ const EmployeeReport = () => {
     );
   };
 
+  // const getQuotationData = async () => {
+  //   try {
+  //     const formatData = (data) => {
+  //       return data.map((item) => ({
+  //         ...item,
+  //         created_date: moment(item.created_date).format('DD/MM/YYYY'),
+  //         createdTime: moment(item.createdTime).format('DD/MM/YYYY'),
+  //       }));
+  //     };
+  
+  //     const [
+  //       quotationResponse,
+  //       invoiceResponse,
+  //       leadsResponse,
+  //     ] = await Promise.all([
+  //       axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/get-quotation-byEmploye/${EmpId}`),
+  //       axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/get-employee-invoice/${EmpId}`),
+  //       axios.get(`https://crmdemo.vimubds5.a2hosted.com/api/employe-leads/${EmpId}`),
+  //     ]);
+  
+  //     // Use formatData to format the response data
+  //     const combinedData = {
+  //       quotation: formatData(quotationResponse.data),
+  //       invoice: formatData(invoiceResponse.data),
+  //       leads: formatData(leadsResponse.data),
+  //     };
+  
+  //     console.log(combinedData);
+  
+  //     const updatedDataFields = {
+  //       ...dataFields,
+  //       quotation: { ...dataFields.quotation, quotation: combinedData.quotation },
+  //       invoice: { ...dataFields.invoice, invoice: combinedData.invoice },
+  //       leads: { ...dataFields.leads, leads: combinedData.leads },
+  //     };
+  
+  //     setDataFields(updatedDataFields);
+  //     setData(combinedData);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  
+  
+  const quotationAxios = axios.create({
+    baseURL: "https://crmdemo.vimubds5.a2hosted.com/api",
+  });
+  
+  const invoiceAxios = axios.create({
+    baseURL: "https://crmdemo.vimubds5.a2hosted.com/api",
+  });
+  
+
+  
+  const leadsAxios = axios.create({
+    baseURL: "https://crmdemo.vimubds5.a2hosted.com/api",
+  });
+  
+  const formatData = (data) => {
+    return data.map((item) => ({
+      ...item,
+      created_date: moment(item.created_date).format('DD/MM/YYYY'),
+      createdTime: moment(item.createdTime).format('DD/MM/YYYY'),
+    }));
+  };
+  
   const getQuotationData = async () => {
     try {
-      const [
-        quotationResponse,
-        invoiceResponse,
-        leadsResponse,
-      ] = await Promise.all([
-        axios.get(`http://localhost:9000/api/get-quotation-byEmploye/${EmpId}`),
-        axios.get(`http://localhost:9000/api/get-employee-invoice/${EmpId}`),
-        axios.get(`http://localhost:9000/api/employe-leads/${EmpId}`),
+      const results = await Promise.allSettled([
+        quotationAxios.get(`/get-quotation-byEmploye/${EmpId}`),
+        invoiceAxios.get(`/get-employee-invoice/${EmpId}`),
+        leadsAxios.get(`/employe-leads/${EmpId}`),
       ]);
-
+  
+      // Initialize empty response objects
+      let quotationData = [];
+      let invoiceData = [];
+      let leadsData = [];
+  
+      // Handle each result
+      results.forEach((result, index) => {
+        if (result.status === 'fulfilled') {
+          switch (index) {
+            case 0:
+              quotationData = formatData(result.value.data);
+              break;
+            case 1:
+              invoiceData = formatData(result.value.data);
+              break;
+            case 2:
+              leadsData = formatData(result.value.data);
+              break;
+            default:
+              break;
+          }
+        } else {
+          console.error(`Error fetching data for index ${index}:`, result.reason);
+        }
+      });
+  
       const combinedData = {
-        quotation: quotationResponse.data,
-        invoice: invoiceResponse.data,
-        leads: leadsResponse.data,
+        quotation: quotationData,
+        invoice: invoiceData,
+        leads: leadsData,
       };
-
-      console.log(combinedData);
-
+  
       const updatedDataFields = {
         ...dataFields,
         quotation: {
           ...dataFields.quotation,
-          quotation: quotationResponse.data,
+          quotation: combinedData.quotation,
         },
         invoice: {
           ...dataFields.invoice,
-          invoice: invoiceResponse.data,
+          invoice: combinedData.invoice,
         },
         leads: {
           ...dataFields.leads,
-          leads: leadsResponse.data,
+          leads: combinedData.leads,
         },
       };
-
+  
       setDataFields(updatedDataFields);
+      console.log(combinedData);
       setData(combinedData);
     } catch (error) {
-      console.log(error);
+      console.log("Unexpected error:", error);
     }
   };
-
+  
   useEffect(() => {
     getQuotationData();
   }, []);
@@ -244,12 +333,13 @@ const EmployeeReport = () => {
 
             <button
               onClick={handleDownload}
-              className="flex items-center px-4 py-2 text-white mr-2 mb-2 bg-green-500 rounded-lg hover:bg-green-600 mt-0"
+              className="flex items-center px-4 py-2 text-white mr-2 mb-2 bg-blue-500 hover:bg-blue-700 rounded-lg    mt-0"
             >
               <BsDownload className="mr-2" /> Download
             </button>
           </div>
         </div>
+        
 
         <div className="overflow-x-auto rounded-lg shadow-md">
           <table className="min-w-full bg-white">
