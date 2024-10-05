@@ -140,12 +140,13 @@ function Single_Lead_Profile() {
                   {" "}
                   Reason
                 </th>
-                <th className="px-6 py-3 border-b-2 border-gray-300">
-                  Lead  Status
-                </th>
+             
                 <th className="px-6 py-3 border-b-2 border-gray-300">
                   {" "}
                   Follow Up Status
+                </th>
+                <th className="px-6 py-3 border-b-2 border-gray-300">
+                  Lead  Status
                 </th>
               </tr>
             </thead>
@@ -167,45 +168,68 @@ function Single_Lead_Profile() {
                       </td>
     
                       {lead.quotation_status === "pending" && (
-                        <td className="px-6 py-4 border-b border-gray-200 text-[red]">
-                          {lead.quotation_status}
-                        </td>
-                      )}
-    
-                      {lead.quotation_status === "done" && (
-                        <td className="px-6 py-4 border-b border-gray-200 text-[green]">
-                          {lead.quotation_status}
-                        </td>
-                      )}
+                             <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[red]">
+                               {lead.quotation_status}
+                             </td>
+                           )}
+         
+                          
+                            {lead.quotation_status === "in progress" && (
+                             <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[orange]">
+                               {lead.quotation_status}
+                             </td>
+                           )}
+                            {lead.quotation_status === "approved" && (
+                             <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[green]">
+                               {lead.quotation_status}
+                             </td>
+                           )}
+                            {lead.quotation_status === "not approved" && (
+                             <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[black]">
+                               {lead.quotation_status}
+                             </td>
+                           )}
     
                       <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
                         {lead.invoice}
                       </td>
+
                       {lead.invoice_status === "pending" && (
-                        <td className="px-6 py-4 border-b border-gray-200 text-[red]">
-                          {lead.invoice_status}
-                        </td>
-                      )}
-    
-                      {lead.invoice_status === "done" && (
-                        <td className="px-6 py-4 border-b border-gray-200 text-[green]">
-                          {lead.invoice_status}
-                        </td>
-                      )}
+                             <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[red]">
+                               {lead.invoice_status}
+                             </td>
+                           )}
+         
+                          
+                            {lead.invoice_status === "in progress" && (
+                             <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[orange]">
+                               {lead.invoice_status}
+                             </td>
+                           )}
+                            {lead.invoice_status === "approved" && (
+                             <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[green]">
+                               {lead.invoice_status}
+                             </td>
+                           )}
+                            {lead.invoice_status === "not approved" && (
+                             <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[black]">
+                               {lead.invoice_status}
+                             </td>
+                           )}
     
                       {lead.deal_status === "pending" && (
-                        <td className="px-6 py-4 border-b border-gray-200 text-[red]">
+                        <td className="px-6 py-4 border-b border-gray-200 font-semibold  text-[red]">
                           {lead.deal_status}
                         </td>
                       )}
     
                       {lead.deal_status === "crack" && (
-                        <td className="px-6 py-4 border-b border-gray-200 text-[green]">
+                        <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[green]">
                           {lead.deal_status}
                         </td>
                       )}
                       {lead.deal_status === "not crack" && (
-                        <td className="px-6 py-4 border-b border-gray-200 text-[blue]">
+                        <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[blue]">
                           {lead.deal_status}
                         </td>
                       )}
@@ -220,35 +244,35 @@ function Single_Lead_Profile() {
                     
                       
                       {lead.follow_up_status === "pending" && (
-                        <td className="px-6 py-4 border-b border-gray-200 text-[red]">
+                        <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[red]">
                           {lead.follow_up_status}
                         </td>
                       )}
     
     {lead.follow_up_status === "in progress" && (
-                        <td className="px-6 py-4 border-b border-gray-200 text-[yellow]">
+                        <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[orange]">
                           {lead.follow_up_status}
                         </td>
                       )}
                       {lead.follow_up_status === "completed" && (
-                        <td className="px-6 py-4 border-b border-gray-200 text-[green]">
+                        <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[green]">
                           {lead.follow_up_status}
                         </td>
                      
                       )}
                       {lead.lead_status === "pending" && (
-                        <td className="px-6 py-4 border-b border-gray-200 text-[red]">
+                        <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[red]">
                           {lead.lead_status}
                         </td>
                       )}
     
     {lead.lead_status === "in progress" && (
-                        <td className="px-6 py-4 border-b border-gray-200 text-[yellow]">
+                        <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[orange]">
                           {lead.lead_status}
                         </td>
                       )}
                       {lead.lead_status === "completed" && (
-                        <td className="px-6 py-4 border-b border-gray-200 text-[green]">
+                        <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[green]">
                           {lead.lead_status}
                         </td>
                      

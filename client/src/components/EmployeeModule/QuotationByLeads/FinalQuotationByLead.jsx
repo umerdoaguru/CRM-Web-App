@@ -3,15 +3,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
-import UpdateServicesForm from "./UpdateServicesForm";
-import UpdateHeaderImageForm from "./UpdateHeaderImageForm";
-import UpdateFooterImageForm from "./UpdatFooterImageForm";
-import Footer from "./Footer";
-import UserLogin from "../../components/UserLogin";
-import Logout from "../../components/Logout";
 
 
-function Final_quotation() {
+import UserLogin from "../../UserLogin";
+import Logout from "../../Logout";
+
+import UpdateServicesFormBylead from "./UpdateServicesFormBylead";
+
+
+
+function FinalQuotationByLeads() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [quotations, setQuotations] = useState([]);
@@ -63,7 +64,7 @@ function Final_quotation() {
   };
 
   const handlePrintPage = () => {
-    navigate(`/print/${id}`);
+    navigate(`/quotationprint-by-lead/${id}`);
   };
 
   const handleUpdateSuccess = () => {
@@ -78,18 +79,18 @@ function Final_quotation() {
   };
 
   const handleAddNotes = () => {
-    navigate(`/createnotes/${id}`);
+    navigate(`/quotationcreatenotes-by-lead/${id}`);
   };
 
   const handleDeleteNotes = () => {
-    navigate(`/deletenotes/${id}`);
+    navigate(`/quotationdeletenotes-by-lead/${id}`);
   };
   const handleUpdateNotes = () => {
-    navigate(`/update-notes/${id}`);
+    navigate(`/quotationupdatenotes-by-lead/${id}`);
   };
 
   const handleAddServices = () => {
-    navigate(`/addservices/${id}`);
+    navigate(`/quotationaddservices-by-lead/${id}`);
   };
   const handleDeleteService = async (serviceId) => {
     const isConfirmed = window.confirm(
@@ -173,7 +174,7 @@ function Final_quotation() {
         </button>
       </div>
       {isUpdateMode && (
-        <UpdateServicesForm
+        <UpdateServicesFormBylead
           quotationId={id}
           onUpdateSuccess={handleUpdateSuccess}
           onUpdateError={handleUpdateError}
@@ -202,7 +203,7 @@ function Final_quotation() {
       <div className="flex justify-between">
         <div className="">
           <Link
-            to="/employee-quotation-invoice"
+            to="/employee-lead-single-data"
             className="text-white bg-green-500 hover:bg-green-600 rounded py-2 px-4 w-auto block text-center"
           >
             <i className="bi bi-arrow-return-left mx-1"></i>Back
@@ -224,19 +225,12 @@ function Final_quotation() {
             Add Services
           </button>
         </div>
-        <div className="">
-          <Link
-            to="/employee-quotation-invoice"
-            className="text-white bg-green-500 hover:bg-green-600 rounded py-2 px-4 w-full block text-center"
-          >
-            Quotation List
-          </Link>
-        </div></div>
+     </div>
         
       </div>
 
          {isUpdateMode && (
-       <UpdateServicesForm
+       <UpdateServicesFormBylead
        quotationId={id}
        onUpdateSuccess={handleUpdateSuccess}
        onUpdateError={handleUpdateError}
@@ -432,7 +426,7 @@ function Final_quotation() {
   );
 }
 
-export default Final_quotation;
+export default FinalQuotationByLeads;
 
 const Wrapper = styled.div`
   th {

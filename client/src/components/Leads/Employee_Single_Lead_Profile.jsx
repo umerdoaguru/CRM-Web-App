@@ -111,6 +111,11 @@ function Employee_Single_Lead_Profile() {
       const handleBackClick = () => {
         navigate(-1); // -1 navigates to the previous page in history
       };
+      const handleQuotation = (lead) => {
+        const name = lead.name
+        navigate(`/quotation-by-lead/${lead.lead_id}`, { state: { name } });
+      };
+      
       const handleInputChange = (e) => {
         const { name, value } = e.target;
         setCurrentLead((prevLead) => ({
@@ -153,17 +158,14 @@ function Employee_Single_Lead_Profile() {
         setShowPopup(false);
     };
 
+    
+
   return (
     <>
     <MainHeader />
     <EmployeeeSider />
     <div className="container mt-5 px-2 mx-auto p-4">
-    <button
-      onClick={handleBackClick}
-      className="bg-blue-500 text-white px-4 py-2 rounded"
-    >
-      Go Back
-    </button>
+   
      <h1 className="text-2xl text-center mt-[2rem]">Leads Profile</h1>
      <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
     <div className="flex flex-wrap mb-4">
@@ -244,6 +246,14 @@ function Employee_Single_Lead_Profile() {
   ))}
 </div>
 
+<div className="">
+  <button
+    onClick={() => handleQuotation(leads[0])}
+    className="bg-blue-500 text-white px-4 py-2 rounded"
+  >
+    Quotation Creation
+  </button>
+</div>
 
    <div className="overflow-x-auto mt-5">
                     <table className="min-w-full bg-white border">
@@ -287,8 +297,19 @@ function Employee_Single_Lead_Profile() {
                              </td>
                            )}
          
-                           {lead.quotation_status === "done" && (
+                          
+                            {lead.quotation_status === "in progress" && (
+                             <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[orange]">
+                               {lead.quotation_status}
+                             </td>
+                           )}
+                            {lead.quotation_status === "approved" && (
                              <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[green]">
+                               {lead.quotation_status}
+                             </td>
+                           )}
+                            {lead.quotation_status === "not approved" && (
+                             <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[black]">
                                {lead.quotation_status}
                              </td>
                            )}
@@ -296,14 +317,28 @@ function Employee_Single_Lead_Profile() {
                            <td className="px-6 py-4 border-b border-gray-200  text-gray-800">
                              {lead.invoice}
                            </td>
-                           {lead.invoice_status === "pending" && (
-                             <td className="px-6 py-4 border-b border-gray-200  font-semibold text-[red]">
+                          
+                          
+         
+         {lead.invoice_status === "pending" && (
+                             <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[red]">
                                {lead.invoice_status}
                              </td>
                            )}
          
-                           {lead.invoice_status === "done" && (
+                          
+                            {lead.invoice_status === "in progress" && (
+                             <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[orange]">
+                               {lead.invoice_status}
+                             </td>
+                           )}
+                            {lead.invoice_status === "approved" && (
                              <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[green]">
+                               {lead.invoice_status}
+                             </td>
+                           )} 
+                            {lead.invoice_status === "not approved" && (
+                             <td className="px-6 py-4 border-b border-gray-200 font-semibold text-[black]">
                                {lead.invoice_status}
                              </td>
                            )}

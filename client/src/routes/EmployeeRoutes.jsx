@@ -56,6 +56,13 @@ import TotalEmpInvoice from '../components/EmployeeModule/EmployeeDashboardCards
 import TotalEmpQuotation from '../components/EmployeeModule/EmployeeDashboardCards/AdminDashBoardCards/TotalEmpQuotation';
 import Leads from '../pages/Leads';
 import Employee_Single_Lead_Profile from '../components/Leads/Employee_Single_Lead_Profile';
+import QuotationByLeads from '../components/EmployeeModule/QuotationByLeads/QuotationByLeads';
+import PrintQuotationBylead from '../components/EmployeeModule/QuotationByLeads/PrintQuotationBylead';
+import AddServiceByLead from './../components/EmployeeModule/QuotationByLeads/AddServiceBylead';
+import CreateNotesBylead from './../components/EmployeeModule/QuotationByLeads/CreateNotesBylead';
+import DeleteNoteBylead from './../components/EmployeeModule/QuotationByLeads/DeleteNoteBylead';
+import UpdateNoteBylead from './../components/EmployeeModule/QuotationByLeads/UpdateNoteBylead';
+import FinalQuotationByLeads from './../components/EmployeeModule/QuotationByLeads/FinalQuotationByLead';
 
 
 function EmployeeRoutes() {
@@ -98,6 +105,7 @@ function EmployeeRoutes() {
 
 
 <Route path="/quotation-form" element={  <QuotationForm1 /> } />
+
 
 <Route path="/final-quotation/:id" element={  <Final_quotation/>} />
 
@@ -151,7 +159,16 @@ function EmployeeRoutes() {
 <Route path="/employee-data-export" element={  <EmployeeDataExport/>} />
 <Route path="/employee-quotation-invoice" element={  <MainQuotation/>} />
 <Route path="/employee-profile" element={  <EmployeeProfile/>} />
+<Route path="/quotation-by-lead/:id" element={  <QuotationByLeads/>} />
+<Route path="/final-quotation-by-lead/:id" element={  <FinalQuotationByLeads/>} />
 
+
+<Route path="/quotationprint-by-lead/:id" element={ <PrintQuotationBylead />} />
+
+<Route path="/quotationaddservices-by-lead/:id" element={  <AddServiceByLead />} />
+<Route path="/quotationcreatenotes-by-lead/:id" element={  <CreateNotesBylead />}/>
+<Route path="/quotationdeletenotes-by-lead/:id" element={  <DeleteNoteBylead />} />
+<Route path="/quotationupdatenotes-by-lead/:id" element={  <UpdateNoteBylead />} />
     
         
 

@@ -1,22 +1,31 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
-import UserLogin from "../../components/UserLogin";
-import Logout from "../../components/Logout";
 
-const QuotationForm1 = () => {
+import { useLocation } from 'react-router-dom';
+import UserLogin from "../../UserLogin";
+import Logout from "../../Logout";
+import cogoToast from "cogo-toast";
+import MainHeader from './../../MainHeader';
+import Sider from "../../Sider";
+import EmployeeeSider from "../EmployeeSider";
+
+const QuotationByLeads = () => {
   const EmpId = useSelector(state => state.auth.user.id);
   const EmpName = useSelector(state => state.auth.user.name);
   const navigate = useNavigate();
+  const location = useLocation();
+  const {id} = useParams(); 
+  const { name } = location.state || {}; // Retrieve name from state
   const [quotationName, setQuotationName] = useState("");
   const [serviceslist, setServiceslist] = useState([]);
   const [services, setServices] = useState([
     {
       service_type: "",
-      service_name: "",  
+      service_name: "",
       service_description: "",
       actual_price: null,
       offer_price: null,
@@ -115,7 +124,7 @@ const QuotationForm1 = () => {
         };
       });
       const response = await axios.post("https://crmdemo.vimubds5.a2hosted.com/api/quotation", {
-        quotation_name: quotationName,
+        quotation_name: name,
         services: servicesToSave,
         // employeeId: userId,
         employeeId: EmpId,
@@ -124,7 +133,25 @@ const QuotationForm1 = () => {
 
       console.log("Quotation added successfully:", response.data);
 
-      navigate(`/final-quotation/${response.data.quotation.id}`);
+      try {
+        // Send updated data to the backend using Axios
+        const response = await axios.put(`https://crmdemo.vimubds5.a2hosted.com/api/updateOnlyQuotationStatus/${id}`,  {quotation: 'created'});
+  
+        if (response.status === 200) {
+          console.log('Updated successfully:', response.data);
+          cogoToast.success('Quotation Created and status updated successfully');
+         
+        } else {
+          console.error('Error updating:', response.data);
+          cogoToast.error('Failed to update the quotation status.');
+        }
+      } catch (error) {
+        console.error('Request failed:', error);
+        cogoToast.error('Failed to update the quotation status.');
+      }
+  
+
+      navigate(`/final-quotation-by-lead/${response.data.quotation.id}`);
     } catch (error) {
       console.error(
         "Error adding quotation:",
@@ -164,9 +191,24 @@ const QuotationForm1 = () => {
     navigate(``);
   };
 
+
+  const handleBackClick = () => {
+    navigate(-1); // -1 navigates to the previous page in history
+  };
+
   return (
-  
-      <div className="p-4">
+  <>
+    <MainHeader/>
+    <EmployeeeSider/>
+  <div className="container">
+
+      <div className="p-4 mt-5">
+      <button
+      onClick={handleBackClick}
+      className="bg-blue-500 text-white px-4 py-2 rounded"
+    >
+      Go Back
+    </button>
         {/* <Link
           to={`/quotation-section`}
           className="bg-green-500 text-white px-4 py-2 rounded mt-3 mx-2 inline-block"
@@ -208,8 +250,8 @@ const QuotationForm1 = () => {
                   id="quotationName"
                   name="quotation_name"
                   placeholder="Quotation Name"
-                  value={quotationName}
-                  onChange={(e) => setQuotationName(e.target.value)}
+                  value={name}
+                  
                   required
                 />
               </div>
@@ -401,6 +443,11 @@ const QuotationForm1 = () => {
           </div>
         </div>
       </div>
+  </div>
+  
+  
+  </>
+    
     );
     
   
@@ -410,4 +457,4 @@ const Wrapper = styled.div`
   /* Add your styles here */
 `;
 
-export default QuotationForm1;
+export default QuotationByLeads;

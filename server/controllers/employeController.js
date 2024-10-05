@@ -76,6 +76,40 @@ const updateOnlyLeadStatus = async (req, res) => {
       res.status(500).json({ message: "Internal Server Error", error: err });
     }
   };
+  
+const updateOnlyQuotationStatus = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { quotation} = req.body;
+
+      console.log(quotation,  id);
+  
+      const sql = `UPDATE leads SET 
+                    quotation = ?
+                    
+                    WHERE lead_id = ?`;
+  
+      await new Promise((resolve, reject) => {
+        db.query(sql, [quotation, id], (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
+        });
+      });
+  
+      res.status(200).json({ message: "Quotation Status updated successfully" });
+    } catch (error) {
+      console.error('Database update error:', error);
+      res.status(500).json({ message: "Internal Server Error", error: err });
+    }
+  };
+
+
+
+
+
 const updateLeadStatus = async (req, res) => {
     try {
       const { id } = req.params;
@@ -163,6 +197,6 @@ module.exports = {
     updateLeadStatus,
     getEmployeeQuotation,
     employeeProfile,
-    updateOnlyLeadStatus
+    updateOnlyLeadStatus,updateOnlyQuotationStatus
 };
   
