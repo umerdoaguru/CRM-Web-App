@@ -1,4 +1,3 @@
-
 // export default FacebookLeads;
 
 import { useState, useEffect } from "react";
@@ -21,11 +20,9 @@ const FacebookLeads = () => {
     employeeId: "",
   });
 
-   // Pagination state
-   const [currentPage, setCurrentPage] = useState(0);
-   const [leadsPerPage] = useState(10);
-
-
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(0);
+  const [leadsPerPage] = useState(10);
 
   // Meta API Token
   const ACCESS_TOKEN =
@@ -42,7 +39,7 @@ const FacebookLeads = () => {
       const leadsData = response.data.data;
       setLeads(leadsData); // Update local state with leads
       console.log(leads);
-      
+
       setLoading(false);
     } catch (err) {
       setError("Failed to fetch leads data");
@@ -52,7 +49,9 @@ const FacebookLeads = () => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/employee");
+      const response = await axios.get(
+        "https://crmdemo.vimubds5.a2hosted.com/api/employee"
+      );
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -60,18 +59,16 @@ const FacebookLeads = () => {
   };
   const fetchLeadassigned = async () => {
     try {
-      const response = await axios.get("https://crmdemo.vimubds5.a2hosted.com/api/leads");
+      const response = await axios.get(
+        "https://crmdemo.vimubds5.a2hosted.com/api/leads"
+      );
       setLeadsAssigned(response.data);
       // console.log(leadsAssigned);
-      
     } catch (error) {
       console.error("Error fetching employees:", error);
     }
   };
-  
 
-  
-  
   useEffect(() => {
     fetchLeads();
     fetchEmployees();
@@ -100,20 +97,19 @@ const FacebookLeads = () => {
   };
 
   const saveChanges = async () => {
-
     try {
       await axios.post("https://crmdemo.vimubds5.a2hosted.com/api/leads", {
-        lead_no:  selectedLead.leadId,    
-        assignedTo:currentLead.assignedTo,
-        employeeId:currentLead.employeeId,
-        createdTime:  selectedLead.date,
-        name: selectedLead.fullName,         
-        phone:  selectedLead.phoneNumber,   
-        leadSource: "Facebook Campaign", 
-        subject:  'Query', 
+        lead_no: selectedLead.leadId,
+        assignedTo: currentLead.assignedTo,
+        employeeId: currentLead.employeeId,
+        createdTime: selectedLead.date,
+        name: selectedLead.fullName,
+        phone: selectedLead.phoneNumber,
+        leadSource: "Facebook Campaign",
+        subject: "Query",
       });
       fetchLeads(); // Refresh the list
-    fetchLeadassigned();
+      fetchLeadassigned();
 
       closePopup();
     } catch (error) {
@@ -142,18 +138,14 @@ const FacebookLeads = () => {
     setShowPopup(false);
     setSelectedLead(null);
   };
- // Pagination logic
- const indexOfLastLead = (currentPage + 1) * leadsPerPage;
- const indexOfFirstLead = indexOfLastLead - leadsPerPage;
- const currentLeads = leads.slice(indexOfFirstLead, indexOfLastLead);
+  // Pagination logic
+  const indexOfLastLead = (currentPage + 1) * leadsPerPage;
+  const indexOfFirstLead = indexOfLastLead - leadsPerPage;
+  const currentLeads = leads.slice(indexOfFirstLead, indexOfLastLead);
 
- const handlePageClick = (data) => {
-   setCurrentPage(data.selected);
- };
-
-
-
-
+  const handlePageClick = (data) => {
+    setCurrentPage(data.selected);
+  };
 
   if (loading)
     return (
@@ -165,62 +157,63 @@ const FacebookLeads = () => {
     );
   if (error) return <div>{error}</div>;
 
-  
-
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl text-center font-bold mb-4">
         Facebook Leads Table
       </h1>
       <div className="mx-auto h-[3px] w-16 bg-[#34495E] my-3"></div>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="py-2 px-4 border-b">Lead S.no</th> 
-              <th className="py-2 px-4 border-b">Lead ID</th>
-              <th className="py-2 px-4 border-b">Full Name</th>
-              <th className="py-2 px-4 border-b">Phone Number</th>
-              <th className="py-2 px-4 border-b">Address</th>
-              <th className="py-2 px-4 border-b">Date</th>
-              <th className="py-2 px-4 border-b">Assign Lead</th>
-            </tr>
-          </thead>
-          <tbody>
-          {currentLeads
-              .filter(
-                (lead) =>
-                  !leadsAssigned.some((assigned) => assigned.lead_no === lead.id)
-              )
-              .map((lead, index) => (
-                <tr key={lead.id}>
-                  <td className="py-2 px-4 border-b">{index + 1}</td>
-                  <td className="py-2 px-4 border-b">{lead.id}</td>
-                  <td className="py-2 px-4 border-b">
-                    {extractFieldValue(lead.field_data, "full_name")}
-                  </td>
-                  <td className="py-2 px-4 border-b">
-                    {extractFieldValue(lead.field_data, "phone_number")}
-                  </td>
-                  <td className="py-2 px-4 border-b">
-                    {extractFieldValue(lead.field_data, "street_address")}
-                  </td>
-                  <td className="py-2 px-4 border-b">
-                    {new Date(lead.created_time).toLocaleString()}
-                  </td>
-                  <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
-                    <button
-                      className="text-blue-500 hover:text-blue-700"
-                      onClick={() => handleEditClick(lead)}
-                    >
-                      Assign
-                    </button>
-                  </td>
-                </tr>
-              ))}
-
-          </tbody>
-        </table>
+      <div className="overflow-x-auto ">
+        <div className="max-h-[500px] overflow-y-auto">
+          <table className="min-w-full bg-white border border-gray-200 table-fixed">
+            <thead className="sticky top-0 bg-gray-100 z-10">
+              <tr>
+                <th className="py-2 px-4 border-b">Lead S.no</th>
+                <th className="py-2 px-4 border-b">Lead ID</th>
+                <th className="py-2 px-4 border-b">Full Name</th>
+                <th className="py-2 px-4 border-b">Phone Number</th>
+                <th className="py-2 px-4 border-b">Address</th>
+                <th className="py-2 px-4 border-b">Date</th>
+                <th className="py-2 px-4 border-b">Assign Lead</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentLeads
+                .filter(
+                  (lead) =>
+                    !leadsAssigned.some(
+                      (assigned) => assigned.lead_no === lead.id
+                    )
+                )
+                .map((lead, index) => (
+                  <tr key={lead.id}>
+                    <td className="py-2 px-4 border-b">{index + 1}</td>
+                    <td className="py-2 px-4 border-b">{lead.id}</td>
+                    <td className="py-2 px-4 border-b">
+                      {extractFieldValue(lead.field_data, "full_name")}
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      {extractFieldValue(lead.field_data, "phone_number")}
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      {extractFieldValue(lead.field_data, "street_address")}
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      {new Date(lead.created_time).toLocaleString()}
+                    </td>
+                    <td className="px-6 py-4 border-b border-gray-200 text-gray-800">
+                      <button
+                        className="text-blue-500 hover:text-blue-700"
+                        onClick={() => handleEditClick(lead)}
+                      >
+                        Assign
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       {/* {showPopup && selectedLead && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
@@ -360,29 +353,28 @@ const FacebookLeads = () => {
         </div>
       )}
 
-       {/* Pagination */}
-       <div className="mt-4 flex justify-center">
-  <ReactPaginate
-    previousLabel={"Previous"}
-    nextLabel={"Next"}
-    breakLabel={"..."}
-    pageCount={Math.ceil(leads.length / leadsPerPage)}
-    marginPagesDisplayed={2}
-    pageRangeDisplayed={3}
-    onPageChange={handlePageClick}
-    containerClassName={"pagination"}
-    activeClassName={"active"}
-    pageClassName={"page-item"}
-    pageLinkClassName={"page-link"}
-    previousClassName={"page-item"}
-    nextClassName={"page-item"}
-    previousLinkClassName={"page-link"}
-    nextLinkClassName={"page-link"}
-    breakClassName={"page-item"}
-    breakLinkClassName={"page-link"}
-  />
-</div>
-
+      {/* Pagination */}
+      <div className="mt-4 flex justify-center">
+        <ReactPaginate
+          previousLabel={"Previous"}
+          nextLabel={"Next"}
+          breakLabel={"..."}
+          pageCount={Math.ceil(leads.length / leadsPerPage)}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={3}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination"}
+          activeClassName={"active"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          previousClassName={"page-item"}
+          nextClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextLinkClassName={"page-link"}
+          breakClassName={"page-item"}
+          breakLinkClassName={"page-link"}
+        />
+      </div>
     </div>
   );
 };
